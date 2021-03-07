@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "787471388892",
+    "firebase_url": "https://wp-worker-management-default-rtdb.firebaseio.com",
+    "project_id": "wp-worker-management",
+    "storage_bucket": "wp-worker-management.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:787471388892:android:3348892de18da5dd29e419",
+        "android_client_info": {
+          "package_name": "com.theinternetcompany.wpworkermanagement"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "787471388892-ka77ttfd95kbu1lh2p6p2rhlj46m66p0.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyChxcW6UHPMUjQGv6vh9bt3511kpVkJy8E"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "787471388892-ka77ttfd95kbu1lh2p6p2rhlj46m66p0.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
