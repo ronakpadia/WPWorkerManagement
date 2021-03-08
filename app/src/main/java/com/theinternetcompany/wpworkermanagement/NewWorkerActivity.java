@@ -17,12 +17,14 @@ public class NewWorkerActivity extends AppCompatActivity {
 
     private EditText name, cardNo, workType, rate;
     private Button btnCreateProfile;
+    private DatabaseReference mainRef = FirebaseDatabase.getInstance().getReference();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_new_worker);
 
+        mainRef.keepSynced(true);
         name = findViewById(R.id.newName);
         cardNo = findViewById(R.id.newCardNo);
         workType = findViewById(R.id.newWorkType);
@@ -61,10 +63,13 @@ public class NewWorkerActivity extends AppCompatActivity {
 
     private void saveWorkerProfileData()
     {
-        final String workerID = FirebaseDatabase.getInstance().getReference().child("Worker_List").push().getKey();
+        final String workerID = mainRef.child("Worker_List").push().getKey();
         WorkerProfile newWorker = new WorkerProfile(workerID, name.getText().toString(), cardNo.getText().toString(), rate.getText().toString(), workType.getText().toString());
-        FirebaseDatabase.getInstance().getReference().child("Worker_List").child(workerID).setValue(newWorker);
-        DatabaseReference scoresRef = FirebaseDatabase.getInstance().getReference("scores");
-        scoresRef.keepSynced(true);
+        mainRef.child("Worker_List").child(workerID).setValue(newWorker);
+//        final String workerID = FirebaseDatabase.getInstance().getReference().child("Worker_List").push().getKey();
+//        WorkerProfile newWorker = new WorkerProfile(workerID, name.getText().toString(), cardNo.getText().toString(), rate.getText().toString(), workType.getText().toString());
+//        FirebaseDatabase.getInstance().getReference().child("Worker_List").child(workerID).setValue(newWorker);
+//        DatabaseReference scoresRef = FirebaseDatabase.getInstance().getReference("scores");
+//        scoresRef.keepSynced(true);
     }
 }
