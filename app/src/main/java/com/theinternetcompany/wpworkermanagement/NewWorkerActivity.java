@@ -9,6 +9,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.theinternetcompany.wpworkermanagement.Models.WorkerProfile;
 
@@ -21,8 +22,6 @@ public class NewWorkerActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_new_worker);
-
-        FirebaseDatabase.getInstance().setPersistenceEnabled(true);
 
         name = findViewById(R.id.newName);
         cardNo = findViewById(R.id.newCardNo);
@@ -65,5 +64,7 @@ public class NewWorkerActivity extends AppCompatActivity {
         final String workerID = FirebaseDatabase.getInstance().getReference().child("Worker_List").push().getKey();
         WorkerProfile newWorker = new WorkerProfile(workerID, name.getText().toString(), cardNo.getText().toString(), rate.getText().toString(), workType.getText().toString());
         FirebaseDatabase.getInstance().getReference().child("Worker_List").child(workerID).setValue(newWorker);
+        DatabaseReference scoresRef = FirebaseDatabase.getInstance().getReference("scores");
+        scoresRef.keepSynced(true);
     }
 }
