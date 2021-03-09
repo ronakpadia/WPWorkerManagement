@@ -10,7 +10,8 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.WPWorkerManagement">
-        <activity android:name=".EditWorkerActivity"></activity>
+        <activity android:name=".NewProjectActivity"></activity>
+        <activity android:name=".EditWorkerActivity" />
         <activity android:name=".WokerDetailActivity" />
         <activity android:name=".NewWorkerActivity" />
         <activity android:name=".MainActivity">
