@@ -1,7 +1,9 @@
 package com.theinternetcompany.wpworkermanagement;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.app.AppCompatDelegate;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.View;
@@ -22,6 +24,8 @@ public class NewProjectActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        // FORCE DAY MODE
+        AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
         setContentView(R.layout.activity_new_project);
         mainRef.keepSynced(true);
         name = findViewById(R.id.newProjectName);
@@ -52,10 +56,16 @@ public class NewProjectActivity extends AppCompatActivity {
 
                 else {
                     saveNewProject();
+                    transitionToProjectList();
                 }
                 //transitionToShopPage();
             }
         });
+    }
+
+    private void transitionToProjectList() {
+        Intent intent = new Intent(NewProjectActivity.this, MainActivity.class);
+        startActivity(intent);
     }
 
     private void saveNewProject() {

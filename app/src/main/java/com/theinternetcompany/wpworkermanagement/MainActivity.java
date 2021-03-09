@@ -2,6 +2,7 @@ package com.theinternetcompany.wpworkermanagement;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.app.AppCompatDelegate;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -28,9 +29,16 @@ public class    MainActivity extends AppCompatActivity {
     private DatabaseReference mainRef = FirebaseDatabase.getInstance().getReference();
     private ArrayList<Project> projectList = new ArrayList<>();
 
+    // Don't do anything when back is pressed
+    @Override
+    public void onBackPressed() {
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        // FORCE DAY MODE
+        AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
         setContentView(R.layout.activity_main);
         btnAddNewProject = findViewById(R.id.btnAddNewProject);
         btnEmployeeList = findViewById(R.id.btnEmployeeList);
