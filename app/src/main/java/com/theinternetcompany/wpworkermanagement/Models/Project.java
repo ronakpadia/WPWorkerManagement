@@ -3,6 +3,10 @@ package com.theinternetcompany.wpworkermanagement.Models;
 public class Project {
     private String id,name,company,location,period,expenses;
 
+    public Project(){
+        // Default constructor required for calls to DataSnapshot.getValue(Order.class)
+    }
+
     public Project(String id,String name,String company,String location,String period, String expenses){
 
         this.id = id;
