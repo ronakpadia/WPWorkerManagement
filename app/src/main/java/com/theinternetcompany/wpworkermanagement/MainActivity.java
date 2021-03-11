@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.app.AppCompatDelegate;
 
 import android.app.AlertDialog;
+import android.app.SearchManager;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
@@ -13,6 +14,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.SearchView;
 import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
@@ -31,6 +33,7 @@ import java.util.List;
 public class MainActivity extends AppCompatActivity {
 
     TableLayout projectTable;
+    private SearchView searchView;
     private Button btnEmployeeList, btnAddNewProject, btnHideShowColumns;
     private TextView idTag, nameTag, locationTag, companyTag, expensesTag;
     private DatabaseReference mainRef = FirebaseDatabase.getInstance().getReference();
@@ -47,6 +50,15 @@ public class MainActivity extends AppCompatActivity {
         // FORCE DAY MODE
         AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
         setContentView(R.layout.activity_main);
+
+        //Seaarch
+        Intent intent = getIntent();
+        if (Intent.ACTION_SEARCH.equals(intent.getAction())) {
+            String query = intent.getStringExtra(SearchManager.QUERY);
+            doMySearch(query);
+        }
+
+        searchView = findViewById(R.id.searchView);
         btnAddNewProject = findViewById(R.id.btnAddNewProject);
         btnEmployeeList = findViewById(R.id.btnEmployeeList);
         btnHideShowColumns = findViewById(R.id.btnHideShowColumns);
@@ -132,7 +144,52 @@ public class MainActivity extends AppCompatActivity {
                 collapseColumn(0);
             }
         });
+
+        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String s) {
+                doMySearch(s);
+                return false;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String s) {
+                if(s.equals("")){
+                    this.onQueryTextSubmit("");
+                }
+                return false;
+            }
+        });
 //        transitionToNewWorkerActivity();
+    }
+
+    private void doMySearch(String query) {
+        ArrayList<Project> filteredList = new ArrayList<>();
+        if(query == null || query.length() == 0)
+        {
+            filteredList.addAll(projectList);
+            Log.v("tag",String.valueOf(projectList.size()));
+            projectTable = findViewById(R.id.projectTable);
+            populateTable(filteredList);
+        }
+        else
+        {
+            String filterPattern = query.toLowerCase().trim();
+            Log.v("tag1",filterPattern);
+            for  (Project p : projectList)
+            {
+
+                if(p.getName().toLowerCase().contains(filterPattern))
+                {
+                    Log.v("tag2",p.getName());
+                    filteredList.add(p);
+                    Log.v("tag3",String.valueOf(filteredList.size()));
+                }
+
+            }
+            projectTable = findViewById(R.id.projectTable);
+            populateTable(filteredList);
+        }
     }
 
     private void collapseColumn(Integer tag) {
@@ -172,6 +229,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void populateTable(ArrayList<Project> projectList) {
+        cleanTable(projectTable);
         for (Project p : projectList){
             TableRow row = new TableRow(MainActivity.this);
             TableRow.LayoutParams lp = new TableRow.LayoutParams(TableRow.LayoutParams.MATCH_PARENT);
@@ -210,4 +268,15 @@ public class MainActivity extends AppCompatActivity {
         Intent intent = new Intent(MainActivity.this, NewProjectActivity.class);
         startActivity(intent);
     }
+
+    private void cleanTable(TableLayout table) {
+
+        int childCount = table.getChildCount();
+
+        // Remove all rows except the first one
+        if (childCount > 1) {
+            table.removeViews(1, childCount - 1);
+        }
+    }
+
 }
