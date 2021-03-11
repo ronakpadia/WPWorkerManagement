@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.app.AppCompatDelegate;
 
 import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
@@ -24,6 +25,8 @@ import com.google.firebase.database.ValueEventListener;
 import com.theinternetcompany.wpworkermanagement.Models.Project;
 
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -63,34 +66,85 @@ public class MainActivity extends AppCompatActivity {
         btnHideShowColumns.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                // setup the alert builder
+                final List<Integer> selectedItems = new ArrayList<Integer>();
                 AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
-                ViewGroup viewGroup = findViewById(android.R.id.content);
-                View dialogView = LayoutInflater.from(view.getContext()).inflate(R.layout.dialog_hide_show_columns, viewGroup, false);
-                builder.setView(dialogView);
-                AlertDialog alertDialog = builder.create();
-                alertDialog.show();
-                Button btnIdHideShow;
-                btnIdHideShow = findViewById(R.id.btnViewColID);
-                btnIdHideShow.setOnClickListener(new View.OnClickListener() {
+                builder.setTitle("Choose Tags");
+                // add a checkbox list
+                String[] tags = {"id", "name", "company", "location", "expenses"};
+                boolean[] checkedItems = {false, false, false, false, false};
+                builder.setMultiChoiceItems(tags, checkedItems, new DialogInterface.OnMultiChoiceClickListener() {
                     @Override
-                    public void onClick(View view) {
-                        collapseId();
+                    public void onClick(DialogInterface dialog, int which, boolean isChecked) {
+                        // user checked or unchecked a box
+                        if (isChecked) {
+                            // If the user checked the item, add it to the selected items
+                            selectedItems.add(which);
+                        } else if (selectedItems.contains(which)) {
+                            // Else, if the item is already in the array, remove it
+                            selectedItems.remove(Integer.valueOf(which));
+                        }
                     }
                 });
+                // add OK and Cancel buttons
+                builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        // user clicked OK
+                        int i;
+                        for (i=0; i<=(tags.length-1); i++){
+                            if (selectedItems.contains(i)){
+                                showColumn(i);
+                            }
+                            else{
+                                collapseColumn(i);
+                            }
+                        }
+
+                    }
+                });
+                builder.setNegativeButton("Cancel", null);
+                // create and show the alert dialog
+                AlertDialog dialog = builder.create();
+                dialog.show();
+
+
+
+//                AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
+//                ViewGroup viewGroup = findViewById(android.R.id.content);
+//                View dialogView = LayoutInflater.from(view.getContext()).inflate(R.layout.dialog_hide_show_columns, viewGroup, false);
+//                builder.setView(dialogView);
+//                AlertDialog alertDialog = builder.create();
+//                alertDialog.show();
+//                Button btnIdHideShow;
+//                btnIdHideShow = findViewById(R.id.btnViewColID);
+//                btnIdHideShow.setOnClickListener(new View.OnClickListener() {
+//                    @Override
+//                    public void onClick(View view) {
+//                        collapseId();
+//                    }
+//                });
             }
         });
         idTag.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View view) {
-                collapseId();
+                collapseColumn(0);
             }
         });
 //        transitionToNewWorkerActivity();
     }
 
-    private void collapseId() {
+    private void collapseColumn(Integer tag) {
         projectTable = findViewById(R.id.projectTable);
-        projectTable.setColumnCollapsed(0, true);
+        projectTable.setColumnCollapsed(tag, true);
+
+    }
+
+    private void showColumn(Integer tag) {
+        projectTable = findViewById(R.id.projectTable);
+        projectTable.setColumnCollapsed(tag, false);
+
     }
 
     private void getProjectData() {
