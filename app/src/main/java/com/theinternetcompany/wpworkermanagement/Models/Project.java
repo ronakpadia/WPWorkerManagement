@@ -2,17 +2,18 @@ package com.theinternetcompany.wpworkermanagement.Models;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 public class Project implements Serializable {
     private String id,name,company,location,period,expenses;
-    private List<WorkerProfile> workerList = new ArrayList();
+    private HashMap<String, WorkerProfile> workerList = new HashMap<>();
 
     public Project(){
         // Default constructor required for calls to DataSnapshot.getValue(Order.class)
     }
 
-    public Project(String id,String name,String company,String location,String period, String expenses, ArrayList<WorkerProfile> workerList){
+    public Project(String id,String name,String company,String location,String period, String expenses, HashMap<String, WorkerProfile> workerList){
 
         this.id = id;
         this.name = name;
@@ -24,9 +25,7 @@ public class Project implements Serializable {
 
 
     }
-
-    public Project(String projectID, String toString, String toString1, String toString2, String toString3, String zero) {
-    }
+    
 
     public String getId() {
         return id;
@@ -74,5 +73,13 @@ public class Project implements Serializable {
 
     public void setExpenses(String expenses) {
         this.expenses = expenses;
+    }
+
+    public HashMap<String, WorkerProfile> getWorkerList() {
+        return workerList;
+    }
+
+    public void setWorkerList(HashMap<String, WorkerProfile> workerList) {
+        this.workerList = workerList;
     }
 }
