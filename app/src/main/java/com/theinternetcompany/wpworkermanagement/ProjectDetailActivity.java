@@ -8,6 +8,7 @@ import android.graphics.Color;
 import android.os.Bundle;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
+import android.widget.TextView;
 
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -24,14 +25,25 @@ public class ProjectDetailActivity extends AppCompatActivity {
     private Project project = new Project();
     private ArrayList<WorkerProfile> workerList = new ArrayList<>();
     private DatabaseReference mainRef = FirebaseDatabase.getInstance().getReference();
+    private TextView projectName, projectId, projectLocation, projectCompany, projectDuration;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_project_detail);
+        projectName = findViewById(R.id.twProjectName);
+        projectId = findViewById(R.id.twProjectId);
+        projectCompany = findViewById(R.id.twProjectCompany);
+        projectDuration = findViewById(R.id.twProjectDuration);
+        projectLocation = findViewById(R.id.twProjectLocation);
 
         Intent i = getIntent();
         project = (Project) i.getSerializableExtra("project");
+        projectName.setText(project.getName());
+        projectId.setText(project.getId());
+        projectCompany.setText(project.getCompany());
+        projectLocation.setText(project.getLocation());
+        projectDuration.setText(project.getPeriod());
         getWorkerData();
 
     }

@@ -19,245 +19,231 @@
             android:layout_height="match_parent"
             android:orientation="vertical">
 
-            <LinearLayout
+            <androidx.cardview.widget.CardView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="15dp"
-                android:orientation="horizontal">
+                app:cardBackgroundColor="#DDDDDD"
+                app:contentPadding="20px">
 
-                <TextView
-                    android:id="@+id/projectIDTag"
+                <LinearLayout
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:text="Project ID:"
-                    android:textColor="#000000" />
+                    android:layout_height="match_parent"
+                    android:orientation="vertical">
 
-                <TextView
-                    android:id="@+id/projectID"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:textColor="#000000" />
+                    <TextView
+                        android:id="@+id/twProjectName"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Project Name"
+                        android:textColor="#000000"
+                        android:textSize="18sp" />
 
-            </LinearLayout>
+                    <TextView
+                        android:id="@+id/twProjectId"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="safdOIEH8q398fdv" />
 
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="15dp"
-                android:orientation="horizontal">
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:orientation="horizontal">
 
-                <TextView
-                    android:id="@+id/nameTag"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:text="Project Name:"
-                    android:textColor="#000000" />
+                        <TextView
+                            android:id="@+id/twProjectCompany"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:text="Company"
+                            android:textColor="#000000" />
 
-                <TextView
-                    android:id="@+id/name"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:textColor="#000000" />
+                        <TextView
+                            android:id="@+id/twProjectLocation"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:text="Location"
+                            android:textColor="#000000" />
+                    </LinearLayout>
 
-            </LinearLayout>
+                    <TextView
+                        android:id="@+id/twProjectDuration"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="Duration" />
 
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="15dp"
-                android:orientation="horizontal">
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:orientation="horizontal">
 
-                <TextView
-                    android:id="@+id/companyTag"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:text="Company:"
-                    android:textColor="#000000" />
+                        <TextView
+                            android:id="@+id/tw"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:text="Wages + Conveyance"
+                            android:textColor="#000000"
+                            android:textSize="14sp" />
 
-                <TextView
-                    android:id="@+id/company"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:textColor="#000000" />
+                        <TextView
+                            android:id="@+id/twWagesConveyance"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:paddingStart="15px"
+                            android:paddingLeft="15px"
+                            android:text="TextView"
+                            android:textColor="#4CAF50" />
+                    </LinearLayout>
 
-            </LinearLayout>
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:orientation="horizontal">
 
+                        <TextView
+                            android:id="@+id/tw2"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:text="Cash Expenses"
+                            android:textColor="#000000"
+                            android:textSize="14sp" />
 
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="15dp"
-                android:orientation="horizontal">
+                        <TextView
+                            android:id="@+id/twCashExpenses"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:paddingStart="15px"
+                            android:paddingLeft="15px"
+                            android:text="TextView"
+                            android:textColor="#4CAF50" />
+                    </LinearLayout>
 
-                <TextView
-                    android:id="@+id/locationTag"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:text="Location:"
-                    android:textColor="#000000" />
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:orientation="horizontal">
 
-                <TextView
-                    android:id="@+id/loacation"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:textColor="#000000" />
+                        <TextView
+                            android:id="@+id/tw3"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:text="Cheque Payments"
+                            android:textColor="#000000"
+                            android:textSize="14sp" />
 
+                        <TextView
+                            android:id="@+id/twChequePayments"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:paddingStart="15px"
+                            android:paddingLeft="15px"
+                            android:text="TextView"
+                            android:textColor="#4CAF50" />
+                    </LinearLayout>
 
-            </LinearLayout>
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:orientation="horizontal">
 
+                        <TextView
+                            android:id="@+id/tw4"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:text="Total Expenses"
+                            android:textColor="#000000"
+                            android:textSize="14sp" />
 
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="15dp"
-                android:orientation="horizontal">
+                        <TextView
+                            android:id="@+id/twTotalExpenses"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:paddingStart="15px"
+                            android:paddingLeft="15px"
+                            android:text="TextView"
+                            android:textColor="#4CAF50" />
+                    </LinearLayout>
 
-                <TextView
-                    android:id="@+id/periodTag"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:text="Period:"
-                    android:textColor="#000000" />
+                </LinearLayout>
 
-                <TextView
-                    android:id="@+id/period"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:textColor="#000000" />
-
-            </LinearLayout>
+            </androidx.cardview.widget.CardView>
 
 
             <TextView
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_marginTop="25dp"
+                android:id="@+id/tvAddWorker"
+                android:layout_width="wrap_content"
+                android:layout_height="0dp"
                 android:layout_weight="1"
-                android:text="Expenses:"
-                android:textColor="#000000" />
+                android:text="Add Worker :"
+                android:textColor="#000000"
+                android:textColorHint="#000000"
+                android:textSize="18sp" />
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="15dp"
-                android:orientation="horizontal">
-
-                <TextView
-                    android:id="@+id/wagesTag"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:gravity="center"
-                    android:text="Wages + Conveyance"
-                    android:textColor="#000000" />
-
-                <TextView
-                    android:id="@+id/cashTag"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:gravity="center"
-                    android:text="Cash Expenses"
-                    android:textColor="#000000" />
-
-                <TextView
-                    android:id="@+id/chequeTag"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:gravity="center"
-                    android:text="Cheque Payments"
-                    android:textColor="#000000" />
-
-
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="15dp"
-                android:orientation="horizontal">
-
-                <TextView
-                    android:id="@+id/wages"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:gravity="center"
-                    android:textColor="#000000" />
-
-                <TextView
-                    android:id="@+id/cash"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:gravity="center"
-                    android:textColor="#000000" />
-
-                <TextView
-                    android:id="@+id/cheque"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:gravity="center"
-                    android:textColor="#000000" />
-
-
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="15dp"
-                android:orientation="horizontal">
-
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:layout_weight="1"
-                    android:text="Total Expense:"
-                    android:textColor="#000000" />
-
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:layout_weight="1"
-                    android:textColor="#000000" />
-
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:orientation="horizontal">
-
-                <TextView
-                    android:id="@+id/tvAddWorker"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:text="Add Worker :"
-                    android:textSize="18sp" />
+                android:orientation="horizontal"
+                tools:layout_editor_absoluteX="1dp"
+                tools:layout_editor_absoluteY="297dp">
 
                 <AutoCompleteTextView
                     android:id="@+id/addWorkerAutoComplete"
+                    android:layout_width="164dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:hint="Name" />
+
+                <EditText
+                    android:id="@+id/editTextRate"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_weight="1" />
+                    android:layout_weight="1"
+                    android:ems="10"
+                    android:hint="Rate"
+                    android:inputType="textPersonName" />
+
+                <Button
+                    android:id="@+id/btnAddWorkerToProject"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="Add" />
             </LinearLayout>
 
         </LinearLayout>
 
+        <TableLayout
+            android:id="@+id/tableProjectWorkers"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <TableRow
+                android:layout_width="match_parent"
+                android:layout_height="match_parent" />
+
+            <TableRow
+                android:layout_width="match_parent"
+                android:layout_height="match_parent" />
+
+            <TableRow
+                android:layout_width="match_parent"
+                android:layout_height="match_parent" />
+
+            <TableRow
+                android:layout_width="match_parent"
+                android:layout_height="match_parent" />
+        </TableLayout>
+
     </LinearLayout>
+
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>
