@@ -2,6 +2,7 @@ package com.theinternetcompany.wpworkermanagement;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.View;
@@ -20,6 +21,10 @@ public class NewWorkerActivity extends AppCompatActivity {
     private Button btnCreateProfile;
     private long back_pressed;
     private DatabaseReference mainRef = FirebaseDatabase.getInstance().getReference();
+
+    @Override
+    public void onBackPressed() {
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -57,11 +62,16 @@ public class NewWorkerActivity extends AppCompatActivity {
                 else {
                     saveWorkerProfileData();
                 }
-                //transitionToShopPage();
+                transitionToWorkerListActivity();
             }
 
         });
 
+    }
+
+    private void transitionToWorkerListActivity() {
+        Intent intent = new Intent(NewWorkerActivity.this, WorkerListActivity.class);
+        startActivity(intent);
     }
 
     private void saveWorkerProfileData()

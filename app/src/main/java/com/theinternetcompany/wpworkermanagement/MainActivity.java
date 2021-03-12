@@ -35,7 +35,7 @@ public class MainActivity extends AppCompatActivity {
     TableLayout projectTable;
     private SearchView searchView;
     private Button btnEmployeeList, btnAddNewProject, btnHideShowColumns;
-    private TextView idTag, nameTag, locationTag, companyTag, expensesTag;
+    private TextView idTag, nameTag, locationTag, companyTag,periodTag, expensesTag;
     private DatabaseReference mainRef = FirebaseDatabase.getInstance().getReference();
     private ArrayList<Project> projectList = new ArrayList<>();
 
@@ -51,20 +51,14 @@ public class MainActivity extends AppCompatActivity {
         AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
         setContentView(R.layout.activity_main);
 
-        //Seaarch
-        Intent intent = getIntent();
-        if (Intent.ACTION_SEARCH.equals(intent.getAction())) {
-            String query = intent.getStringExtra(SearchManager.QUERY);
-            doMySearch(query);
-        }
 
         searchView = findViewById(R.id.searchView);
         btnAddNewProject = findViewById(R.id.btnAddNewProject);
         btnEmployeeList = findViewById(R.id.btnEmployeeList);
         btnHideShowColumns = findViewById(R.id.btnHideShowColumns);
-        idTag = findViewById(R.id.idTag);
         nameTag = findViewById(R.id.nameTag);
         locationTag = findViewById(R.id.locationTag);
+        periodTag = findViewById(R.id.periodTag);
         companyTag = findViewById(R.id.companyTag);
         expensesTag = findViewById(R.id.expensesTag);
         mainRef.keepSynced(true);
@@ -83,7 +77,7 @@ public class MainActivity extends AppCompatActivity {
                 AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
                 builder.setTitle("Choose Tags");
                 // add a checkbox list
-                String[] tags = {"id", "name", "company", "location", "expenses"};
+                String[] tags = {"name", "company", "location","period", "expenses"};
                 boolean[] checkedItems = {false, false, false, false, false};
                 builder.setMultiChoiceItems(tags, checkedItems, new DialogInterface.OnMultiChoiceClickListener() {
                     @Override
@@ -138,10 +132,39 @@ public class MainActivity extends AppCompatActivity {
 //                });
             }
         });
-        idTag.setOnClickListener(new View.OnClickListener(){
+
+        nameTag.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View view) {
                 collapseColumn(0);
+            }
+        });
+
+        companyTag.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View view) {
+                collapseColumn(1);
+            }
+        });
+
+        locationTag.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View view) {
+                collapseColumn(2);
+            }
+        });
+
+        periodTag.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View view) {
+                collapseColumn(3);
+            }
+        });
+
+        expensesTag.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View view) {
+                collapseColumn(4);
             }
         });
 
@@ -160,7 +183,14 @@ public class MainActivity extends AppCompatActivity {
                 return false;
             }
         });
-//        transitionToNewWorkerActivity();
+
+        btnEmployeeList.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View view) {
+                transitionToWorkerListActivity();
+            }
+        });
+//
     }
 
     private void doMySearch(String query) {
@@ -235,22 +265,47 @@ public class MainActivity extends AppCompatActivity {
             TableRow.LayoutParams lp = new TableRow.LayoutParams(TableRow.LayoutParams.MATCH_PARENT);
             row.setLayoutParams(lp);
             // Generating TextViews for row
-            TextView pid = new TextView(MainActivity.this);
-            pid.setText(p.getId());
+//            TextView pid = new TextView(MainActivity.this);
+//            pid.setText(p.getId());
             TextView pname = new TextView(MainActivity.this);
             pname.setText(p.getName());
+            pname.setPadding(20,20,20,20);
+            pname.setTextSize(20);
             TextView pcompany = new TextView(MainActivity.this);
             pcompany.setText(p.getCompany());
+            pcompany.setPadding(20,20,20,20);
+            pcompany.setTextSize(20);
             TextView plocation = new TextView(MainActivity.this);
             plocation.setText(p.getLocation());
+            plocation.setPadding(20,20,20,20);
+            plocation.setTextSize(20);
+            TextView pperiod = new TextView(MainActivity.this);
+            pperiod.setText(p.getPeriod());
+            pperiod.setPadding(20,20,20,20);
+            pperiod.setTextSize(20);
             TextView pexpenses = new TextView(MainActivity.this);
             pexpenses.setText(p.getExpenses());
+            pexpenses.setPadding(20,20,20,20);
+            pexpenses.setTextSize(20);
             // Adding TextViews
-            row.addView(pid);
+//            row.addView(pid);
             row.addView(pname);
             row.addView(pcompany);
             row.addView(plocation);
+            row.addView(pperiod);
             row.addView(pexpenses);
+            row.setClickable(true);
+            row.setOnClickListener(new View.OnClickListener() {
+
+                @Override
+                public void onClick(View v) {
+
+                    Intent intent = new Intent(MainActivity.this, WorkerListActivity.class);
+                    intent.putExtra("project", p);
+                    startActivity(intent);
+
+                }
+            });
             // Adding the row to tableLayout
             Log.v("BHENCHOD", "MADARCHOD");
             projectTable.addView(row);
@@ -258,9 +313,9 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    private void transitionToNewWorkerActivity() {
+    private void transitionToWorkerListActivity() {
 
-        Intent intent = new Intent(MainActivity.this, EditWorkerActivity.class);
+        Intent intent = new Intent(MainActivity.this, WorkerListActivity.class);
         startActivity(intent);
     }
 

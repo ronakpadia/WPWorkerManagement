@@ -15,6 +15,10 @@ import com.theinternetcompany.wpworkermanagement.Models.WorkerProfile;
 
 public class EditWorkerActivity extends AppCompatActivity {
 
+    @Override
+    public void onBackPressed() {
+    }
+
     private EditText name, cardNo, workType, rate;
     private Button btnSave;
     private DatabaseReference mainRef = FirebaseDatabase.getInstance().getReference();

@@ -17,6 +17,10 @@ import com.theinternetcompany.wpworkermanagement.Models.Project;
 
 public class NewProjectActivity extends AppCompatActivity {
 
+    @Override
+    public void onBackPressed() {
+    }
+
     private EditText name, company, location, period;
     private Button btnCreateProject;
     private DatabaseReference mainRef = FirebaseDatabase.getInstance().getReference();

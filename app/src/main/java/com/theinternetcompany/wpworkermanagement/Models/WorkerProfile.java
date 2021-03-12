@@ -4,6 +4,10 @@ public class WorkerProfile {
 
     private String name, cardNo, rate, workType, id;
 
+    public WorkerProfile(){
+        // Default constructor required for calls to DataSnapshot.getValue(Order.class)
+    }
+
     public WorkerProfile(String id, String name, String cardNo,String rate, String workType) {
         this.id = id;
         this.name = name;

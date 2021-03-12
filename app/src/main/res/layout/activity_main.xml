@@ -48,7 +48,7 @@
                 android:layout_height="match_parent" >
 
                 <ScrollView
-                    android:layout_width="wrap_content"
+                    android:layout_width="match_parent"
                     android:layout_height="match_parent">
 
                     <LinearLayout
@@ -66,13 +66,6 @@
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content">
 
-                                <TextView
-                                    android:id="@+id/idTag"
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:padding="5dp"
-                                    android:text="ID"
-                                    android:textAppearance="?android:attr/textAppearanceMedium"></TextView>
 
                                 <TextView
                                     android:id="@+id/nameTag"
@@ -80,6 +73,9 @@
                                     android:layout_height="wrap_content"
                                     android:padding="5dp"
                                     android:text="Name"
+                                    android:textSize="20dp"
+                                    android:textStyle="bold"
+                                    android:textColor="@color/black"
                                     android:textAppearance="?android:attr/textAppearanceMedium"></TextView>
 
                                 <TextView
@@ -88,14 +84,31 @@
                                     android:layout_height="wrap_content"
                                     android:padding="5dp"
                                     android:text="Company"
-                                    android:textAppearance="?android:attr/textAppearanceMedium"></TextView>
+                                    android:textAppearance="?android:attr/textAppearanceMedium"
+                                    android:textColor="@color/black"
+                                    android:textSize="20dp"
+                                    android:textStyle="bold"></TextView>
 
                                 <TextView
                                     android:id="@+id/locationTag"
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
                                     android:padding="5dp"
+                                    android:textSize="20dp"
+                                    android:textStyle="bold"
+                                    android:textColor="@color/black"
                                     android:text="Location"
+                                    android:textAppearance="?android:attr/textAppearanceMedium"></TextView>
+
+                                <TextView
+                                    android:id="@+id/periodTag"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:padding="5dp"
+                                    android:textSize="20dp"
+                                    android:textStyle="bold"
+                                    android:textColor="@color/black"
+                                    android:text="Period"
                                     android:textAppearance="?android:attr/textAppearanceMedium"></TextView>
 
                                 <TextView
@@ -103,6 +116,9 @@
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
                                     android:padding="5dp"
+                                    android:textSize="20dp"
+                                    android:textStyle="bold"
+                                    android:textColor="@color/black"
                                     android:text="Expenses"
                                     android:textAppearance="?android:attr/textAppearanceMedium"></TextView>
 

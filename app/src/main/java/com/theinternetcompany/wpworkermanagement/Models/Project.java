@@ -1,6 +1,8 @@
 package com.theinternetcompany.wpworkermanagement.Models;
 
-public class Project {
+import java.io.Serializable;
+
+public class Project implements Serializable {
     private String id,name,company,location,period,expenses;
 
     public Project(){
