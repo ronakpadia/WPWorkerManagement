@@ -50,7 +50,7 @@
                 android:layout_marginTop="15dp">
 
                 <TextView
-                    android:id="@+id/nameTag"
+                    android:id="@+id/workerNameTag"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="Worker Name:"
@@ -58,7 +58,7 @@
                     android:textColor="#000000" />
 
                 <TextView
-                    android:id="@+id/name"
+                    android:id="@+id/workerName"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
@@ -137,6 +137,118 @@
                     android:textColor="#000000" />
 
             </LinearLayout>
+
+            <HorizontalScrollView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent" >
+
+                <ScrollView
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        android:layout_marginTop="15dp">
+
+                        <TableLayout
+                            android:id="@+id/projectTable"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent">
+
+                            <TableRow
+                                android:id="@+id/TableHeaderTags"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content">
+
+                                <TextView
+                                    android:id="@+id/projectIDTag"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:padding="5dp"
+                                    android:text="ID"
+                                    android:textAppearance="?android:attr/textAppearanceMedium"></TextView>
+
+                                <TextView
+                                    android:id="@+id/projectNameTag"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:padding="5dp"
+                                    android:text="Name"
+                                    android:textAppearance="?android:attr/textAppearanceMedium"></TextView>
+
+                                <TextView
+                                    android:id="@+id/companyTag"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:padding="5dp"
+                                    android:text="Company"
+                                    android:textAppearance="?android:attr/textAppearanceMedium"></TextView>
+
+                                <TextView
+                                    android:id="@+id/projectRate"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:padding="5dp"
+                                    android:text="Rate"
+                                    android:textAppearance="?android:attr/textAppearanceMedium"></TextView>
+
+                                <TextView
+                                    android:id="@+id/shifts"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:padding="5dp"
+                                    android:text="Shifts"
+                                    android:textAppearance="?android:attr/textAppearanceMedium"></TextView>
+
+                                <TextView
+                                    android:id="@+id/wage"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:padding="5dp"
+                                    android:text="Wage"
+                                    android:textAppearance="?android:attr/textAppearanceMedium"></TextView>
+
+                                <TextView
+                                    android:id="@+id/conveyance"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:padding="5dp"
+                                    android:text="Conveyance"
+                                    android:textAppearance="?android:attr/textAppearanceMedium"></TextView>
+
+                                <TextView
+                                    android:id="@+id/total"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:padding="5dp"
+                                    android:text="Total"
+                                    android:textAppearance="?android:attr/textAppearanceMedium"></TextView>
+
+
+                            </TableRow>
+
+                            <TableRow
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent" />
+
+                            <TableRow
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent" />
+
+                            <TableRow
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent" />
+
+                            <TableRow
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent" />
+                        </TableLayout>
+
+                    </LinearLayout>
+                </ScrollView>
+            </HorizontalScrollView>
 
 
 
