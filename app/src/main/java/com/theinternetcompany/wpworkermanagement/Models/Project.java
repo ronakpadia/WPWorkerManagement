@@ -13,7 +13,7 @@ public class Project implements Serializable {
         // Default constructor required for calls to DataSnapshot.getValue(Order.class)
     }
 
-    public Project(String id,String name,String company,String location,String period, String expenses, HashMap<String, WorkerProfile> workerList){
+    public Project(String id,String name,String company,String location,String period, String expenses){
 
         this.id = id;
         this.name = name;
@@ -25,7 +25,7 @@ public class Project implements Serializable {
 
 
     }
-    
+
 
     public String getId() {
         return id;

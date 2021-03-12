@@ -309,7 +309,7 @@ public class MainActivity extends AppCompatActivity {
 
                 @Override
                 public void onClick(View v) {
-
+                    Log.v("Click", p.getName());
                     Intent intent = new Intent(MainActivity.this, ProjectDetailActivity.class);
                     intent.putExtra("project", p);
                     startActivity(intent);

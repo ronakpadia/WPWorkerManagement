@@ -66,7 +66,7 @@ public class EditWorkerActivity extends AppCompatActivity {
     private void saveWorkerProfileData()
     {
 
-        WorkerProfile newWorker = new WorkerProfile("-MVGdE48egxQm3MXHiFB", name.getText().toString(), cardNo.getText().toString(), workType.getText().toString(), rate.getText().toString() );
+        WorkerProfile newWorker = new WorkerProfile("-MVGdE48egxQm3MXHiFB", name.getText().toString(), cardNo.getText().toString(), workType.getText().toString(), rate.getText().toString() , rate.getText().toString() );
         mainRef.child("Worker_List").child("-MVGdE48egxQm3MXHiFB").setValue(newWorker);
 //        final String workerID = FirebaseDatabase.getInstance().getReference().child("Worker_List").push().getKey();
 //        WorkerProfile newWorker = new WorkerProfile(workerID, name.getText().toString(), cardNo.getText().toString(), rate.getText().toString(), workType.getText().toString());
