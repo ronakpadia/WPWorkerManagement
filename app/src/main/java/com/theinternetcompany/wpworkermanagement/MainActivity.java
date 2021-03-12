@@ -215,6 +215,16 @@ public class MainActivity extends AppCompatActivity {
                     filteredList.add(p);
                     Log.v("tag3",String.valueOf(filteredList.size()));
                 }
+                else if(p.getCompany().toLowerCase().contains(filterPattern))
+                {
+                    filteredList.add(p);
+                }else if(p.getLocation().toLowerCase().contains(filterPattern))
+                {
+                    filteredList.add(p);
+                }else if(p.getPeriod().toLowerCase().contains(filterPattern))
+                {
+                    filteredList.add(p);
+                }
 
             }
             projectTable = findViewById(R.id.projectTable);
@@ -300,7 +310,7 @@ public class MainActivity extends AppCompatActivity {
                 @Override
                 public void onClick(View v) {
 
-                    Intent intent = new Intent(MainActivity.this, WorkerListActivity.class);
+                    Intent intent = new Intent(MainActivity.this, ProjectDetailActivity.class);
                     intent.putExtra("project", p);
                     startActivity(intent);
 

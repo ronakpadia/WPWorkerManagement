@@ -1,15 +1,18 @@
 package com.theinternetcompany.wpworkermanagement.Models;
 
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
 
 public class Project implements Serializable {
     private String id,name,company,location,period,expenses;
+    private List<WorkerProfile> workerList = new ArrayList();
 
     public Project(){
         // Default constructor required for calls to DataSnapshot.getValue(Order.class)
     }
 
-    public Project(String id,String name,String company,String location,String period, String expenses){
+    public Project(String id,String name,String company,String location,String period, String expenses, ArrayList<WorkerProfile> workerList){
 
         this.id = id;
         this.name = name;
@@ -17,7 +20,12 @@ public class Project implements Serializable {
         this.location = location;
         this.period = period;
         this.expenses = expenses;
+        this.workerList = workerList;
 
+
+    }
+
+    public Project(String projectID, String toString, String toString1, String toString2, String toString3, String zero) {
     }
 
     public String getId() {
