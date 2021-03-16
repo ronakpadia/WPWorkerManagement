@@ -27,6 +27,8 @@ import com.theinternetcompany.wpworkermanagement.Models.WorkerProfile;
 
 import java.util.ArrayList;
 
+import static android.os.SystemClock.sleep;
+
 public class ProjectDetailActivity extends AppCompatActivity {
 
     private Project project = new Project();
@@ -36,7 +38,7 @@ public class ProjectDetailActivity extends AppCompatActivity {
     private ArrayList<WorkerProfile> pWorkerList = new ArrayList<>();
     private DatabaseReference mainRef = FirebaseDatabase.getInstance().getReference();
     private TextView projectName, projectId, projectLocation, projectCompany, projectDuration;
-    private Button btnAddWorker;
+    private Button btnAdd, btnRemove, btnSave;
     LinearLayout layout;
 
     @Override
@@ -52,7 +54,9 @@ public class ProjectDetailActivity extends AppCompatActivity {
         projectCompany = findViewById(R.id.twProjectCompany);
         projectDuration = findViewById(R.id.twProjectDuration);
         projectLocation = findViewById(R.id.twProjectLocation);
-        btnAddWorker = findViewById(R.id.btnAddWorker);
+        btnAdd = findViewById(R.id.btnAdd);
+        btnRemove = findViewById(R.id.btnRemove);
+        btnSave = findViewById(R.id.btnSave);
 
         Intent i = getIntent();
         project = (Project) i.getSerializableExtra("project");
@@ -61,19 +65,70 @@ public class ProjectDetailActivity extends AppCompatActivity {
         projectCompany.setText(project.getCompany());
         projectLocation.setText(project.getLocation());
         projectDuration.setText(project.getPeriod());
+        btnSave.setVisibility(View.GONE);
         layout.setVisibility(View.GONE);
         getWorkerData();
+        getPWorkerData(project.getId());
+        populateTable(pWorkerList, projectTable, "main");
 
-        btnAddWorker.setOnClickListener(new View.OnClickListener() {
+        btnRemove.setOnClickListener(new View.OnClickListener() {
+            String parent = "Remove";
 
             @Override
             public void onClick(View v) {
-                btnAddWorker.setVisibility(View.GONE);
+                btnRemove.setVisibility(View.GONE);
+                btnSave.setVisibility(View.VISIBLE);
+                btnAdd.setVisibility(View.GONE);
                 layout .setVisibility(View.VISIBLE);
+                getPWorkerData(project.getId());
+                populateTable(pWorkerList, projectTable2, "remove");
+
 
             }
         });
 
+        btnSave.setOnClickListener(new View.OnClickListener() {
+
+            @Override
+            public void onClick(View v) {
+                btnRemove.setVisibility(View.VISIBLE);
+                btnAdd.setVisibility(View.VISIBLE);
+                btnSave.setVisibility(View.GONE);
+                layout.setVisibility(View.GONE);
+
+            }
+        });
+
+        btnAdd.setOnClickListener(new View.OnClickListener() {
+
+            // Reminder : duplicate in pWorkerList shud not overwrite previous entry
+
+            @Override
+            public void onClick(View v) {
+                btnAdd.setVisibility(View.GONE);
+                btnSave.setVisibility(View.VISIBLE);
+                btnRemove.setVisibility(View.GONE);
+                layout .setVisibility(View.VISIBLE);
+                populateTable(workerList, projectTable2, "add");
+
+            }
+        });
+
+    }
+
+    private void addPWorker(WorkerProfile worker) {
+
+        DatabaseReference workerRef = mainRef.child("Project_List").child(project.getId()).child("worker_list");
+        workerRef.keepSynced(true);
+        WorkerProfile newWorker = new WorkerProfile(worker.getId(), worker.getName(),worker.getCardNo(), worker.getBaseRate() , worker.getRate(), worker.getWorkType() );
+        workerRef.child(worker.getId()).setValue(newWorker);
+    }
+
+    private void removePWorker(WorkerProfile worker) {
+
+        DatabaseReference workerRef = mainRef.child("Project_List").child(project.getId()).child("worker_list");
+        workerRef.keepSynced(true);
+        workerRef.child(worker.getId()).removeValue();
     }
 
     private void getWorkerData() {
@@ -84,12 +139,11 @@ public class ProjectDetailActivity extends AppCompatActivity {
         workerRef.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
-                for(DataSnapshot snap : snapshot.getChildren()){
+                workerList.clear();
+                for(DataSnapshot snap : snapshot.getChildren()) {
                     workerList.add(snap.getValue(WorkerProfile.class));
 
                 }
-                populateTable(workerList, projectTable2);
-
 
             }
 
@@ -100,19 +154,19 @@ public class ProjectDetailActivity extends AppCompatActivity {
         });
     }
 
-    private void getPWorkerData() {
-        DatabaseReference workerRef = mainRef.child("Project_List").child("worker_list");
+    private void getPWorkerData(String id) {
+        DatabaseReference workerRef = mainRef.child("Project_List").child(id).child("worker_list");
         workerRef.keepSynced(true);
 
 
         workerRef.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
+                pWorkerList.clear();
                 for(DataSnapshot snap : snapshot.getChildren()){
-                    workerList.add(snap.getValue(WorkerProfile.class));
+                    pWorkerList.add(snap.getValue(WorkerProfile.class));
 
                 }
-                populateTable(workerList, projectTable2);
 
 
             }
@@ -124,7 +178,7 @@ public class ProjectDetailActivity extends AppCompatActivity {
         });
     }
 
-    private void populateTable(ArrayList<WorkerProfile> workerList, TableLayout table) {
+    private void populateTable(ArrayList<WorkerProfile> workerList, TableLayout table, String parentMethod) {
         cleanTable(table);
         for (WorkerProfile p : workerList){
             TableRow row = new TableRow(ProjectDetailActivity.this);
@@ -158,17 +212,31 @@ public class ProjectDetailActivity extends AppCompatActivity {
             // Adding the row to tableLayout
             Log.v("BHENCHOD", "MADARCHOD");
 
-            row.setClickable(true);
-            row.setOnClickListener(new View.OnClickListener() {
+            if (table == projectTable2){
+                row.setClickable(true);
+                row.setOnClickListener(new View.OnClickListener() {
 
-                @Override
-                public void onClick(View v) {
-                    Log.v("Click", p.getName());
-                    pWorkerList.add(p);
-                    populateTable(pWorkerList, projectTable);
+                    @Override
+                    public void onClick(View v) {
+                        if (parentMethod.equals("add")){
+                            addPWorker(p);
+                            sleep(1000);
+                            getPWorkerData(project.getId());
+                            populateTable(pWorkerList, projectTable, "inner");
+                        }
+                        else if (parentMethod.equals("remove")){
+                            removePWorker(p);
+                            sleep(1000);
+                            getPWorkerData(project.getId());
+                            populateTable(pWorkerList, projectTable, "inner");
+                        }
 
-                }
-            });
+
+                    }
+                });
+            }
+
+
             table.addView(row);
             Log.v("KIA ADD", "RANDI");
         }
