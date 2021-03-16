@@ -79,7 +79,7 @@
 
                         <TextView
                             android:id="@+id/tw"
-                            android:layout_width="wrap_content"
+                            android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
                             android:text="Wages + Conveyance"
@@ -88,7 +88,7 @@
 
                         <TextView
                             android:id="@+id/twWagesConveyance"
-                            android:layout_width="wrap_content"
+                            android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
                             android:paddingStart="15px"
@@ -104,7 +104,7 @@
 
                         <TextView
                             android:id="@+id/tw2"
-                            android:layout_width="wrap_content"
+                            android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
                             android:text="Cash Expenses"
@@ -113,7 +113,7 @@
 
                         <TextView
                             android:id="@+id/twCashExpenses"
-                            android:layout_width="wrap_content"
+                            android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
                             android:paddingStart="15px"
@@ -129,7 +129,7 @@
 
                         <TextView
                             android:id="@+id/tw3"
-                            android:layout_width="wrap_content"
+                            android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
                             android:text="Cheque Payments"
@@ -138,7 +138,7 @@
 
                         <TextView
                             android:id="@+id/twChequePayments"
-                            android:layout_width="wrap_content"
+                            android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
                             android:paddingStart="15px"
@@ -154,7 +154,7 @@
 
                         <TextView
                             android:id="@+id/tw4"
-                            android:layout_width="wrap_content"
+                            android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
                             android:text="Total Expenses"
@@ -163,7 +163,7 @@
 
                         <TextView
                             android:id="@+id/twTotalExpenses"
-                            android:layout_width="wrap_content"
+                            android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
                             android:paddingStart="15px"
@@ -177,70 +177,238 @@
             </androidx.cardview.widget.CardView>
 
 
-            <TextView
-                android:id="@+id/tvAddWorker"
-                android:layout_width="wrap_content"
-                android:layout_height="0dp"
-                android:layout_weight="1"
-                android:text="Add Worker :"
-                android:textColor="#000000"
-                android:textColorHint="#000000"
-                android:textSize="18sp" />
+            <LinearLayout
+                android:id="@+id/linearLayout"
+                android:layout_width="match_parent"
+                android:layout_height="200dp"
+                android:orientation="vertical"
+                android:layout_above="@+id/LL">
+
+                <HorizontalScrollView
+                    android:layout_marginTop="15dp"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent" >
+
+                    <ScrollView
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent">
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="vertical">
+
+                            <TableLayout
+                                android:id="@+id/projectTable"
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent">
+
+                                <TableRow
+                                    android:id="@+id/TableHeaderTags"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content">
+
+
+                                    <TextView
+                                        android:id="@+id/nameTag"
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:padding="5dp"
+                                        android:text="Name"
+                                        android:textSize="20dp"
+                                        android:textStyle="bold"
+                                        android:textColor="@color/black"
+                                        android:textAppearance="?android:attr/textAppearanceMedium"></TextView>
+
+                                    <TextView
+                                        android:id="@+id/cardTag"
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:padding="5dp"
+                                        android:text="Card No."
+                                        android:textSize="20dp"
+                                        android:textStyle="bold"
+                                        android:textColor="@color/black"
+                                        android:textAppearance="?android:attr/textAppearanceMedium"></TextView>
+
+                                    <TextView
+                                        android:id="@+id/rateTag"
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:padding="5dp"
+                                        android:text="Base Rate"
+                                        android:textSize="20dp"
+                                        android:textStyle="bold"
+                                        android:textColor="@color/black"
+                                        android:textAppearance="?android:attr/textAppearanceMedium"></TextView>
+
+                                    <TextView
+                                        android:id="@+id/workTpyeTag"
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:padding="5dp"
+                                        android:text="Work Type"
+                                        android:textSize="20dp"
+                                        android:textStyle="bold"
+                                        android:textColor="@color/black"
+                                        android:textAppearance="?android:attr/textAppearanceMedium"></TextView>
+
+                                </TableRow>
+
+                                <TableRow
+                                    android:layout_width="match_parent"
+                                    android:layout_height="match_parent" />
+
+                                <TableRow
+                                    android:layout_width="match_parent"
+                                    android:layout_height="match_parent" />
+
+                                <TableRow
+                                    android:layout_width="match_parent"
+                                    android:layout_height="match_parent" />
+
+                                <TableRow
+                                    android:layout_width="match_parent"
+                                    android:layout_height="match_parent" />
+                            </TableLayout>
+
+                        </LinearLayout>
+                    </ScrollView>
+                </HorizontalScrollView>
+
+            </LinearLayout>
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                tools:layout_editor_absoluteX="1dp"
-                tools:layout_editor_absoluteY="297dp">
+                android:orientation="horizontal">
 
-                <AutoCompleteTextView
-                    android:id="@+id/addWorkerAutoComplete"
-                    android:layout_width="164dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:hint="Name" />
 
-                <EditText
-                    android:id="@+id/editTextRate"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:ems="10"
-                    android:hint="Rate"
-                    android:inputType="textPersonName" />
 
-                <Button
-                    android:id="@+id/btnAddWorkerToProject"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:text="Add" />
+
+            </LinearLayout>
+
+            <Button
+                android:id="@+id/btnAddWorker"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Add Worker"
+                android:layout_gravity="end"/>
+
+            <LinearLayout
+                android:id="@+id/linearLayoutT"
+                android:layout_width="match_parent"
+                android:layout_height="200dp"
+                android:orientation="vertical"
+                android:layout_above="@+id/LL">
+
+                <SearchView
+                    android:id="@+id/searchView"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+
+                </SearchView>
+
+
+                <HorizontalScrollView
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent" >
+
+                    <ScrollView
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent">
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="vertical">
+
+                            <TableLayout
+                                android:id="@+id/projectTable2"
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent">
+
+                                <TableRow
+                                    android:id="@+id/TableHeaderTags2"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content">
+
+
+                                    <TextView
+                                        android:id="@+id/nameTag2"
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:padding="5dp"
+                                        android:text="Name"
+                                        android:textSize="20dp"
+                                        android:textStyle="bold"
+                                        android:textColor="@color/black"
+                                        android:textAppearance="?android:attr/textAppearanceMedium"></TextView>
+
+                                    <TextView
+                                        android:id="@+id/cardTag2"
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:padding="5dp"
+                                        android:text="Card No."
+                                        android:textAppearance="?android:attr/textAppearanceMedium"
+                                        android:textColor="@color/black"
+                                        android:textSize="20dp"
+                                        android:textStyle="bold"></TextView>
+
+                                    <TextView
+                                        android:id="@+id/rateTag2"
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:padding="5dp"
+                                        android:text="Base Rate"
+                                        android:textSize="20dp"
+                                        android:textStyle="bold"
+                                        android:textColor="@color/black"
+                                        android:textAppearance="?android:attr/textAppearanceMedium"></TextView>
+
+                                    <TextView
+                                        android:id="@+id/workTpyeTag2"
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:padding="5dp"
+                                        android:text="Work Type"
+                                        android:textSize="20dp"
+                                        android:textStyle="bold"
+                                        android:textColor="@color/black"
+                                        android:textAppearance="?android:attr/textAppearanceMedium"></TextView>
+
+                                </TableRow>
+
+                                <TableRow
+                                    android:layout_width="match_parent"
+                                    android:layout_height="match_parent" />
+
+                                <TableRow
+                                    android:layout_width="match_parent"
+                                    android:layout_height="match_parent" />
+
+                                <TableRow
+                                    android:layout_width="match_parent"
+                                    android:layout_height="match_parent" />
+
+                                <TableRow
+                                    android:layout_width="match_parent"
+                                    android:layout_height="match_parent" />
+                            </TableLayout>
+
+                        </LinearLayout>
+                    </ScrollView>
+                </HorizontalScrollView>
+
             </LinearLayout>
 
         </LinearLayout>
 
-        <TableLayout
-            android:id="@+id/tableProjectWorkers"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent">
 
-            <TableRow
-                android:layout_width="match_parent"
-                android:layout_height="match_parent" />
 
-            <TableRow
-                android:layout_width="match_parent"
-                android:layout_height="match_parent" />
 
-            <TableRow
-                android:layout_width="match_parent"
-                android:layout_height="match_parent" />
-
-            <TableRow
-                android:layout_width="match_parent"
-                android:layout_height="match_parent" />
-        </TableLayout>
 
     </LinearLayout>
 
