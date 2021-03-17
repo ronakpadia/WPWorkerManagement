@@ -7,15 +7,15 @@ import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.graphics.Color;
 import android.os.Bundle;
 import android.text.InputType;
+import android.text.TextUtils;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
-import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
-import android.widget.ArrayAdapter;
-import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
@@ -23,7 +23,10 @@ import android.widget.SearchView;
 import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.google.android.material.textfield.TextInputEditText;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -32,9 +35,9 @@ import com.google.firebase.database.ValueEventListener;
 import com.theinternetcompany.wpworkermanagement.Models.Project;
 import com.theinternetcompany.wpworkermanagement.Models.WorkerProfile;
 
-import java.util.ArrayList;
+import org.w3c.dom.Text;
 
-import static android.os.SystemClock.sleep;
+import java.util.ArrayList;
 
 public class ProjectDetailActivity extends AppCompatActivity {
 
@@ -48,7 +51,27 @@ public class ProjectDetailActivity extends AppCompatActivity {
     private DatabaseReference mainRef = FirebaseDatabase.getInstance().getReference();
     private TextView projectName, projectId, projectLocation, projectCompany, projectDuration;
     private Button btnAdd, btnRemove, btnSave;
+    private FloatingActionButton btnEditProject;
     LinearLayout layout;
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.menu_home_button, menu);
+        return true;
+    }
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            // action with ID action_refresh was selected
+            case R.id.go_home:
+                Intent intent = new Intent(ProjectDetailActivity.this, MainActivity.class);
+                startActivity(intent);
+                break;
+        }
+
+        return true;
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -66,6 +89,7 @@ public class ProjectDetailActivity extends AppCompatActivity {
         btnAdd = findViewById(R.id.btnAdd);
         btnRemove = findViewById(R.id.btnRemove);
         btnSave = findViewById(R.id.btnSave);
+        btnEditProject = findViewById(R.id.btnEditProject);
 
         Intent i = getIntent();
         project = (Project) i.getSerializableExtra("project");
@@ -124,7 +148,123 @@ public class ProjectDetailActivity extends AppCompatActivity {
             }
         });
 
+        btnEditProject.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                openEditProjectDialog();
+            }
+        });
     }
+
+
+    private void openEditProjectDialog() {
+        LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(
+                LinearLayout.LayoutParams.MATCH_PARENT,
+                LinearLayout.LayoutParams.MATCH_PARENT
+        );
+        LinearLayout.LayoutParams tagParams = new LinearLayout.LayoutParams(
+                LinearLayout.LayoutParams.MATCH_PARENT,
+                LinearLayout.LayoutParams.MATCH_PARENT
+        );
+        params.setMargins(40,15,40,15);
+        tagParams.setMargins(30,15,30,15);
+        LinearLayout editProjectLL = new LinearLayout(this);
+        editProjectLL.setOrientation(LinearLayout.VERTICAL);
+        EditText projectName = new EditText(this);
+        EditText projectCompany = new EditText(this);
+        EditText projectLocation = new EditText(this);
+        EditText projectPeriod = new EditText(this);
+        TextView nameTag = new TextView(this);
+        TextView companyTag = new TextView(this);
+        TextView locationTag = new TextView(this);
+        TextView periodTag = new TextView(this);
+        nameTag.setText("Name:");
+        companyTag.setText("Company:");
+        locationTag.setText("Location:");
+        periodTag.setText("Period:");
+        nameTag.setLayoutParams(tagParams);
+        companyTag.setLayoutParams(tagParams);
+        locationTag.setLayoutParams(tagParams);
+        periodTag.setLayoutParams(tagParams);
+        projectName.setLayoutParams(params);
+        projectCompany.setLayoutParams(params);
+        projectLocation.setLayoutParams(params);
+        projectPeriod.setLayoutParams(params);
+        projectName.setText(project.getName());
+        projectCompany.setText(project.getCompany());
+        projectLocation.setText(project.getLocation());
+        projectPeriod.setText(project.getPeriod());
+        editProjectLL.addView(nameTag);
+        editProjectLL.addView(projectName);
+        editProjectLL.addView(companyTag);
+        editProjectLL.addView(projectCompany);
+        editProjectLL.addView(locationTag);
+        editProjectLL.addView(projectLocation);
+        editProjectLL.addView(periodTag);
+        editProjectLL.addView(projectPeriod);
+        AlertDialog dialog = new AlertDialog.Builder(this)
+                .setTitle(project.getName())
+                .setMessage("Edit Project")
+                .setView(editProjectLL)
+                .setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        closeKeyboard();
+                        String pName = projectName.getText().toString();
+                        String pLocation= projectLocation.getText().toString();
+                        String pPeriod = projectPeriod.getText().toString();
+                        String pCompany = projectCompany.getText().toString();
+                        if (TextUtils.isEmpty(pName)) {
+                            Toast.makeText(ProjectDetailActivity.this,"Enter Worker Name", Toast.LENGTH_SHORT).show();
+                        }
+
+                        else if (TextUtils.isEmpty(pLocation)) {
+                            Toast.makeText(ProjectDetailActivity.this,"Enter Card Number", Toast.LENGTH_SHORT).show();
+                        }
+
+                        else if (TextUtils.isEmpty(pPeriod)) {
+                            Toast.makeText(ProjectDetailActivity.this,"Enter Work Type", Toast.LENGTH_SHORT).show();
+                        }
+
+                        else if (TextUtils.isEmpty(pCompany)) {
+                            Toast.makeText(ProjectDetailActivity.this,"Enter Rate", Toast.LENGTH_SHORT).show();
+                        }
+                        else{
+                            project.setName(pName);
+                            project.setLocation(pLocation);
+                            project.setPeriod(pPeriod);
+                            project.setCompany(pCompany);
+                            mainRef.child("Project_List").child(project.getId()).setValue(project);
+                            refreshActivity();
+                        }
+
+
+//                        String editTextInput = rateInput.getText().toString();
+//                        w.setRate(editTextInput);
+//                        addPWorker(w);
+//                        Log.d("onclick","editext value is: "+ editTextInput);
+                    }
+                })
+                .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        closeKeyboard();
+                    }
+                })
+                .create();
+        dialog.show();
+        projectName.requestFocus();
+        InputMethodManager imm = (InputMethodManager) getSystemService(this.INPUT_METHOD_SERVICE);
+        imm.showSoftInput(projectName, InputMethodManager.SHOW_IMPLICIT);
+        showKeyboard();
+    }
+
+    private void refreshActivity(){
+        Intent intent = getIntent();
+        finish();
+        startActivity(intent);
+    }
+
 
     private void addPWorker(WorkerProfile worker) {
 
