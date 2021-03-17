@@ -36,6 +36,8 @@ public class ProjectDetailActivity extends AppCompatActivity {
     private SearchView searchView;
     private ArrayList<WorkerProfile> workerList = new ArrayList<>();
     private ArrayList<WorkerProfile> pWorkerList = new ArrayList<>();
+    private ArrayList<WorkerProfile> addWorkerList = new ArrayList<>();
+    private ArrayList<WorkerProfile> removeWorkerList = new ArrayList<>();
     private DatabaseReference mainRef = FirebaseDatabase.getInstance().getReference();
     private TextView projectName, projectId, projectLocation, projectCompany, projectDuration;
     private Button btnAdd, btnRemove, btnSave;
@@ -154,6 +156,60 @@ public class ProjectDetailActivity extends AppCompatActivity {
         });
     }
 
+    private void getPWorkerAddData() {
+        mainRef = FirebaseDatabase.getInstance().getReference();
+        DatabaseReference workerRef = mainRef.child("Worker_List");
+        workerRef.keepSynced(true);
+
+
+        workerRef.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                addWorkerList.clear();
+                for(DataSnapshot snap : snapshot.getChildren()){
+                    WorkerProfile add = new WorkerProfile();
+                    add = snap.getValue(WorkerProfile.class);
+                    addWorkerList.add(add);
+
+                }
+
+                populateTable(addWorkerList, projectTable2, "add");
+
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
+    }
+
+    private void getPWorkerRemoveData() {
+        mainRef = FirebaseDatabase.getInstance().getReference();
+        DatabaseReference workerRef = mainRef.child("Project_List").child(project.getId()).child("worker_list");
+        workerRef.keepSynced(true);
+
+
+        workerRef.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                removeWorkerList.clear();
+                for(DataSnapshot snap : snapshot.getChildren()){
+                    removeWorkerList.add(snap.getValue(WorkerProfile.class));
+
+                }
+
+                populateTable(removeWorkerList, projectTable2, "remove");
+
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
+    }
+
     private void getPWorkerData() {
         mainRef = FirebaseDatabase.getInstance().getReference();
         DatabaseReference workerRef = mainRef.child("Project_List").child(project.getId()).child("worker_list");
@@ -222,14 +278,14 @@ public class ProjectDetailActivity extends AppCompatActivity {
                     public void onClick(View v) {
                         if (parentMethod.equals("add")){
                             addPWorker(p);
-                            sleep(1000);
                             getPWorkerData();
+                            getPWorkerAddData();
 //                            populateTable(pWorkerList, projectTable, "inner");
                         }
                         else if (parentMethod.equals("remove")){
                             removePWorker(p);
-                            sleep(1000);
                             getPWorkerData();
+                            getPWorkerRemoveData();
 //                            populateTable(pWorkerList, projectTable, "inner");
                         }
 
