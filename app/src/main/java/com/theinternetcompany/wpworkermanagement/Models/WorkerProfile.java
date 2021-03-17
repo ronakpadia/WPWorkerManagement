@@ -1,6 +1,8 @@
 package com.theinternetcompany.wpworkermanagement.Models;
 
-public class WorkerProfile {
+import java.io.Serializable;
+
+public class WorkerProfile implements Serializable {
 
     private String name, cardNo, rate, baseRate, workType, id;
 

@@ -8,6 +8,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.provider.Settings;
 import android.text.InputType;
 import android.text.TextUtils;
 import android.util.Log;
@@ -38,6 +39,7 @@ import com.theinternetcompany.wpworkermanagement.Models.WorkerProfile;
 import org.w3c.dom.Text;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 public class ProjectDetailActivity extends AppCompatActivity {
 
@@ -48,6 +50,7 @@ public class ProjectDetailActivity extends AppCompatActivity {
     private ArrayList<WorkerProfile> pWorkerList = new ArrayList<>();
     private ArrayList<WorkerProfile> addWorkerList = new ArrayList<>();
     private ArrayList<WorkerProfile> removeWorkerList = new ArrayList<>();
+    private HashMap<String, WorkerProfile> WorkerList = new HashMap<>();
     private DatabaseReference mainRef = FirebaseDatabase.getInstance().getReference();
     private TextView projectName, projectId, projectLocation, projectCompany, projectDuration;
     private Button btnAdd, btnRemove, btnSave,btnDelete;
@@ -152,7 +155,7 @@ public class ProjectDetailActivity extends AppCompatActivity {
         btnEditProject.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                openEditProjectDialog();
+                openEditProjectDialog(pWorkerList);
             }
         });
 
@@ -167,7 +170,7 @@ public class ProjectDetailActivity extends AppCompatActivity {
     }
 
 
-    private void openEditProjectDialog() {
+    private void openEditProjectDialog(ArrayList<WorkerProfile> pWorkerList) {
         LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(
                 LinearLayout.LayoutParams.MATCH_PARENT,
                 LinearLayout.LayoutParams.MATCH_PARENT
@@ -225,25 +228,32 @@ public class ProjectDetailActivity extends AppCompatActivity {
                         String pPeriod = projectPeriod.getText().toString();
                         String pCompany = projectCompany.getText().toString();
                         if (TextUtils.isEmpty(pName)) {
-                            Toast.makeText(ProjectDetailActivity.this,"Enter Worker Name", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(ProjectDetailActivity.this,"Enter Project Name", Toast.LENGTH_SHORT).show();
                         }
 
                         else if (TextUtils.isEmpty(pLocation)) {
-                            Toast.makeText(ProjectDetailActivity.this,"Enter Card Number", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(ProjectDetailActivity.this,"Enter Location", Toast.LENGTH_SHORT).show();
                         }
 
                         else if (TextUtils.isEmpty(pPeriod)) {
-                            Toast.makeText(ProjectDetailActivity.this,"Enter Work Type", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(ProjectDetailActivity.this,"Enter Period", Toast.LENGTH_SHORT).show();
                         }
 
                         else if (TextUtils.isEmpty(pCompany)) {
-                            Toast.makeText(ProjectDetailActivity.this,"Enter Rate", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(ProjectDetailActivity.this,"Enter Company", Toast.LENGTH_SHORT).show();
                         }
                         else{
+                            HashMap<String,WorkerProfile> WorkerList = new HashMap<String,WorkerProfile>();
+                            Log.d("debug", String.valueOf(pWorkerList.size()));
+                            for (WorkerProfile worker: pWorkerList){
+                                WorkerList.put(worker.getId(), worker);
+                            }
+
                             project.setName(pName);
                             project.setLocation(pLocation);
                             project.setPeriod(pPeriod);
                             project.setCompany(pCompany);
+                            project.setWorkerList(WorkerList);
                             mainRef.child("Project_List").child(project.getId()).setValue(project);
                             refreshActivity();
                         }
@@ -270,8 +280,11 @@ public class ProjectDetailActivity extends AppCompatActivity {
     }
 
     private void refreshActivity(){
-        Intent intent = getIntent();
-        finish();
+//        Intent intent = getIntent();
+//        finish();
+//        startActivity(intent);
+        Intent intent = new Intent(ProjectDetailActivity.this, ProjectDetailActivity.class);
+        intent.putExtra("project", project);
         startActivity(intent);
     }
 
@@ -283,7 +296,7 @@ public class ProjectDetailActivity extends AppCompatActivity {
 
     private void addPWorker(WorkerProfile worker) {
 
-        DatabaseReference workerRef = mainRef.child("Project_List").child(project.getId()).child("worker_list");
+        DatabaseReference workerRef = mainRef.child("Project_List").child(project.getId()).child("workerList");
         workerRef.keepSynced(true);
         WorkerProfile newWorker = new WorkerProfile(worker.getId(), worker.getName(),worker.getCardNo(), worker.getRate(), worker.getBaseRate(), worker.getWorkType() );
         workerRef.child(worker.getId()).setValue(newWorker);
@@ -293,7 +306,7 @@ public class ProjectDetailActivity extends AppCompatActivity {
 
     private void removePWorker(WorkerProfile worker) {
 
-        DatabaseReference workerRef = mainRef.child("Project_List").child(project.getId()).child("worker_list");
+        DatabaseReference workerRef = mainRef.child("Project_List").child(project.getId()).child("workerList");
         workerRef.keepSynced(true);
         workerRef.child(worker.getId()).removeValue();
         getPWorkerData("remove");
@@ -302,7 +315,7 @@ public class ProjectDetailActivity extends AppCompatActivity {
     private void getWorkerData() {
 
         mainRef = FirebaseDatabase.getInstance().getReference();
-        DatabaseReference pWorkerRef = mainRef.child("Project_List").child(project.getId()).child("worker_list");
+        DatabaseReference pWorkerRef = mainRef.child("Project_List").child(project.getId()).child("workerList");
         pWorkerRef.keepSynced(true);
 
 
@@ -350,7 +363,8 @@ public class ProjectDetailActivity extends AppCompatActivity {
 
     private void getPWorkerData(String parent) {
         mainRef = FirebaseDatabase.getInstance().getReference();
-        DatabaseReference workerRef = mainRef.child("Project_List").child(project.getId()).child("worker_list");
+        DatabaseReference workerRef = mainRef.child("Project_List").child(project.getId()).child("workerList");
+        Log.d("pWorker",String.valueOf(pWorkerList.size()) );
         workerRef.keepSynced(true);
 
 

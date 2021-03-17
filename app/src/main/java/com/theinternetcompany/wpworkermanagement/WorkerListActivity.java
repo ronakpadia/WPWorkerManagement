@@ -213,11 +213,26 @@ public class WorkerListActivity extends AppCompatActivity {
             row.addView(card);
             row.addView(rate);
             row.addView(workType);
+            row.setClickable(true);
+            row.setOnClickListener(new View.OnClickListener() {
+
+                @Override
+                public void onClick(View v) {
+                    transitionToWorkerDetailActivity(p);
+
+                }
+            });
             // Adding the row to tableLayout
             Log.v("BHENCHOD", "MADARCHOD");
             projectTable.addView(row);
             Log.v("KIA ADD", "RANDI");
         }
+    }
+
+    private void transitionToWorkerDetailActivity(WorkerProfile worker) {
+        Intent intent = new Intent(WorkerListActivity.this, WokerDetailActivity.class);
+        intent.putExtra("worker", worker);
+        startActivity(intent);
     }
 
     private void cleanTable(TableLayout table) {
