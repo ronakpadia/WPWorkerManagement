@@ -111,7 +111,8 @@ public class ProjectDetailActivity extends AppCompatActivity {
                 btnSave.setVisibility(View.VISIBLE);
                 btnRemove.setVisibility(View.GONE);
                 layout .setVisibility(View.VISIBLE);
-                populateTable(workerList, projectTable2, "add");
+                getPWorkerData("add");
+//                populateTable(workerList, projectTable2, "add");
 
             }
         });
@@ -125,6 +126,7 @@ public class ProjectDetailActivity extends AppCompatActivity {
         WorkerProfile newWorker = new WorkerProfile(worker.getId(), worker.getName(),worker.getCardNo(), worker.getRate() , worker.getBaseRate(), worker.getWorkType() );
         workerRef.child(worker.getId()).setValue(newWorker);
         getPWorkerData("add");
+
     }
 
     private void removePWorker(WorkerProfile worker) {
@@ -184,60 +186,6 @@ public class ProjectDetailActivity extends AppCompatActivity {
         });
     }
 
-    private void getPWorkerAddData() {
-        mainRef = FirebaseDatabase.getInstance().getReference();
-        DatabaseReference workerRef = mainRef.child("Worker_List");
-        workerRef.keepSynced(true);
-
-
-        workerRef.addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot snapshot) {
-                addWorkerList.clear();
-                for(DataSnapshot snap : snapshot.getChildren()){
-                    WorkerProfile add = new WorkerProfile();
-                    add = snap.getValue(WorkerProfile.class);
-                    addWorkerList.add(add);
-
-                }
-
-                populateTable(addWorkerList, projectTable2, "add");
-
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError error) {
-
-            }
-        });
-    }
-
-    private void getPWorkerRemoveData() {
-        mainRef = FirebaseDatabase.getInstance().getReference();
-        DatabaseReference workerRef = mainRef.child("Project_List").child(project.getId()).child("worker_list");
-        workerRef.keepSynced(true);
-
-
-        workerRef.addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot snapshot) {
-                removeWorkerList.clear();
-                for(DataSnapshot snap : snapshot.getChildren()){
-                    removeWorkerList.add(snap.getValue(WorkerProfile.class));
-
-                }
-
-
-
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError error) {
-
-            }
-        });
-    }
-
     private void getPWorkerData(String parent) {
         mainRef = FirebaseDatabase.getInstance().getReference();
         DatabaseReference workerRef = mainRef.child("Project_List").child(project.getId()).child("worker_list");
@@ -255,8 +203,45 @@ public class ProjectDetailActivity extends AppCompatActivity {
 
                 populateTable(pWorkerList, projectTable, "inner");
                 if (parent.equals("add")){
+                    DatabaseReference workerRef = mainRef.child("Worker_List");
+                    workerRef.keepSynced(true);
+                    workerList.clear();
+                    workerRef.addListenerForSingleValueEvent(new ValueEventListener() {
+                        @Override
+                        public void onDataChange(@NonNull DataSnapshot snapshot) {
+                            for(DataSnapshot snap : snapshot.getChildren()){
+                                WorkerProfile add = new WorkerProfile();
+                                add = snap.getValue(WorkerProfile.class);
+                                workerList.add(add);
 
-                    populateTable(workerList, projectTable2, "add");
+                            }
+                            addWorkerList.clear();
+
+                            //Make AddWOrkerLItst
+                            Log.v("WORKERLISTSIZE", String.valueOf(workerList.size()));
+                            Log.v("PWORKERLIST", String.valueOf(pWorkerList.size()));
+                            for(WorkerProfile w : workerList){
+                                boolean isPresent = false;
+                                for(WorkerProfile pw : pWorkerList){
+                                    if(pw.getId().equals(w.getId())){
+                                        isPresent = true;
+                                    }
+                                }
+                                if(!isPresent){
+                                    addWorkerList.add(w);
+                                }
+
+                            }
+                            Log.v("MAKICHUT", String.valueOf(addWorkerList.size()));
+                            populateTable(addWorkerList, projectTable2, "add");
+                        }
+
+                        @Override
+                        public void onCancelled(@NonNull DatabaseError error) {
+
+                        }
+                    });
+//                    populateTable(workerList, projectTable2, "add");
 //                            populateTable(pWorkerList, projectTable, "inner");
                 }
                 else if (parent.equals("remove")){

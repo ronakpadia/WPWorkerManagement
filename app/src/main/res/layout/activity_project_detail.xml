@@ -180,18 +180,18 @@
             <LinearLayout
                 android:id="@+id/linearLayout"
                 android:layout_width="match_parent"
-                android:layout_height="100dp"
-                android:orientation="vertical"
-                android:layout_above="@+id/LL">
+                android:layout_height="wrap_content"
+                android:layout_above="@+id/LL"
+                android:orientation="vertical">
 
                 <HorizontalScrollView
-                    android:layout_marginTop="15dp"
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent" >
+                    android:layout_height="match_parent"
+                    android:layout_marginTop="15dp">
 
                     <ScrollView
                         android:layout_width="wrap_content"
-                        android:layout_height="match_parent">
+                        android:layout_height="150dp">
 
                         <LinearLayout
                             android:layout_width="match_parent"
@@ -215,10 +215,10 @@
                                         android:layout_height="wrap_content"
                                         android:padding="5dp"
                                         android:text="Name"
-                                        android:textSize="20dp"
-                                        android:textStyle="bold"
+                                        android:textAppearance="?android:attr/textAppearanceMedium"
                                         android:textColor="@color/black"
-                                        android:textAppearance="?android:attr/textAppearanceMedium"></TextView>
+                                        android:textSize="20dp"
+                                        android:textStyle="bold"></TextView>
 
                                     <TextView
                                         android:id="@+id/cardTag"
@@ -226,10 +226,10 @@
                                         android:layout_height="wrap_content"
                                         android:padding="5dp"
                                         android:text="Card No."
-                                        android:textSize="20dp"
-                                        android:textStyle="bold"
+                                        android:textAppearance="?android:attr/textAppearanceMedium"
                                         android:textColor="@color/black"
-                                        android:textAppearance="?android:attr/textAppearanceMedium"></TextView>
+                                        android:textSize="20dp"
+                                        android:textStyle="bold"></TextView>
 
                                     <TextView
                                         android:id="@+id/rateTag"
@@ -237,10 +237,10 @@
                                         android:layout_height="wrap_content"
                                         android:padding="5dp"
                                         android:text="Base Rate"
-                                        android:textSize="20dp"
-                                        android:textStyle="bold"
+                                        android:textAppearance="?android:attr/textAppearanceMedium"
                                         android:textColor="@color/black"
-                                        android:textAppearance="?android:attr/textAppearanceMedium"></TextView>
+                                        android:textSize="20dp"
+                                        android:textStyle="bold"></TextView>
 
                                     <TextView
                                         android:id="@+id/workTpyeTag"
@@ -248,10 +248,10 @@
                                         android:layout_height="wrap_content"
                                         android:padding="5dp"
                                         android:text="Work Type"
-                                        android:textSize="20dp"
-                                        android:textStyle="bold"
+                                        android:textAppearance="?android:attr/textAppearanceMedium"
                                         android:textColor="@color/black"
-                                        android:textAppearance="?android:attr/textAppearanceMedium"></TextView>
+                                        android:textSize="20dp"
+                                        android:textStyle="bold"></TextView>
 
                                 </TableRow>
 
@@ -298,39 +298,40 @@
                     android:id="@+id/btnRemove"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Remove"
                     android:layout_gravity="end"
-                    android:layout_weight="1"/>
+                    android:layout_marginRight="10dp"
+                    android:layout_weight="1"
+                    android:text="Remove" />
 
                 <Button
                     android:id="@+id/btnSave"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Save"
-                    android:layout_marginLeft="10dp"
-                    android:layout_marginRight="10dp"
                     android:layout_gravity="end"
-                    android:layout_weight="1"/>
+                    android:layout_marginLeft="0dp"
+                    android:layout_marginRight="0dp"
+                    android:layout_weight="1"
+                    android:text="Save" />
 
                 <Button
                     android:id="@+id/btnAdd"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Add"
                     android:layout_gravity="end"
-                    android:layout_weight="1"/>
+                    android:layout_marginLeft="10dp"
+                    android:layout_weight="1"
+                    android:text="Add" />
 
 
             </LinearLayout>
-
 
 
             <LinearLayout
                 android:id="@+id/linearLayoutT"
                 android:layout_width="match_parent"
                 android:layout_height="200dp"
-                android:orientation="vertical"
-                android:layout_above="@+id/LL">
+                android:layout_above="@+id/LL"
+                android:orientation="vertical">
 
                 <SearchView
                     android:id="@+id/searchView"
@@ -343,11 +344,11 @@
 
                 <HorizontalScrollView
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent" >
+                    android:layout_height="match_parent">
 
                     <ScrollView
                         android:layout_width="wrap_content"
-                        android:layout_height="match_parent">
+                        android:layout_height="150dp">
 
                         <LinearLayout
                             android:layout_width="match_parent"
@@ -371,10 +372,10 @@
                                         android:layout_height="wrap_content"
                                         android:padding="5dp"
                                         android:text="Name"
-                                        android:textSize="20dp"
-                                        android:textStyle="bold"
+                                        android:textAppearance="?android:attr/textAppearanceMedium"
                                         android:textColor="@color/black"
-                                        android:textAppearance="?android:attr/textAppearanceMedium"></TextView>
+                                        android:textSize="20dp"
+                                        android:textStyle="bold"></TextView>
 
                                     <TextView
                                         android:id="@+id/cardTag2"
@@ -393,10 +394,10 @@
                                         android:layout_height="wrap_content"
                                         android:padding="5dp"
                                         android:text="Base Rate"
-                                        android:textSize="20dp"
-                                        android:textStyle="bold"
+                                        android:textAppearance="?android:attr/textAppearanceMedium"
                                         android:textColor="@color/black"
-                                        android:textAppearance="?android:attr/textAppearanceMedium"></TextView>
+                                        android:textSize="20dp"
+                                        android:textStyle="bold"></TextView>
 
                                     <TextView
                                         android:id="@+id/workTpyeTag2"
@@ -404,10 +405,10 @@
                                         android:layout_height="wrap_content"
                                         android:padding="5dp"
                                         android:text="Work Type"
-                                        android:textSize="20dp"
-                                        android:textStyle="bold"
+                                        android:textAppearance="?android:attr/textAppearanceMedium"
                                         android:textColor="@color/black"
-                                        android:textAppearance="?android:attr/textAppearanceMedium"></TextView>
+                                        android:textSize="20dp"
+                                        android:textStyle="bold"></TextView>
 
                                 </TableRow>
 
