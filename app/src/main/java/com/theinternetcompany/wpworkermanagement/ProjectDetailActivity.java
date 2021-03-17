@@ -69,8 +69,8 @@ public class ProjectDetailActivity extends AppCompatActivity {
         projectDuration.setText(project.getPeriod());
         btnSave.setVisibility(View.GONE);
         layout.setVisibility(View.GONE);
-        getWorkerData();
         getPWorkerData("main");
+        getWorkerData();
         populateTable(pWorkerList, projectTable, "main");
 
         btnRemove.setOnClickListener(new View.OnClickListener() {
@@ -83,7 +83,7 @@ public class ProjectDetailActivity extends AppCompatActivity {
                 btnAdd.setVisibility(View.GONE);
                 layout .setVisibility(View.VISIBLE);
                 getPWorkerData("remove");
-                populateTable(pWorkerList, projectTable2, "remove");
+
 
 
             }
@@ -122,8 +122,9 @@ public class ProjectDetailActivity extends AppCompatActivity {
 
         DatabaseReference workerRef = mainRef.child("Project_List").child(project.getId()).child("worker_list");
         workerRef.keepSynced(true);
-        WorkerProfile newWorker = new WorkerProfile(worker.getId(), worker.getName(),worker.getCardNo(), worker.getBaseRate() , worker.getRate(), worker.getWorkType() );
+        WorkerProfile newWorker = new WorkerProfile(worker.getId(), worker.getName(),worker.getCardNo(), worker.getRate() , worker.getBaseRate(), worker.getWorkType() );
         workerRef.child(worker.getId()).setValue(newWorker);
+        getPWorkerData("add");
     }
 
     private void removePWorker(WorkerProfile worker) {
@@ -131,9 +132,34 @@ public class ProjectDetailActivity extends AppCompatActivity {
         DatabaseReference workerRef = mainRef.child("Project_List").child(project.getId()).child("worker_list");
         workerRef.keepSynced(true);
         workerRef.child(worker.getId()).removeValue();
+        getPWorkerData("remove");
     }
 
     private void getWorkerData() {
+
+        mainRef = FirebaseDatabase.getInstance().getReference();
+        DatabaseReference pWorkerRef = mainRef.child("Project_List").child(project.getId()).child("worker_list");
+        pWorkerRef.keepSynced(true);
+
+
+        pWorkerRef.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                pWorkerList.clear();
+                for(DataSnapshot snap : snapshot.getChildren()){
+                    pWorkerList.add(snap.getValue(WorkerProfile.class));
+
+                }
+
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
+
+
         DatabaseReference workerRef = mainRef.child("Worker_List");
         workerRef.keepSynced(true);
 
@@ -146,6 +172,8 @@ public class ProjectDetailActivity extends AppCompatActivity {
                     workerList.add(snap.getValue(WorkerProfile.class));
 
                 }
+
+                
 
             }
 
@@ -199,7 +227,7 @@ public class ProjectDetailActivity extends AppCompatActivity {
 
                 }
 
-                populateTable(removeWorkerList, projectTable2, "remove");
+
 
             }
 
@@ -227,11 +255,12 @@ public class ProjectDetailActivity extends AppCompatActivity {
 
                 populateTable(pWorkerList, projectTable, "inner");
                 if (parent.equals("add")){
-                    getPWorkerAddData();
+
+                    populateTable(workerList, projectTable2, "add");
 //                            populateTable(pWorkerList, projectTable, "inner");
                 }
                 else if (parent.equals("remove")){
-                    getPWorkerRemoveData();
+                    populateTable(pWorkerList, projectTable2, "remove");
 //                            populateTable(pWorkerList, projectTable, "inner");
                 }
 
@@ -286,12 +315,10 @@ public class ProjectDetailActivity extends AppCompatActivity {
                     public void onClick(View v) {
                         if (parentMethod.equals("add")){
                             addPWorker(p);
-                            getPWorkerData("add");
 //                            populateTable(pWorkerList, projectTable, "inner");
                         }
                         else if (parentMethod.equals("remove")){
                             removePWorker(p);
-                            getPWorkerData("remove");
 //                            populateTable(pWorkerList, projectTable, "inner");
                         }
 
