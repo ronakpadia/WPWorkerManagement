@@ -3,14 +3,21 @@ package com.theinternetcompany.wpworkermanagement;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.app.AlertDialog;
+import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.text.InputType;
 import android.util.Log;
 import android.view.View;
+import android.view.ViewGroup;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.SearchView;
 import android.widget.TableLayout;
@@ -123,7 +130,7 @@ public class ProjectDetailActivity extends AppCompatActivity {
 
         DatabaseReference workerRef = mainRef.child("Project_List").child(project.getId()).child("worker_list");
         workerRef.keepSynced(true);
-        WorkerProfile newWorker = new WorkerProfile(worker.getId(), worker.getName(),worker.getCardNo(), worker.getRate() , worker.getBaseRate(), worker.getWorkType() );
+        WorkerProfile newWorker = new WorkerProfile(worker.getId(), worker.getName(),worker.getCardNo(), worker.getRate(), worker.getBaseRate(), worker.getWorkType() );
         workerRef.child(worker.getId()).setValue(newWorker);
         getPWorkerData("add");
 
@@ -299,7 +306,8 @@ public class ProjectDetailActivity extends AppCompatActivity {
                     @Override
                     public void onClick(View v) {
                         if (parentMethod.equals("add")){
-                            addPWorker(p);
+
+                            openRateDialog(p);
 //                            populateTable(pWorkerList, projectTable, "inner");
                         }
                         else if (parentMethod.equals("remove")){
@@ -316,6 +324,50 @@ public class ProjectDetailActivity extends AppCompatActivity {
             table.addView(row);
             Log.v("KIA ADD", "RANDI");
         }
+    }
+
+    private void openRateDialog(WorkerProfile w){
+        EditText rateInput = new EditText(this);
+        rateInput.setInputType(InputType.TYPE_CLASS_NUMBER);
+        Integer rate = Integer.valueOf(w.getRate());
+        Log.v("RATE",String.valueOf(rate));
+        rateInput.setText(String.valueOf(rate));
+        AlertDialog dialog = new AlertDialog.Builder(this)
+                .setTitle("Rate")
+                .setMessage("Enter Rate:")
+                .setView(rateInput)
+                .setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        closeKeyboard();
+                        String editTextInput = rateInput.getText().toString();
+                        w.setRate(editTextInput);
+                        addPWorker(w);
+                        Log.d("onclick","editext value is: "+ editTextInput);
+                    }
+                })
+                .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        closeKeyboard();
+                    }
+                })
+                .create();
+        dialog.show();
+        rateInput.requestFocus();
+        InputMethodManager imm = (InputMethodManager) getSystemService(this.INPUT_METHOD_SERVICE);
+        imm.showSoftInput(rateInput, InputMethodManager.SHOW_IMPLICIT);
+        showKeyboard();
+    }
+
+    public void showKeyboard(){
+        InputMethodManager inputMethodManager = (InputMethodManager) this.getSystemService(Context.INPUT_METHOD_SERVICE);
+        inputMethodManager.toggleSoftInput(InputMethodManager.SHOW_FORCED, 0);
+    }
+
+    public void closeKeyboard(){
+        InputMethodManager inputMethodManager = (InputMethodManager) this.getSystemService(Context.INPUT_METHOD_SERVICE);
+        inputMethodManager.toggleSoftInput(InputMethodManager.HIDE_IMPLICIT_ONLY, 0);
     }
 
     private void cleanTable(TableLayout table) {
