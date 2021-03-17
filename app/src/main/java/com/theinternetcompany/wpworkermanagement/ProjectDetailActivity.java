@@ -68,7 +68,7 @@ public class ProjectDetailActivity extends AppCompatActivity {
         btnSave.setVisibility(View.GONE);
         layout.setVisibility(View.GONE);
         getWorkerData();
-        getPWorkerData(project.getId());
+        getPWorkerData();
         populateTable(pWorkerList, projectTable, "main");
 
         btnRemove.setOnClickListener(new View.OnClickListener() {
@@ -80,7 +80,7 @@ public class ProjectDetailActivity extends AppCompatActivity {
                 btnSave.setVisibility(View.VISIBLE);
                 btnAdd.setVisibility(View.GONE);
                 layout .setVisibility(View.VISIBLE);
-                getPWorkerData(project.getId());
+                getPWorkerData();
                 populateTable(pWorkerList, projectTable2, "remove");
 
 
@@ -154,8 +154,9 @@ public class ProjectDetailActivity extends AppCompatActivity {
         });
     }
 
-    private void getPWorkerData(String id) {
-        DatabaseReference workerRef = mainRef.child("Project_List").child(id).child("worker_list");
+    private void getPWorkerData() {
+        mainRef = FirebaseDatabase.getInstance().getReference();
+        DatabaseReference workerRef = mainRef.child("Project_List").child(project.getId()).child("worker_list");
         workerRef.keepSynced(true);
 
 
@@ -168,6 +169,7 @@ public class ProjectDetailActivity extends AppCompatActivity {
 
                 }
 
+                populateTable(pWorkerList, projectTable, "inner");
 
             }
 
@@ -221,14 +223,14 @@ public class ProjectDetailActivity extends AppCompatActivity {
                         if (parentMethod.equals("add")){
                             addPWorker(p);
                             sleep(1000);
-                            getPWorkerData(project.getId());
-                            populateTable(pWorkerList, projectTable, "inner");
+                            getPWorkerData();
+//                            populateTable(pWorkerList, projectTable, "inner");
                         }
                         else if (parentMethod.equals("remove")){
                             removePWorker(p);
                             sleep(1000);
-                            getPWorkerData(project.getId());
-                            populateTable(pWorkerList, projectTable, "inner");
+                            getPWorkerData();
+//                            populateTable(pWorkerList, projectTable, "inner");
                         }
 
 
@@ -250,6 +252,10 @@ public class ProjectDetailActivity extends AppCompatActivity {
         if (childCount > 1) {
             table.removeViews(1, childCount - 1);
         }
+    }
+
+    private void refreshDatabase(){
+        mainRef = FirebaseDatabase.getInstance().getReference();
     }
 
 
