@@ -50,7 +50,7 @@ public class ProjectDetailActivity extends AppCompatActivity {
     private ArrayList<WorkerProfile> removeWorkerList = new ArrayList<>();
     private DatabaseReference mainRef = FirebaseDatabase.getInstance().getReference();
     private TextView projectName, projectId, projectLocation, projectCompany, projectDuration;
-    private Button btnAdd, btnRemove, btnSave;
+    private Button btnAdd, btnRemove, btnSave,btnDelete;
     private FloatingActionButton btnEditProject;
     LinearLayout layout;
 
@@ -90,6 +90,7 @@ public class ProjectDetailActivity extends AppCompatActivity {
         btnRemove = findViewById(R.id.btnRemove);
         btnSave = findViewById(R.id.btnSave);
         btnEditProject = findViewById(R.id.btnEditProject);
+        btnDelete = findViewById(R.id.btnDelete);
 
         Intent i = getIntent();
         project = (Project) i.getSerializableExtra("project");
@@ -152,6 +153,15 @@ public class ProjectDetailActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 openEditProjectDialog();
+            }
+        });
+
+        btnDelete.setOnClickListener(new View.OnClickListener() {
+            String parent = "Remove";
+
+            @Override
+            public void onClick(View v) {
+                deleteProjectDialog();
             }
         });
     }
@@ -262,6 +272,11 @@ public class ProjectDetailActivity extends AppCompatActivity {
     private void refreshActivity(){
         Intent intent = getIntent();
         finish();
+        startActivity(intent);
+    }
+
+    private void transitionToMainActivity() {
+        Intent intent = new Intent(ProjectDetailActivity.this, MainActivity.class);
         startActivity(intent);
     }
 
@@ -508,6 +523,36 @@ public class ProjectDetailActivity extends AppCompatActivity {
     public void closeKeyboard(){
         InputMethodManager inputMethodManager = (InputMethodManager) this.getSystemService(Context.INPUT_METHOD_SERVICE);
         inputMethodManager.toggleSoftInput(InputMethodManager.HIDE_IMPLICIT_ONLY, 0);
+    }
+
+    private void deleteProjectDialog() {
+        LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(
+                LinearLayout.LayoutParams.WRAP_CONTENT,
+                LinearLayout.LayoutParams.WRAP_CONTENT
+        );
+        params.setMargins(15,15,15,15);
+        LinearLayout editProjectLL = new LinearLayout(this);
+        AlertDialog dialog = new AlertDialog.Builder(this)
+                .setTitle("Delete Project")
+                .setMessage("Are you sure you want to delete this project? This action is irreversible, you may lose data permanently.")
+                .setView(editProjectLL)
+                .setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        DatabaseReference projectRef = mainRef.child("Project_List").child(project.getId());
+                        projectRef.keepSynced(true);
+                        projectRef.removeValue();
+                        transitionToMainActivity();
+                    }
+                })
+                .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                    }
+                })
+                .create();
+        dialog.show();
+
     }
 
     private void cleanTable(TableLayout table) {

@@ -20,123 +20,138 @@
             android:layout_height="match_parent"
             android:orientation="vertical">
 
-            <LinearLayout
+            <androidx.cardview.widget.CardView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
-                android:layout_marginTop="15dp">
+                android:layout_marginTop="15dp"
+                app:cardBackgroundColor="#DDDDDD"
+                app:contentPadding="20px">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical">
+
 
                 <TextView
-                    android:id="@+id/workerIDTag"
+                    android:id="@+id/twWorkerName"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Worker Name"
+                    android:textColor="#000000"
+                    android:textSize="18sp" />
+
+                <TextView
+                    android:id="@+id/twWorkerCardNo"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="Worker ID:"
+                    android:text="8888"
+                    android:textColor="#000000"/>
+
+                <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:id="@+id/tvWorkType"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
                     android:layout_weight="1"
+                    android:text="Work Type"
                     android:textColor="#000000" />
 
                 <TextView
-                    android:id="@+id/workerID"
-                    android:layout_width="match_parent"
+                    android:id="@+id/tvBaseRate"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
+                    android:text=" ₹ 999"
                     android:textColor="#000000" />
-
             </LinearLayout>
 
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:layout_marginTop="15dp">
+                android:layout_height="match_parent"
+                android:layout_marginTop="10dp"
+                android:orientation="horizontal">
 
                 <TextView
-                    android:id="@+id/workerNameTag"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="Worker Name:"
-                    android:layout_weight="1"
-                    android:textColor="#000000" />
-
-                <TextView
-                    android:id="@+id/workerName"
+                    android:id="@+id/tw1"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:textColor="#000000" />
+                    android:text="Number Of Projects"
+                    android:textColor="#000000"
+                    android:textSize="14sp" />
 
+                <TextView
+                    android:id="@+id/tvTotalProjects"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:paddingStart="15px"
+                    android:paddingLeft="15px"
+                    android:text="TextView"
+                    android:textColor="#000000"/>
             </LinearLayout>
 
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:layout_marginTop="15dp">
+                android:layout_height="match_parent"
+                android:orientation="horizontal">
 
                 <TextView
-                    android:id="@+id/cardNoTag"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="Card Number:"
-                    android:layout_weight="1"
-                    android:textColor="#000000" />
-
-                <TextView
-                    android:id="@+id/cardNo"
+                    android:id="@+id/tw2"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:textColor="#000000" />
+                    android:text="Total Earnings"
+                    android:textColor="#000000"
+                    android:textSize="14sp" />
 
+                <TextView
+                    android:id="@+id/twTotalEarnings"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:paddingStart="15px"
+                    android:paddingLeft="15px"
+                    android:text="TextView"
+                    android:textColor="#000000" />
             </LinearLayout>
-
-
 
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:layout_marginTop="15dp">
+                android:layout_height="match_parent"
+                android:orientation="horizontal">
 
                 <TextView
-                    android:id="@+id/workTypeTag"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="Work Type:"
-                    android:layout_weight="1"
-                    android:textColor="#000000" />
-                <TextView
-                    android:id="@+id/workType"
+                    android:id="@+id/tw3"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
+                    android:text="Pending Expenses"
+                    android:textColor="#000000"
+                    android:textSize="14sp" />
+
+                <TextView
+                    android:id="@+id/twPendingExpenses"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:paddingStart="15px"
+                    android:paddingLeft="15px"
+                    android:text="TextView"
                     android:textColor="#000000" />
-
-
             </LinearLayout>
+        </LinearLayout>
 
 
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:layout_marginTop="15dp">
+            </androidx.cardview.widget.CardView>
 
-                <TextView
-                    android:id="@+id/rateTag"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="Base Rate:"
-                    android:layout_weight="1"
-                    android:textColor="#000000" />
 
-                <TextView
-                    android:id="@+id/rate"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:textColor="#000000" />
-
-            </LinearLayout>
 
             <HorizontalScrollView
                 android:layout_width="match_parent"
