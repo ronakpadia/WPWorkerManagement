@@ -1,4 +1,4 @@
-package com.theinternetcompany.wpworkermanagement;
+  package com.theinternetcompany.wpworkermanagement;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -73,16 +73,16 @@ public class WokerDetailActivity extends AppCompatActivity {
                 for (DataSnapshot snap : snapshot.getChildren()) {
                     projectList.add(snap.getValue(Project.class));
                     for (Project project: projectList){
-                        HashMap<String,WorkerProfile> workerList = new HashMap<>();
+                        HashMap<String,WorkerProfile> workerList;
                         workerList = project.getWorkerList();
                         for (String id: workerList.keySet()){
                             if(id.equals(worker.getId())){
                                 wProjectList.add(project);
-                                pWorkerDetails.put(project.getId(),workerList.get(id));
                             }
                         }
                     }
                     populateTable();
+
                 }
             }
 
@@ -94,8 +94,9 @@ public class WokerDetailActivity extends AppCompatActivity {
     }
 
     private void populateTable() {
+        Log.d("lol",String.valueOf(wProjectList.size()));
         cleanTable(projectTable);
-        for (Project p : projectList){
+        for (Project p : wProjectList){
             TableRow row = new TableRow(WokerDetailActivity.this);
             TableRow.LayoutParams lp = new TableRow.LayoutParams(TableRow.LayoutParams.MATCH_PARENT);
             row.setLayoutParams(lp);
@@ -114,26 +115,35 @@ public class WokerDetailActivity extends AppCompatActivity {
             company.setText(p.getCompany());
             company.setPadding(20,20,20,20);
             company.setTextSize(20);
+
+
+
+            HashMap<String,WorkerProfile> workerList = new HashMap<>();
+            workerList = p.getWorkerList();
+
+            Log.d("lol2",String.valueOf(workerList.size()));
+            Log.d("lol2",String.valueOf(workerList.get(worker.getId())));
+
             TextView rate = new TextView(WokerDetailActivity.this);
-            rate.setText("");
+            rate.setText(String.valueOf(workerList.get(worker.getId()).getRate()));
             rate.setPadding(20,20,20,20);
             rate.setTextSize(20);
             TextView shifts = new TextView(WokerDetailActivity.this);
-            rate.setText("");
-            rate.setPadding(20,20,20,20);
-            rate.setTextSize(20);
+            shifts.setText("");
+            shifts.setPadding(20,20,20,20);
+            shifts.setTextSize(20);
             TextView wage = new TextView(WokerDetailActivity.this);
-            rate.setText("");
-            rate.setPadding(20,20,20,20);
-            rate.setTextSize(20);
+            wage.setText("");
+            wage.setPadding(20,20,20,20);
+            wage.setTextSize(20);
             TextView conveyance = new TextView(WokerDetailActivity.this);
-            rate.setText("");
-            rate.setPadding(20,20,20,20);
-            rate.setTextSize(20);
+            conveyance.setText("");
+            conveyance.setPadding(20,20,20,20);
+            conveyance.setTextSize(20);
             TextView total = new TextView(WokerDetailActivity.this);
-            rate.setText("");
-            rate.setPadding(20,20,20,20);
-            rate.setTextSize(20);
+            total.setText("");
+            total.setPadding(20,20,20,20);
+            total.setTextSize(20);
             // Adding TextViews
 //            row.addView(pid);
             row.addView(ID);
