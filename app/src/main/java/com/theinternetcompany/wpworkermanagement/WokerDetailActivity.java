@@ -34,9 +34,9 @@ public class WokerDetailActivity extends AppCompatActivity {
     private DatabaseReference projectListRef = FirebaseDatabase.getInstance().getReference();
     private TextView workerName, workerCardNo, workType, baseRate, totalProjects, totalEarnings, pendingExpenses;
 
-    @Override
-    public void onBackPressed() {
-    }
+//    @Override
+//    public void onBackPressed() {
+//    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -72,18 +72,17 @@ public class WokerDetailActivity extends AppCompatActivity {
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 for (DataSnapshot snap : snapshot.getChildren()) {
                     projectList.add(snap.getValue(Project.class));
-                    for (Project project: projectList){
-                        HashMap<String,WorkerProfile> workerList;
-                        workerList = project.getWorkerList();
-                        for (String id: workerList.keySet()){
-                            if(id.equals(worker.getId())){
-                                wProjectList.add(project);
-                            }
+                }
+                for (Project project: projectList){
+                    HashMap<String,WorkerProfile> workerList;
+                    workerList = project.getWorkerList();
+                    for (String id: workerList.keySet()){
+                        if(id.equals(worker.getId())){
+                            wProjectList.add(project);
                         }
                     }
-                    populateTable();
-
                 }
+                populateTable();
             }
 
             @Override
