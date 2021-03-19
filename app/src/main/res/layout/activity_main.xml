@@ -10,16 +10,14 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
+        app:layout_constraintStart_toStartOf="parent">
 
         <LinearLayout
             android:id="@+id/linearLayout"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:orientation="vertical"
-            android:layout_above="@+id/LL">
+            android:layout_above="@+id/LL"
+            android:orientation="vertical">
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -45,7 +43,7 @@
 
             <HorizontalScrollView
                 android:layout_width="match_parent"
-                android:layout_height="match_parent" >
+                android:layout_height="match_parent">
 
                 <ScrollView
                     android:layout_width="match_parent"
@@ -73,10 +71,10 @@
                                     android:layout_height="wrap_content"
                                     android:padding="5dp"
                                     android:text="Name"
-                                    android:textSize="20dp"
-                                    android:textStyle="bold"
+                                    android:textAppearance="?android:attr/textAppearanceMedium"
                                     android:textColor="@color/black"
-                                    android:textAppearance="?android:attr/textAppearanceMedium"></TextView>
+                                    android:textSize="20dp"
+                                    android:textStyle="bold"></TextView>
 
                                 <TextView
                                     android:id="@+id/companyTag"
@@ -94,33 +92,33 @@
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
                                     android:padding="5dp"
-                                    android:textSize="20dp"
-                                    android:textStyle="bold"
-                                    android:textColor="@color/black"
                                     android:text="Location"
-                                    android:textAppearance="?android:attr/textAppearanceMedium"></TextView>
+                                    android:textAppearance="?android:attr/textAppearanceMedium"
+                                    android:textColor="@color/black"
+                                    android:textSize="20dp"
+                                    android:textStyle="bold"></TextView>
 
                                 <TextView
                                     android:id="@+id/periodTag"
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
                                     android:padding="5dp"
-                                    android:textSize="20dp"
-                                    android:textStyle="bold"
-                                    android:textColor="@color/black"
                                     android:text="Period"
-                                    android:textAppearance="?android:attr/textAppearanceMedium"></TextView>
+                                    android:textAppearance="?android:attr/textAppearanceMedium"
+                                    android:textColor="@color/black"
+                                    android:textSize="20dp"
+                                    android:textStyle="bold"></TextView>
 
                                 <TextView
                                     android:id="@+id/expensesTag"
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
                                     android:padding="5dp"
-                                    android:textSize="20dp"
-                                    android:textStyle="bold"
-                                    android:textColor="@color/black"
                                     android:text="Expenses"
-                                    android:textAppearance="?android:attr/textAppearanceMedium"></TextView>
+                                    android:textAppearance="?android:attr/textAppearanceMedium"
+                                    android:textColor="@color/black"
+                                    android:textSize="20dp"
+                                    android:textStyle="bold"></TextView>
 
                             </TableRow>
 
@@ -163,16 +161,25 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="end"
                 android:layout_marginLeft="10dp"
-                android:text="Employee List" />
+                android:text="Workers" />
 
             <Button
                 android:id="@+id/btnAddNewProject"
-                android:layout_width="match_parent"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="end"
                 android:layout_marginLeft="10dp"
                 android:layout_marginRight="10dp"
-                android:text="Add New Project" />
+                android:text="+ Project" />
+
+            <Button
+                android:id="@+id/btnExportProjectList"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="10dp"
+                android:layout_weight="1"
+                android:drawableLeft="@android:drawable/ic_menu_share"
+                android:text="CSV" />
 
         </LinearLayout>
     </RelativeLayout>

@@ -3,12 +3,16 @@ package com.theinternetcompany.wpworkermanagement;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.app.AppCompatDelegate;
+import androidx.core.content.FileProvider;
 
 import android.app.AlertDialog;
 import android.app.SearchManager;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
+import android.provider.ContactsContract;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -26,6 +30,8 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.theinternetcompany.wpworkermanagement.Models.Project;
 
+import java.io.File;
+import java.io.FileOutputStream;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -34,7 +40,7 @@ public class MainActivity extends AppCompatActivity {
 
     TableLayout projectTable;
     private SearchView searchView;
-    private Button btnEmployeeList, btnAddNewProject, btnHideShowColumns;
+    private Button btnEmployeeList, btnAddNewProject, btnHideShowColumns, btnExportCSV;
     private TextView idTag, nameTag, locationTag, companyTag,periodTag, expensesTag;
     private DatabaseReference mainRef = FirebaseDatabase.getInstance().getReference();
     private ArrayList<Project> projectList = new ArrayList<>();
@@ -56,6 +62,7 @@ public class MainActivity extends AppCompatActivity {
         btnAddNewProject = findViewById(R.id.btnAddNewProject);
         btnEmployeeList = findViewById(R.id.btnEmployeeList);
         btnHideShowColumns = findViewById(R.id.btnHideShowColumns);
+        btnExportCSV = findViewById(R.id.btnExportProjectList);
         nameTag = findViewById(R.id.nameTag);
         locationTag = findViewById(R.id.locationTag);
         periodTag = findViewById(R.id.periodTag);
@@ -69,6 +76,14 @@ public class MainActivity extends AppCompatActivity {
                 transitionToNewProjectActivity();
             }
         });
+
+        btnExportCSV.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                exportCSV();
+            }
+        });
+
         btnHideShowColumns.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -77,7 +92,7 @@ public class MainActivity extends AppCompatActivity {
                 AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
                 builder.setTitle("Choose Tags");
                 // add a checkbox list
-                String[] tags = {"name", "company", "location","period", "expenses"};
+                String[] tags = {"Name", "Company", "Location","Period", "Expenses"};
                 boolean[] checkedItems = {false, false, false, false, false};
                 builder.setMultiChoiceItems(tags, checkedItems, new DialogInterface.OnMultiChoiceClickListener() {
                     @Override
@@ -191,6 +206,72 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 //
+    }
+
+    private void exportCSV() {
+        StringBuilder data = new StringBuilder();
+        data.append("ID, Name, Location, Expenses, Company, Duration");
+        DatabaseReference projectRef = mainRef.child("Project_List");
+        projectRef.keepSynced(true);
+        projectList.clear();
+
+        projectRef.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                for(DataSnapshot snap : snapshot.getChildren()){
+                    projectList.add(snap.getValue(Project.class));
+                }
+                for(Project p:projectList){
+                    String pName = p.getName();
+                    pName = addQuotes(pName);
+                    String pId = p.getId();
+                    pId = addQuotes(pId);
+                    String pLocation = p.getLocation();
+                    pLocation = addQuotes(pLocation);
+                    String pExpenses = p.getExpenses();
+                    pExpenses = addQuotes(pExpenses);
+                    String pDuration = p.getPeriod();
+                    pDuration = addQuotes(pDuration);
+                    String pCompany = p.getCompany();
+                    pCompany = addQuotes(pCompany);
+                    String c = ", ";
+                    data.append("\n"+pId+c+pName+c+pLocation+c+pExpenses+c+pCompany+c+pDuration);
+
+                }
+                try {
+                    // Saving the file into the phone
+                    FileOutputStream out = openFileOutput("Report.csv", Context.MODE_PRIVATE);
+                    out.write((data.toString()).getBytes());
+                    out.close();
+
+                    // exporting
+                    Context context = getApplicationContext();
+                    File filelocation = new File(getFilesDir(), "Report.csv");
+                    Uri path = FileProvider.getUriForFile(context, "com.theinternetcompany.wpworkermanagement.fileprovider", filelocation);
+                    Intent fileIntent = new Intent(Intent.ACTION_SEND);
+                    fileIntent.setType("text/plain");
+                    fileIntent.putExtra(Intent.EXTRA_SUBJECT, "Data");
+                    fileIntent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
+                    fileIntent.addFlags(Intent.FLAG_GRANT_WRITE_URI_PERMISSION);
+//            fileIntent.setData(path);
+                    fileIntent.putExtra(Intent.EXTRA_STREAM, path);
+                    startActivity(Intent.createChooser(fileIntent, "Send mail"));
+                } catch (Exception e){
+                    e.printStackTrace();
+                }
+
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
+
+    }
+
+    private String addQuotes(String data) {
+        return '"'+data+'"';
     }
 
     private void doMySearch(String query) {
