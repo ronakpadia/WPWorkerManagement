@@ -30,7 +30,6 @@ public class WokerDetailActivity extends AppCompatActivity {
     private WorkerProfile pWorker = new WorkerProfile();
     private ArrayList<Project> projectList = new ArrayList<>();
     private ArrayList<Project> wProjectList = new ArrayList<>();
-//    private ArrayList<WorkerProfile> wProjectDetails = new ArrayList<>();
     private DatabaseReference projectListRef = FirebaseDatabase.getInstance().getReference();
     private TextView workerName, workerCardNo, workType, baseRate, totalProjects, totalEarnings, pendingExpenses;
 

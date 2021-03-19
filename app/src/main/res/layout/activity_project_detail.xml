@@ -442,7 +442,17 @@
                 android:backgroundTint="#cc0000"
                 />
 
+            <Button
+                android:id="@+id/btnMarkAttendance"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Mark Attendance"
+
+                />
+
         </LinearLayout>
+
+
 
 
 

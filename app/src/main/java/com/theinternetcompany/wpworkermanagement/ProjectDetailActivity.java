@@ -53,7 +53,7 @@ public class ProjectDetailActivity extends AppCompatActivity {
     private HashMap<String, WorkerProfile> WorkerList = new HashMap<>();
     private DatabaseReference mainRef = FirebaseDatabase.getInstance().getReference();
     private TextView projectName, projectId, projectLocation, projectCompany, projectDuration;
-    private Button btnAdd, btnRemove, btnSave,btnDelete;
+    private Button btnAdd, btnRemove, btnSave,btnDelete,btnMarkAttendance;
     private FloatingActionButton btnEditProject;
     LinearLayout layout;
 
@@ -94,6 +94,7 @@ public class ProjectDetailActivity extends AppCompatActivity {
         btnSave = findViewById(R.id.btnSave);
         btnEditProject = findViewById(R.id.btnEditProject);
         btnDelete = findViewById(R.id.btnDelete);
+        btnMarkAttendance = findViewById(R.id.btnMarkAttendance);
 
         Intent i = getIntent();
         project = (Project) i.getSerializableExtra("project");
@@ -158,6 +159,7 @@ public class ProjectDetailActivity extends AppCompatActivity {
                 openEditProjectDialog(pWorkerList);
             }
         });
+        
 
         btnDelete.setOnClickListener(new View.OnClickListener() {
             String parent = "Remove";
@@ -167,6 +169,19 @@ public class ProjectDetailActivity extends AppCompatActivity {
                 deleteProjectDialog();
             }
         });
+
+        btnMarkAttendance.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                transitionToMarkAttendanceActivity();
+            }
+        });
+    }
+
+    private void transitionToMarkAttendanceActivity() {
+        Intent intent = new Intent(ProjectDetailActivity.this, WokerDetailActivity.class);
+        intent.putExtra("project", project);
+        startActivity(intent);
     }
 
 
