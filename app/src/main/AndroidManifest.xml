@@ -11,9 +11,9 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.WPWorkerManagement">
         <activity android:name=".LoginActivity"></activity>
-        <activity android:name=".NewProjectActivity" />
-        <activity android:name=".WorkerListActivity" />
-        <activity android:name=".ProjectDetailActivity" />
+        <activity android:name=".NewProjectActivity"></activity>
+        <activity android:name=".WorkerListActivity"></activity>
+        <activity android:name=".ProjectDetailActivity"></activity>
         <activity android:name=".EditWorkerActivity" />
         <activity android:name=".WokerDetailActivity" />
         <activity android:name=".NewWorkerActivity" />
@@ -21,6 +21,7 @@
             <intent-filter>
                 <action android:name="android.intent.action.SEARCH" />
             </intent-filter>
+            
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
