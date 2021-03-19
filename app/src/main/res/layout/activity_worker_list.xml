@@ -6,7 +6,19 @@
     android:layout_height="match_parent"
     tools:context=".WorkerListActivity">
 
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/btnAddNewWorker"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="15dp"
+        android:layout_marginBottom="15dp"
+        android:clickable="true"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:srcCompat="@android:drawable/ic_menu_add" />
+
     <RelativeLayout
+        android:id="@+id/relativeLayout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -18,8 +30,8 @@
             android:id="@+id/linearLayout"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:orientation="vertical"
-            android:layout_above="@+id/LL">
+            android:layout_above="@+id/LL"
+            android:orientation="vertical">
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -45,7 +57,7 @@
 
             <HorizontalScrollView
                 android:layout_width="match_parent"
-                android:layout_height="match_parent" >
+                android:layout_height="match_parent">
 
                 <ScrollView
                     android:layout_width="wrap_content"
@@ -73,10 +85,10 @@
                                     android:layout_height="wrap_content"
                                     android:padding="5dp"
                                     android:text="Name"
-                                    android:textSize="20dp"
-                                    android:textStyle="bold"
+                                    android:textAppearance="?android:attr/textAppearanceMedium"
                                     android:textColor="@color/black"
-                                    android:textAppearance="?android:attr/textAppearanceMedium"></TextView>
+                                    android:textSize="20dp"
+                                    android:textStyle="bold"></TextView>
 
                                 <TextView
                                     android:id="@+id/cardTag"
@@ -84,10 +96,10 @@
                                     android:layout_height="wrap_content"
                                     android:padding="5dp"
                                     android:text="Card No."
-                                    android:textSize="20dp"
-                                    android:textStyle="bold"
+                                    android:textAppearance="?android:attr/textAppearanceMedium"
                                     android:textColor="@color/black"
-                                    android:textAppearance="?android:attr/textAppearanceMedium"></TextView>
+                                    android:textSize="20dp"
+                                    android:textStyle="bold"></TextView>
 
                                 <TextView
                                     android:id="@+id/rateTag"
@@ -95,10 +107,10 @@
                                     android:layout_height="wrap_content"
                                     android:padding="5dp"
                                     android:text="Base Rate"
-                                    android:textSize="20dp"
-                                    android:textStyle="bold"
+                                    android:textAppearance="?android:attr/textAppearanceMedium"
                                     android:textColor="@color/black"
-                                    android:textAppearance="?android:attr/textAppearanceMedium"></TextView>
+                                    android:textSize="20dp"
+                                    android:textStyle="bold"></TextView>
 
                                 <TextView
                                     android:id="@+id/workTpyeTag"
@@ -106,10 +118,10 @@
                                     android:layout_height="wrap_content"
                                     android:padding="5dp"
                                     android:text="Work Type"
-                                    android:textSize="20dp"
-                                    android:textStyle="bold"
+                                    android:textAppearance="?android:attr/textAppearanceMedium"
                                     android:textColor="@color/black"
-                                    android:textAppearance="?android:attr/textAppearanceMedium"></TextView>
+                                    android:textSize="20dp"
+                                    android:textStyle="bold"></TextView>
 
                             </TableRow>
 
@@ -136,37 +148,7 @@
 
         </LinearLayout>
 
-        <LinearLayout
-            android:id="@+id/LL"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_alignParentBottom="true"
-            android:orientation="vertical"
-            app:layout_constraintBottom_toTopOf="@+id/linearLayout"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent">
-
-            <Button
-                android:id="@+id/btnNewEmployee"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_gravity="end"
-                android:layout_marginLeft="10dp"
-                android:text="Add New Employee" />
-
-            <Button
-                android:id="@+id/home"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_gravity="end"
-                android:layout_marginLeft="10dp"
-                android:text="Home Page" />
-
-
-
-        </LinearLayout>
     </RelativeLayout>
-
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

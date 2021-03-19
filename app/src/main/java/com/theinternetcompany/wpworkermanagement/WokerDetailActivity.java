@@ -6,6 +6,9 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.TableLayout;
 import android.widget.TableRow;
@@ -36,6 +39,25 @@ public class WokerDetailActivity extends AppCompatActivity {
 //    @Override
 //    public void onBackPressed() {
 //    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.menu_home_button, menu);
+        return true;
+    }
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            // action with ID action_refresh was selected
+            case R.id.go_home:
+                Intent intent = new Intent(WokerDetailActivity.this, MainActivity.class);
+                startActivity(intent);
+                break;
+        }
+
+        return true;
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

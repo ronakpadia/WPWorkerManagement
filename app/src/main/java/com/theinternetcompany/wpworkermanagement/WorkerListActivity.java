@@ -8,6 +8,9 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.SearchView;
@@ -15,6 +18,7 @@ import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
 
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -28,7 +32,8 @@ import java.util.List;
 
 public class WorkerListActivity extends AppCompatActivity {
 
-    private Button btnHome, btnNewEmployee, btnHideShowColumns;
+    private Button btnHome, btnHideShowColumns;
+    private FloatingActionButton btnNewEmployee;
     TableLayout projectTable;
     private SearchView searchView;
     private ArrayList<WorkerProfile> workerList = new ArrayList<>();
@@ -39,12 +44,31 @@ public class WorkerListActivity extends AppCompatActivity {
     }
 
     @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.menu_home_button, menu);
+        return true;
+    }
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            // action with ID action_refresh was selected
+            case R.id.go_home:
+                Intent intent = new Intent(WorkerListActivity.this, MainActivity.class);
+                startActivity(intent);
+                break;
+        }
+
+        return true;
+    }
+
+    @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_worker_list);
         
         btnHome = findViewById(R.id.home);
-        btnNewEmployee = findViewById(R.id.btnNewEmployee);
+        btnNewEmployee = findViewById(R.id.btnAddNewWorker);
         searchView = findViewById(R.id.searchView);
         btnHideShowColumns = findViewById(R.id.btnHideShowColumns);
         mainRef.keepSynced(true);
@@ -114,13 +138,6 @@ public class WorkerListActivity extends AppCompatActivity {
             }
         });
 
-
-        btnHome.setOnClickListener(new View.OnClickListener(){
-            @Override
-            public void onClick(View view) {
-                transitionToMainActivity();
-            }
-        });
         btnNewEmployee.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View view) {
