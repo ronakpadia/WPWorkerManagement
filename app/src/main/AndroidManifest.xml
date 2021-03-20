@@ -13,6 +13,7 @@
         <activity android:name=".LoginActivity"></activity>
         <activity android:name=".NewProjectActivity"></activity>
         <activity android:name=".WorkerListActivity"></activity>
+        <activity android:name=".MarkAttendanceActivity"></activity>
         <activity android:name=".ProjectDetailActivity"></activity>
         <activity android:name=".EditWorkerActivity" />
         <activity android:name=".WokerDetailActivity" />

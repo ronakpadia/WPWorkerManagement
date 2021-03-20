@@ -179,7 +179,7 @@ public class ProjectDetailActivity extends AppCompatActivity {
     }
 
     private void transitionToMarkAttendanceActivity() {
-        Intent intent = new Intent(ProjectDetailActivity.this, WokerDetailActivity.class);
+        Intent intent = new Intent(ProjectDetailActivity.this, MarkAttendanceActivity.class);
         intent.putExtra("project", project);
         startActivity(intent);
     }

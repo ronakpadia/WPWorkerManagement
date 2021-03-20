@@ -1,10 +1,13 @@
 package com.theinternetcompany.wpworkermanagement.Models;
 
 import java.io.Serializable;
+import java.util.HashMap;
 
 public class WorkerProfile implements Serializable {
 
-    private String name, cardNo, rate, baseRate, workType, id;
+    private String name, cardNo, rate, baseRate, workType, id,conveyance;
+    private HashMap<String, String> attendance;
+
 
     public WorkerProfile(){
         // Default constructor required for calls to DataSnapshot.getValue(Order.class)
@@ -70,5 +73,21 @@ public class WorkerProfile implements Serializable {
     public String toString()
     {
         return this.getName();
+    }
+
+    public HashMap<String, String> getAttendance() {
+        return attendance;
+    }
+
+    public void setAttendance(HashMap<String, String> attendance) {
+        this.attendance = attendance;
+    }
+
+    public String getConveyance() {
+        return conveyance;
+    }
+
+    public void setConveyance(String conveyance) {
+        this.conveyance = conveyance;
     }
 }
