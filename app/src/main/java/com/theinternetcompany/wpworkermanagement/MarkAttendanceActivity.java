@@ -8,8 +8,11 @@ import android.app.DatePickerDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Color;
+import android.graphics.Typeface;
 import android.os.Bundle;
 import android.text.InputType;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
@@ -21,6 +24,7 @@ import android.widget.SearchView;
 import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -36,11 +40,12 @@ import java.util.Calendar;
 import java.util.Locale;
 
 public class MarkAttendanceActivity extends AppCompatActivity {
-    private EditText date;
+    private EditText ETdate;
     private Button btnMarkAttendance, btnAddConveyance, btnSave;
     private Project project = new Project();
     private TableLayout workerTable, workerTable2;
     private SearchView searchView;
+    private TableRow tableHeaderTags;
     private LinearLayout layout, buttonLayout;
     private ArrayList<WorkerProfile> attendenceList = new ArrayList<>();
     private ArrayList<WorkerProfile> pWorkerList = new ArrayList<>();
@@ -52,18 +57,19 @@ public class MarkAttendanceActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_mark_attendance);
-        
+
         workerTable = findViewById(R.id.workerTable);
         workerTable2 = findViewById(R.id.workerTable2);
         searchView = findViewById(R.id.searchView);
         layout = findViewById(R.id.linearLayoutT);
         btnMarkAttendance = findViewById(R.id.btnMarkAttendance);
         btnAddConveyance = findViewById(R.id.btnAddConveyance);
-        date = findViewById(R.id.ETdate);
+        ETdate = findViewById(R.id.ETdate);
         btnSave = findViewById(R.id.btnSave);
+        tableHeaderTags = findViewById(R.id.tableHeaderTags);
         Intent i = getIntent();
         project = (Project) i.getSerializableExtra("project");
-        getAttendance();
+//        getAttendance();
         getWorkerList();
         btnSave.setVisibility(View.GONE);
         layout.setVisibility(View.GONE);
@@ -72,7 +78,6 @@ public class MarkAttendanceActivity extends AppCompatActivity {
         //Date Picker
         final Calendar myCalendar = Calendar.getInstance();
 
-        EditText edittext= (EditText) findViewById(R.id.ETdate);
         DatePickerDialog.OnDateSetListener date = new DatePickerDialog.OnDateSetListener() {
 
 
@@ -88,7 +93,7 @@ public class MarkAttendanceActivity extends AppCompatActivity {
 
         };
 
-        edittext.setOnClickListener(new View.OnClickListener() {
+        ETdate.setOnClickListener(new View.OnClickListener() {
 
             @Override
             public void onClick(View v) {
@@ -96,6 +101,45 @@ public class MarkAttendanceActivity extends AppCompatActivity {
                 new DatePickerDialog(MarkAttendanceActivity.this, date, myCalendar
                         .get(Calendar.YEAR), myCalendar.get(Calendar.MONTH),
                         myCalendar.get(Calendar.DAY_OF_MONTH)).show();
+            }
+        });
+
+        btnMarkAttendance.setOnClickListener(new View.OnClickListener() {
+
+            @Override
+            public void onClick(View v) {
+
+                btnSave.setVisibility(View.VISIBLE);
+                layout.setVisibility(View.VISIBLE);
+                btnMarkAttendance.setVisibility(View.GONE);
+                btnAddConveyance.setVisibility(View.GONE);
+                populateTable(workerTable2, "attendance");
+
+            }
+        });
+
+        btnSave.setOnClickListener(new View.OnClickListener() {
+
+            @Override
+            public void onClick(View v) {
+
+                btnSave.setVisibility(View.GONE);
+                layout.setVisibility(View.GONE);
+                btnMarkAttendance.setVisibility(View.VISIBLE);
+                btnAddConveyance.setVisibility(View.VISIBLE);
+
+            }
+        });
+
+        btnAddConveyance.setOnClickListener(new View.OnClickListener() {
+
+            @Override
+            public void onClick(View v) {
+                btnSave.setVisibility(View.VISIBLE);
+                layout.setVisibility(View.VISIBLE);
+                btnMarkAttendance.setVisibility(View.GONE);
+                btnAddConveyance.setVisibility(View.GONE);
+                populateTable(workerTable2, "conveyance");
             }
         });
     }
@@ -114,7 +158,7 @@ public class MarkAttendanceActivity extends AppCompatActivity {
 
                 }
 
-                populateTable(workerTable);
+                populateTable(workerTable,"none");
 
             }
 
@@ -129,7 +173,7 @@ public class MarkAttendanceActivity extends AppCompatActivity {
         String myFormat = "dd-MM-yy"; //In which you need put here
         SimpleDateFormat sdf = new SimpleDateFormat(myFormat, Locale.US);
 
-        date.setText(sdf.format(myCalendar.getTime()));
+        ETdate.setText(sdf.format(myCalendar.getTime()));
     }
 
     private void getWorkerList() {
@@ -146,8 +190,9 @@ public class MarkAttendanceActivity extends AppCompatActivity {
                     pWorkerList.add(snap.getValue(WorkerProfile.class));
 
                 }
+                
+                populateTable(workerTable, "none");
 
-                populateTable(workerTable2);
 
             }
 
@@ -159,8 +204,20 @@ public class MarkAttendanceActivity extends AppCompatActivity {
 
     }
 
-    private void populateTable(TableLayout table) {
+    private void populateTable(TableLayout table, String parent) {
         cleanTable(table);
+        if (table == workerTable){
+            for (String date : pWorkerList.get(0).getAttendance().keySet()){
+                TextView dateTag = new TextView(MarkAttendanceActivity.this);
+                dateTag.setText(String.valueOf(date));
+                dateTag.setPadding(20,20,20,20);
+                dateTag.setTextSize(20);
+                dateTag.setTextColor(Color.BLACK);
+                dateTag.setTypeface(Typeface.DEFAULT_BOLD);
+                tableHeaderTags.addView(dateTag);
+            }
+        }
+
         for (WorkerProfile p : pWorkerList){
             TableRow row = new TableRow(MarkAttendanceActivity.this);
             TableRow.LayoutParams lp = new TableRow.LayoutParams(TableRow.LayoutParams.MATCH_PARENT);
@@ -199,11 +256,20 @@ public class MarkAttendanceActivity extends AppCompatActivity {
 
                     @Override
                     public void onClick(View v) {
-                        openShiftDialog(p);
+                        openShiftDialog(p, parent);
 
 
                     }
                 });
+            }
+            else{
+                for (String shift : p.getAttendance().values()){
+                    TextView shifts = new TextView(MarkAttendanceActivity.this);
+                    shifts.setText(String.valueOf(shift));
+                    shifts.setPadding(20,20,20,20);
+                    shifts.setTextSize(20);
+                    row.addView(shifts);
+                }
             }
 
 
@@ -212,19 +278,41 @@ public class MarkAttendanceActivity extends AppCompatActivity {
         }
     }
 
-    private void openShiftDialog(WorkerProfile p) {
+    private void openShiftDialog(WorkerProfile p, String parent) {
         EditText shiftsInput = new EditText(this);
+        String msg = "";
+        if (parent.equals("attendance")){
+            msg = "Enter Shifts:";
+        }else if (parent.equals("conveyance")){
+            msg = "Enter Conveyance:";
+        }
         shiftsInput.setInputType(InputType.TYPE_CLASS_NUMBER);
+        
         AlertDialog dialog = new AlertDialog.Builder(this)
                 .setTitle(p.getName())
-                .setMessage("Enter Shifts:")
+                .setMessage(msg)
                 .setView(shiftsInput)
                 .setPositiveButton("OK", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
-                        closeKeyboard();
                         String editTextInput = shiftsInput.getText().toString();
-                        addWorkerAttendance(p,editTextInput);
+                        if (TextUtils.isEmpty(ETdate.getText().toString())) {
+                            Toast.makeText(MarkAttendanceActivity.this,"Enter Date", Toast.LENGTH_SHORT).show();
+                        }
+                        else if (TextUtils.isEmpty(editTextInput)) {
+                            Log.d("debug" , editTextInput);
+                            Toast.makeText(MarkAttendanceActivity.this,"Enter Shift", Toast.LENGTH_SHORT).show();
+                        }
+                        else{
+                            if (parent.equals("attendance")){
+                                addWorkerAttendance(p,editTextInput);
+                            }else if (parent.equals("conveyance")){
+                                addWorkerConveyance(p,editTextInput);
+                            }
+                            
+//                            getAttWorkerList();
+                        }
+                        closeKeyboard();
                         Log.d("onclick","editext value is: "+ editTextInput);
                     }
                 })
@@ -242,10 +330,25 @@ public class MarkAttendanceActivity extends AppCompatActivity {
         showKeyboard();
     }
 
-    private void addWorkerAttendance(WorkerProfile worker, String editTextInput) {
-        DatabaseReference workerRef = mainRef.child("Project_List").child(project.getId()).child("workerList").child(worker.getId()).child("Attendance");
-        workerRef.child(String.valueOf(date.getText())).setValue(editTextInput);
-        workerRef.keepSynced(true);
+    private void addWorkerConveyance(WorkerProfile worker, String editTextInput) {
+        DatabaseReference workerRef = mainRef.child("Project_List").child(project.getId()).child("workerList").child(worker.getId()).child("Conveyance");
+        workerRef.child(String.valueOf(ETdate.getText())).setValue(editTextInput);
+    }
+
+    private void addWorkerAttendance(WorkerProfile targetWorker, String editTextInput) {
+        for (WorkerProfile worker: pWorkerList){
+            if (worker.getId().equals(targetWorker.getId())){
+                DatabaseReference workerRef = mainRef.child("Project_List").child(project.getId()).child("workerList").child(worker.getId()).child("Attendance");
+                workerRef.child(String.valueOf(ETdate.getText())).setValue(editTextInput);
+                workerRef.keepSynced(true);
+            }
+            else{
+                DatabaseReference workerRef = mainRef.child("Project_List").child(project.getId()).child("workerList").child(worker.getId()).child("Attendance");
+                workerRef.child(String.valueOf(ETdate.getText())).setValue("0");
+                workerRef.keepSynced(true);
+            }
+        }
+
 
     }
 

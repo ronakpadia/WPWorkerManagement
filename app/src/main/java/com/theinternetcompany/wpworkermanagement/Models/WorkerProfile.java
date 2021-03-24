@@ -5,8 +5,9 @@ import java.util.HashMap;
 
 public class WorkerProfile implements Serializable {
 
-    private String name, cardNo, rate, baseRate, workType, id,conveyance;
-    private HashMap<String, String> attendance;
+    private String name, cardNo, rate, baseRate, workType, id;
+    private HashMap<String, String> Attendance;
+    private HashMap<String, String> Conveyance;
 
 
     public WorkerProfile(){
@@ -76,18 +77,18 @@ public class WorkerProfile implements Serializable {
     }
 
     public HashMap<String, String> getAttendance() {
-        return attendance;
+        return Attendance;
     }
 
     public void setAttendance(HashMap<String, String> attendance) {
-        this.attendance = attendance;
+        this.Attendance = attendance;
     }
 
-    public String getConveyance() {
-        return conveyance;
+    public HashMap<String,String> getConveyance() {
+        return Conveyance;
     }
 
-    public void setConveyance(String conveyance) {
-        this.conveyance = conveyance;
+    public void setConveyance(HashMap<String,String> conveyance) {
+        this.Conveyance = conveyance;
     }
 }
