@@ -1,3 +1,5 @@
+
+
 package com.theinternetcompany.wpworkermanagement;
 
 import androidx.annotation.NonNull;
@@ -38,19 +40,19 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Locale;
+import java.util.Set;
 
 public class MarkAttendanceActivity extends AppCompatActivity {
     private EditText ETdate;
+    private TextView dateTV;
     private Button btnMarkAttendance, btnAddConveyance, btnSave;
     private Project project = new Project();
     private TableLayout workerTable, workerTable2;
     private SearchView searchView;
     private TableRow tableHeaderTags;
     private LinearLayout layout, buttonLayout;
-    private ArrayList<WorkerProfile> attendenceList = new ArrayList<>();
     private ArrayList<WorkerProfile> pWorkerList = new ArrayList<>();
     private DatabaseReference mainRef = FirebaseDatabase.getInstance().getReference();
-
 
 
     @Override
@@ -65,12 +67,13 @@ public class MarkAttendanceActivity extends AppCompatActivity {
         btnMarkAttendance = findViewById(R.id.btnMarkAttendance);
         btnAddConveyance = findViewById(R.id.btnAddConveyance);
         ETdate = findViewById(R.id.ETdate);
+        dateTV = findViewById(R.id.dateTV);
         btnSave = findViewById(R.id.btnSave);
-        tableHeaderTags = findViewById(R.id.tableHeaderTags);
+//        tableHeaderTags = findViewById(R.id.tableHeaderTags);
         Intent i = getIntent();
         project = (Project) i.getSerializableExtra("project");
 //        getAttendance();
-        getWorkerList();
+        getWorkerList("first");
         btnSave.setVisibility(View.GONE);
         layout.setVisibility(View.GONE);
 
@@ -111,9 +114,11 @@ public class MarkAttendanceActivity extends AppCompatActivity {
 
                 btnSave.setVisibility(View.VISIBLE);
                 layout.setVisibility(View.VISIBLE);
+                dateTV.setVisibility(View.VISIBLE);
+                ETdate.setVisibility(View.VISIBLE);
                 btnMarkAttendance.setVisibility(View.GONE);
                 btnAddConveyance.setVisibility(View.GONE);
-                populateTable(workerTable2, "attendance");
+                populateTable(workerTable2, "attendance", pWorkerList);
 
             }
         });
@@ -137,37 +142,16 @@ public class MarkAttendanceActivity extends AppCompatActivity {
             public void onClick(View v) {
                 btnSave.setVisibility(View.VISIBLE);
                 layout.setVisibility(View.VISIBLE);
+                dateTV.setVisibility(View.GONE);
+                ETdate.setVisibility(View.GONE);
                 btnMarkAttendance.setVisibility(View.GONE);
                 btnAddConveyance.setVisibility(View.GONE);
-                populateTable(workerTable2, "conveyance");
+                populateTable(workerTable2, "conveyance", pWorkerList
+                );
             }
         });
     }
 
-    private void getAttendance() {
-        mainRef = FirebaseDatabase.getInstance().getReference();
-        DatabaseReference attendanceRef = mainRef.child("Project_List").child(project.getId()).child("workerList").child("Attendance");
-        attendanceRef.keepSynced(true);
-
-        attendanceRef.addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot snapshot) {
-                attendenceList.clear();
-                for(DataSnapshot snap : snapshot.getChildren()){
-                    attendenceList.add(snap.getValue(WorkerProfile.class));
-
-                }
-
-                populateTable(workerTable,"none");
-
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError error) {
-
-            }
-        });
-    }
 
     private void updateLabel(Calendar myCalendar) {
         String myFormat = "dd-MM-yy"; //In which you need put here
@@ -176,7 +160,7 @@ public class MarkAttendanceActivity extends AppCompatActivity {
         ETdate.setText(sdf.format(myCalendar.getTime()));
     }
 
-    private void getWorkerList() {
+    private void getWorkerList(String callback) {
         mainRef = FirebaseDatabase.getInstance().getReference();
         DatabaseReference pWorkerRef = mainRef.child("Project_List").child(project.getId()).child("workerList");
         pWorkerRef.keepSynced(true);
@@ -191,7 +175,8 @@ public class MarkAttendanceActivity extends AppCompatActivity {
 
                 }
                 
-                populateTable(workerTable, "none");
+                populateTable(workerTable, callback, pWorkerList);
+                populateTable(workerTable2, callback, pWorkerList);
 
 
             }
@@ -204,9 +189,49 @@ public class MarkAttendanceActivity extends AppCompatActivity {
 
     }
 
-    private void populateTable(TableLayout table, String parent) {
+    private void populateTable(TableLayout table, String parent, ArrayList<WorkerProfile> pWorkerList) {
+
         cleanTable(table);
+
+        TableRow headerRow = new TableRow(MarkAttendanceActivity.this);
+        TableRow.LayoutParams rlp = new TableRow.LayoutParams(TableRow.LayoutParams.MATCH_PARENT);
+        headerRow.setLayoutParams(rlp);
+
+        TextView nameTag = new TextView(MarkAttendanceActivity.this);
+        nameTag.setText("Name");
+        nameTag.setPadding(20,20,20,20);
+        nameTag.setTextSize(20);
+        nameTag.setTextColor(Color.BLACK);
+        nameTag.setTypeface(Typeface.DEFAULT_BOLD);
+        headerRow.addView(nameTag);
+
+        TextView cardNoTag = new TextView(MarkAttendanceActivity.this);
+        cardNoTag.setText("Card No.");
+        cardNoTag.setPadding(20,20,20,20);
+        cardNoTag.setTextSize(20);
+        cardNoTag.setTextColor(Color.BLACK);
+        cardNoTag.setTypeface(Typeface.DEFAULT_BOLD);
+        headerRow.addView(cardNoTag);
+
+        TextView rateTag = new TextView(MarkAttendanceActivity.this);
+        rateTag.setText("Rate");
+        rateTag.setPadding(20,20,20,20);
+        rateTag.setTextSize(20);
+        rateTag.setTextColor(Color.BLACK);
+        rateTag.setTypeface(Typeface.DEFAULT_BOLD);
+        headerRow.addView(rateTag);
+
+        TextView workTypeTag = new TextView(MarkAttendanceActivity.this);
+        workTypeTag.setText("Work Type");
+        workTypeTag.setPadding(20,20,20,20);
+        workTypeTag.setTextSize(20);
+        workTypeTag.setTextColor(Color.BLACK);
+        workTypeTag.setTypeface(Typeface.DEFAULT_BOLD);
+        headerRow.addView(workTypeTag);
+
+
         if (table == workerTable){
+
             for (String date : pWorkerList.get(0).getAttendance().keySet()){
                 TextView dateTag = new TextView(MarkAttendanceActivity.this);
                 dateTag.setText(String.valueOf(date));
@@ -214,9 +239,44 @@ public class MarkAttendanceActivity extends AppCompatActivity {
                 dateTag.setTextSize(20);
                 dateTag.setTextColor(Color.BLACK);
                 dateTag.setTypeface(Typeface.DEFAULT_BOLD);
-                tableHeaderTags.addView(dateTag);
+                headerRow.addView(dateTag);
             }
+
+            TextView totalShiftsTag = new TextView(MarkAttendanceActivity.this);
+            totalShiftsTag.setText("Total Shifts");
+            totalShiftsTag.setPadding(20,20,20,20);
+            totalShiftsTag.setTextSize(20);
+            totalShiftsTag.setTextColor(Color.BLACK);
+            totalShiftsTag.setTypeface(Typeface.DEFAULT_BOLD);
+            headerRow.addView(totalShiftsTag);
+
+            TextView wageTag = new TextView(MarkAttendanceActivity.this);
+            wageTag.setText("Wage");
+            wageTag.setPadding(20,20,20,20);
+            wageTag.setTextSize(20);
+            wageTag.setTextColor(Color.BLACK);
+            wageTag.setTypeface(Typeface.DEFAULT_BOLD);
+            headerRow.addView(wageTag);
+
+            TextView conveyanceTag = new TextView(MarkAttendanceActivity.this);
+            conveyanceTag.setText("Conveyance");
+            conveyanceTag.setPadding(20,20,20,20);
+            conveyanceTag.setTextSize(20);
+            conveyanceTag.setTextColor(Color.BLACK);
+            conveyanceTag.setTypeface(Typeface.DEFAULT_BOLD);
+            headerRow.addView(conveyanceTag);
+
+            TextView totalTag = new TextView(MarkAttendanceActivity.this);
+            totalTag.setText("Total");
+            totalTag.setPadding(20,20,20,20);
+            totalTag.setTextSize(20);
+            totalTag.setTextColor(Color.BLACK);
+            totalTag.setTypeface(Typeface.DEFAULT_BOLD);
+            headerRow.addView(totalTag);
         }
+
+
+        table.addView(headerRow);
 
         for (WorkerProfile p : pWorkerList){
             TableRow row = new TableRow(MarkAttendanceActivity.this);
@@ -256,8 +316,12 @@ public class MarkAttendanceActivity extends AppCompatActivity {
 
                     @Override
                     public void onClick(View v) {
-                        openShiftDialog(p, parent);
-
+                        if (parent.equals("conveyance")){
+                            openConveyanceDialog(p);
+                        }
+                        else if (parent.equals("attendance")){
+                            openShiftDialog(p);
+                        }
 
                     }
                 });
@@ -270,47 +334,61 @@ public class MarkAttendanceActivity extends AppCompatActivity {
                     shifts.setTextSize(20);
                     row.addView(shifts);
                 }
-            }
 
+                TextView totalShifts = new TextView(MarkAttendanceActivity.this);
+                totalShifts.setText(p.getTotalShifts());
+                totalShifts.setPadding(20,20,20,20);
+                totalShifts.setTextSize(20);
+                row.addView(totalShifts);
+
+                TextView wage = new TextView(MarkAttendanceActivity.this);
+                wage.setText(p.getTotalWage());
+                wage.setPadding(20,20,20,20);
+                wage.setTextSize(20);
+                row.addView(wage);
+
+                TextView conveyance = new TextView(MarkAttendanceActivity.this);
+                conveyance.setText(String.valueOf(p.getConveyance()));
+                conveyance.setPadding(20,20,20,20);
+                conveyance.setTextSize(20);
+                row.addView(conveyance);
+
+                TextView total = new TextView(MarkAttendanceActivity.this);
+                total.setText(p.getTotal());
+                total.setPadding(20,20,20,20);
+                total.setTextSize(20);
+                row.addView(total);
+            }
 
             table.addView(row);
             Log.v("KIA ADD", "RANDI");
         }
     }
 
-    private void openShiftDialog(WorkerProfile p, String parent) {
+    private void openShiftDialog(WorkerProfile p) {
         EditText shiftsInput = new EditText(this);
-        String msg = "";
-        if (parent.equals("attendance")){
-            msg = "Enter Shifts:";
-        }else if (parent.equals("conveyance")){
-            msg = "Enter Conveyance:";
-        }
         shiftsInput.setInputType(InputType.TYPE_CLASS_NUMBER);
         
         AlertDialog dialog = new AlertDialog.Builder(this)
                 .setTitle(p.getName())
-                .setMessage(msg)
+                .setMessage("Enter Shifts:")
                 .setView(shiftsInput)
                 .setPositiveButton("OK", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
                         String editTextInput = shiftsInput.getText().toString();
+
                         if (TextUtils.isEmpty(ETdate.getText().toString())) {
                             Toast.makeText(MarkAttendanceActivity.this,"Enter Date", Toast.LENGTH_SHORT).show();
                         }
+
                         else if (TextUtils.isEmpty(editTextInput)) {
-                            Log.d("debug" , editTextInput);
                             Toast.makeText(MarkAttendanceActivity.this,"Enter Shift", Toast.LENGTH_SHORT).show();
+                            Log.d("debug" , editTextInput);
+
                         }
                         else{
-                            if (parent.equals("attendance")){
-                                addWorkerAttendance(p,editTextInput);
-                            }else if (parent.equals("conveyance")){
-                                addWorkerConveyance(p,editTextInput);
-                            }
-                            
-//                            getAttWorkerList();
+                            addWorkerAttendance(p,editTextInput);
                         }
                         closeKeyboard();
                         Log.d("onclick","editext value is: "+ editTextInput);
@@ -330,9 +408,52 @@ public class MarkAttendanceActivity extends AppCompatActivity {
         showKeyboard();
     }
 
+    private void openConveyanceDialog(WorkerProfile p) {
+        EditText conveyanceInput = new EditText(this);
+        String msg = "";
+
+        conveyanceInput.setInputType(InputType.TYPE_CLASS_NUMBER);
+
+        AlertDialog dialog = new AlertDialog.Builder(this)
+                .setTitle(p.getName())
+                .setMessage("Enter Conveyance:")
+                .setView(conveyanceInput)
+                .setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        String editTextInput = conveyanceInput.getText().toString();
+                        if (TextUtils.isEmpty(editTextInput)) {
+
+                            Toast.makeText(MarkAttendanceActivity.this,"Enter Conveyance", Toast.LENGTH_SHORT).show();
+                            Log.d("debug" , editTextInput);
+
+                        }
+                        else{
+                            addWorkerConveyance(p,editTextInput);
+                        }
+                        closeKeyboard();
+                        Log.d("onclick","editext value is: "+ editTextInput);
+                    }
+                })
+                .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        closeKeyboard();
+                    }
+                })
+                .create();
+        dialog.show();
+        conveyanceInput.requestFocus();
+        InputMethodManager imm = (InputMethodManager) getSystemService(this.INPUT_METHOD_SERVICE);
+        imm.showSoftInput(conveyanceInput, InputMethodManager.SHOW_IMPLICIT);
+        showKeyboard();
+    }
+
     private void addWorkerConveyance(WorkerProfile worker, String editTextInput) {
-        DatabaseReference workerRef = mainRef.child("Project_List").child(project.getId()).child("workerList").child(worker.getId()).child("Conveyance");
-        workerRef.child(String.valueOf(ETdate.getText())).setValue(editTextInput);
+        Integer conveyance = Integer.parseInt(worker.getTotalConveyance()) + Integer.parseInt(editTextInput);
+        DatabaseReference workerRef = mainRef.child("Project_List").child(project.getId()).child("workerList").child(worker.getId()).child("conveyance");
+        workerRef.setValue(conveyance);
+        getWorkerList("conveyance");
     }
 
     private void addWorkerAttendance(WorkerProfile targetWorker, String editTextInput) {
@@ -348,6 +469,7 @@ public class MarkAttendanceActivity extends AppCompatActivity {
                 workerRef.keepSynced(true);
             }
         }
+        getWorkerList("attendance");
 
 
     }
@@ -369,7 +491,7 @@ public class MarkAttendanceActivity extends AppCompatActivity {
 
         // Remove all rows except the first one
         if (childCount > 1) {
-            table.removeViews(1, childCount - 1);
+            table.removeViews(0, childCount );
         }
     }
 

@@ -1,13 +1,21 @@
 package com.theinternetcompany.wpworkermanagement.Models;
 
+import android.util.Log;
+
 import java.io.Serializable;
 import java.util.HashMap;
 
 public class WorkerProfile implements Serializable {
 
     private String name, cardNo, rate, baseRate, workType, id;
-    private HashMap<String, String> Attendance;
-    private HashMap<String, String> Conveyance;
+    private Integer totalWage;
+    private Integer Total;
+
+
+
+    private Integer totalShifts;
+    private Integer conveyance;
+    private HashMap<String, String> Attendance = new HashMap<>();
 
 
     public WorkerProfile(){
@@ -21,6 +29,8 @@ public class WorkerProfile implements Serializable {
         this.rate = rate;
         this.baseRate = baseRate;
         this.workType = workType;
+        this.conveyance = 0;
+        this.totalShifts = 0;
     }
 
     public String getName() {
@@ -45,6 +55,13 @@ public class WorkerProfile implements Serializable {
 
     public void setRate(String rate) {
         this.rate = rate;
+    }
+
+    public void setConveyance(Integer conveyance) {
+        this.conveyance = conveyance;
+    }
+    public Integer getConveyance() {
+        return conveyance;
     }
 
     public String getBaseRate() {
@@ -84,11 +101,35 @@ public class WorkerProfile implements Serializable {
         this.Attendance = attendance;
     }
 
-    public HashMap<String,String> getConveyance() {
-        return Conveyance;
+
+    public String getTotalConveyance() {
+        return String.valueOf(conveyance);
     }
 
-    public void setConveyance(HashMap<String,String> conveyance) {
-        this.Conveyance = conveyance;
+    public String getTotalWage() {
+        totalWage = 0;
+        for (String shift : Attendance.values()){
+            totalWage += Integer.parseInt(shift)* Integer.parseInt(rate);
+        }
+        return String.valueOf(totalWage);
     }
+
+    public String getTotal() {
+        Total = 0;
+        Total = conveyance + totalWage;
+        return String.valueOf(Total);
+    }
+
+    public String getTotalShifts() {
+        totalShifts = 0;
+        for (String shift : Attendance.values()){
+            totalShifts += Integer.parseInt(shift);
+        }
+        return String.valueOf(totalShifts);
+    }
+
+    public void setTotalShifts(Integer totalShifts) {
+        this.totalShifts = totalShifts;
+    }
+
 }
