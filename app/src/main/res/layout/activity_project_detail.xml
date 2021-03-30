@@ -607,7 +607,7 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:rippleColor="@color/purple_500"
-        app:srcCompat="@android:drawable/ic_menu_edit" />
+        app:srcCompat="@mipmap/edit_foreground" />
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/btnDelete"
@@ -621,7 +621,7 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:rippleColor="#B71C1C"
-        app:srcCompat="@android:drawable/ic_menu_delete" />
+        app:srcCompat="@mipmap/delete_foreground" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -174,7 +174,7 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:rippleColor="#00FFFFFF"
-        app:srcCompat="@mipmap/user_big_foreground" />
+        app:srcCompat="@mipmap/workers_foreground" />
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/btnAddNewProject"
@@ -189,7 +189,7 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:rippleColor="#FFF8F8"
-        app:srcCompat="@android:drawable/ic_menu_add" />
+        app:srcCompat="@mipmap/add_foreground" />
 
 
 
