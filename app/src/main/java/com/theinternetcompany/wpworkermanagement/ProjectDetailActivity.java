@@ -106,7 +106,7 @@ public class ProjectDetailActivity extends AppCompatActivity {
 //        btnSave.setVisibility(View.GONE);
         layout.setVisibility(View.GONE);
         getPWorkerData("main");
-        getWorkerData();
+//        getWorkerData();
         populateTable(pWorkerList, projectTable, "main");
 
         btnRemove.setOnClickListener(new View.OnClickListener() {
@@ -436,7 +436,7 @@ public class ProjectDetailActivity extends AppCompatActivity {
 
                             }
                             Log.v("MAKICHUT", String.valueOf(addWorkerList.size()));
-                            populateTable(addWorkerList, projectTable2, "add");
+                            populateTable(addWorkerList, projectTable2, parent);
                         }
 
                         @Override
@@ -447,8 +447,8 @@ public class ProjectDetailActivity extends AppCompatActivity {
 //                    populateTable(workerList, projectTable2, "add");
 //                            populateTable(pWorkerList, projectTable, "inner");
                 }
-                else if (parent.equals("remove")){
-                    populateTable(pWorkerList, projectTable2, "remove");
+                else {
+                    populateTable(pWorkerList, projectTable2, parent);
 //                            populateTable(pWorkerList, projectTable, "inner");
                 }
 
