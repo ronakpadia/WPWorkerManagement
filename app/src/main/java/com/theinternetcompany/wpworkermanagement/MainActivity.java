@@ -23,6 +23,7 @@ import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
 
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -40,7 +41,8 @@ public class MainActivity extends AppCompatActivity {
 
     TableLayout projectTable;
     private SearchView searchView;
-    private Button btnEmployeeList, btnAddNewProject, btnHideShowColumns, btnExportCSV;
+    private Button btnHideShowColumns, btnExportCSV;
+    private FloatingActionButton btnAddNewProject,btnEmployeeList;
     private TextView idTag, nameTag, locationTag, companyTag,periodTag, expensesTag;
     private DatabaseReference mainRef = FirebaseDatabase.getInstance().getReference();
     private ArrayList<Project> projectList = new ArrayList<>();
@@ -64,7 +66,7 @@ public class MainActivity extends AppCompatActivity {
         btnAddNewProject = findViewById(R.id.btnAddNewProject);
         btnEmployeeList = findViewById(R.id.btnEmployeeList);
         btnHideShowColumns = findViewById(R.id.btnHideShowColumns);
-        btnExportCSV = findViewById(R.id.btnExportProjectList);
+//        btnExportCSV = findViewById(R.id.btnExportProjectList);
         nameTag = findViewById(R.id.nameTag);
         locationTag = findViewById(R.id.locationTag);
         periodTag = findViewById(R.id.periodTag);
@@ -79,12 +81,12 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        btnExportCSV.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                exportCSV();
-            }
-        });
+//        btnExportCSV.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                exportCSV();
+//            }
+//        });
 
         btnHideShowColumns.setOnClickListener(new View.OnClickListener() {
             @Override
