@@ -593,7 +593,7 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:rippleColor="@color/purple_500"
-        app:srcCompat="@android:drawable/ic_menu_edit" />
+        app:srcCompat="@mipmap/edit_foreground" />
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/btnDone"
@@ -607,7 +607,7 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:rippleColor="@color/purple_500"
-        app:srcCompat="@mipmap/edit_foreground" />
+        app:srcCompat="@mipmap/done_foreground" />
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/btnDelete"
