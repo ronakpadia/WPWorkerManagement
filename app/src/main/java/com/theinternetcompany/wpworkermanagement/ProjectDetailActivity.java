@@ -4,9 +4,12 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.app.AlertDialog;
+import android.app.DatePickerDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Color;
+import android.graphics.Typeface;
 import android.os.Bundle;
 import android.provider.Settings;
 import android.text.InputType;
@@ -18,6 +21,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
+import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.SearchView;
@@ -38,14 +42,18 @@ import com.theinternetcompany.wpworkermanagement.Models.WorkerProfile;
 
 import org.w3c.dom.Text;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.HashMap;
+import java.util.Locale;
 
 public class ProjectDetailActivity extends AppCompatActivity {
 
     private Project project = new Project();
-    TableLayout projectTable, projectTable2;
-    private SearchView searchView;
+    TableLayout workerTable, workerTable2;
+    private EditText ETdate;
+    private SearchView searchView, addSearchView;
     private ArrayList<WorkerProfile> workerList = new ArrayList<>();
     private ArrayList<WorkerProfile> pWorkerList = new ArrayList<>();
     private ArrayList<WorkerProfile> addWorkerList = new ArrayList<>();
@@ -53,9 +61,9 @@ public class ProjectDetailActivity extends AppCompatActivity {
     private HashMap<String, WorkerProfile> WorkerList = new HashMap<>();
     private DatabaseReference mainRef = FirebaseDatabase.getInstance().getReference();
     private TextView projectName, projectId, projectLocation, projectCompany, projectDuration;
-    private Button btnAdd, btnRemove, btnSave,btnMarkAttendance;
-    private FloatingActionButton btnEditProject,btnDelete;
-    LinearLayout layout;
+    private Button btnAdd, btnRemove,btnMarkAttendance, btnAddConveyance;
+    private FloatingActionButton btnEditProject,btnDelete, btnDone;
+    LinearLayout layout, dateLL, buttonsLL;
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -82,16 +90,22 @@ public class ProjectDetailActivity extends AppCompatActivity {
         setContentView(R.layout.activity_project_detail);
         projectName = findViewById(R.id.twProjectName);
         projectId = findViewById(R.id.twProjectId);
-        projectTable = findViewById(R.id.projectTable);
-        projectTable2 = findViewById(R.id.projectTable2);
+        workerTable = findViewById(R.id.projectTable);
+        workerTable2 = findViewById(R.id.projectTable2);
+        ETdate = findViewById(R.id.ETdate);
         searchView = findViewById(R.id.searchView);
+        addSearchView = findViewById(R.id.addSearchView);
         layout = findViewById(R.id.linearLayoutT);
+        dateLL = findViewById(R.id.dateLL);
+        buttonsLL = findViewById(R.id.buttonsLL);
         projectCompany = findViewById(R.id.twProjectCompany);
         projectDuration = findViewById(R.id.twProjectDuration);
         projectLocation = findViewById(R.id.twProjectLocation);
         btnAdd = findViewById(R.id.btnAdd);
         btnRemove = findViewById(R.id.btnRemove);
-        btnSave = findViewById(R.id.btnSave);
+        btnAddConveyance = findViewById(R.id.btnConveyance);
+        btnMarkAttendance = findViewById(R.id.btnMarkAttendance);
+        btnDone = findViewById(R.id.btnDone);
         btnEditProject = findViewById(R.id.btnEditProject);
         btnDelete = findViewById(R.id.btnDelete);
         btnMarkAttendance = findViewById(R.id.btnMarkAttendance);
@@ -103,39 +117,61 @@ public class ProjectDetailActivity extends AppCompatActivity {
         projectCompany.setText(project.getCompany());
         projectLocation.setText(project.getLocation());
         projectDuration.setText(project.getPeriod());
-//        btnSave.setVisibility(View.GONE);
+        btnDone.setVisibility(View.GONE);
+        searchView.setVisibility(View.GONE);
+        searchView.setVisibility(View.GONE);
         layout.setVisibility(View.GONE);
+        dateLL.setVisibility(View.GONE);
         getPWorkerData("main");
 //        getWorkerData();
-        populateTable(pWorkerList, projectTable, "main");
+//        populateTable(pWorkerList, workerTable, "main");
+
+        final Calendar myCalendar = Calendar.getInstance();
+
+        DatePickerDialog.OnDateSetListener date = new DatePickerDialog.OnDateSetListener() {
+
+
+            @Override
+            public void onDateSet(DatePicker view, int year, int monthOfYear,
+                                  int dayOfMonth) {
+                // TODO Auto-generated method stub
+                myCalendar.set(Calendar.YEAR, year);
+                myCalendar.set(Calendar.MONTH, monthOfYear);
+                myCalendar.set(Calendar.DAY_OF_MONTH, dayOfMonth);
+                updateLabel(myCalendar);
+            }
+
+        };
+
+        ETdate.setOnClickListener(new View.OnClickListener() {
+
+            @Override
+            public void onClick(View v) {
+                // TODO Auto-generated method stub
+                new DatePickerDialog(ProjectDetailActivity.this, date, myCalendar
+                        .get(Calendar.YEAR), myCalendar.get(Calendar.MONTH),
+                        myCalendar.get(Calendar.DAY_OF_MONTH)).show();
+            }
+        });
 
         btnRemove.setOnClickListener(new View.OnClickListener() {
             String parent = "Remove";
 
             @Override
             public void onClick(View v) {
-                btnRemove.setVisibility(View.GONE);
-                btnSave.setVisibility(View.VISIBLE);
-                btnAdd.setVisibility(View.GONE);
-                layout .setVisibility(View.VISIBLE);
+                buttonsLL.setVisibility(View.GONE);
+                btnEditProject.setVisibility(View.GONE);
+                btnDelete.setVisibility(View.GONE);
+                dateLL.setVisibility(View.GONE);
+                btnDone.setVisibility(View.VISIBLE);
                 getPWorkerData("remove");
+                layout .setVisibility(View.VISIBLE);
+
 
 
 
             }
         });
-
-//        btnSave.setOnClickListener(new View.OnClickListener() {
-//
-//            @Override
-//            public void onClick(View v) {
-//                btnRemove.setVisibility(View.VISIBLE);
-//                btnAdd.setVisibility(View.VISIBLE);
-//                btnSave.setVisibility(View.GONE);
-//                layout.setVisibility(View.GONE);
-//
-//            }
-//        });
 
         btnAdd.setOnClickListener(new View.OnClickListener() {
 
@@ -143,15 +179,61 @@ public class ProjectDetailActivity extends AppCompatActivity {
 
             @Override
             public void onClick(View v) {
-                btnAdd.setVisibility(View.GONE);
-                btnSave.setVisibility(View.VISIBLE);
-                btnRemove.setVisibility(View.GONE);
-                layout .setVisibility(View.VISIBLE);
+                buttonsLL.setVisibility(View.GONE);
+                btnEditProject.setVisibility(View.GONE);
+                btnDelete.setVisibility(View.GONE);
+                dateLL.setVisibility(View.GONE);
+                btnDone.setVisibility(View.VISIBLE);
                 getPWorkerData("add");
+                layout .setVisibility(View.VISIBLE);
+
 //                populateTable(workerList, projectTable2, "add");
 
             }
         });
+
+        btnAddConveyance.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                buttonsLL.setVisibility(View.GONE);
+                btnEditProject.setVisibility(View.GONE);
+                btnDelete.setVisibility(View.GONE);
+                dateLL.setVisibility(View.GONE);
+                btnDone.setVisibility(View.VISIBLE);
+                layout .setVisibility(View.VISIBLE);
+                getPWorkerData("conveyance");
+            }
+        });
+
+        btnMarkAttendance.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                buttonsLL.setVisibility(View.GONE);
+                btnEditProject.setVisibility(View.GONE);
+                btnDelete.setVisibility(View.GONE);
+                dateLL.setVisibility(View.VISIBLE);
+                btnDone.setVisibility(View.VISIBLE);
+                layout .setVisibility(View.VISIBLE);
+                getPWorkerData("attendance");
+            }
+        });
+
+        btnDone.setOnClickListener(new View.OnClickListener() {
+
+            @Override
+            public void onClick(View v) {
+                buttonsLL.setVisibility(View.VISIBLE);
+                btnEditProject.setVisibility(View.VISIBLE);
+                btnDelete.setVisibility(View.VISIBLE);
+                dateLL.setVisibility(View.GONE);
+                btnDone.setVisibility(View.GONE);
+                layout .setVisibility(View.GONE);
+
+            }
+        });
+
+        
+
 
         btnEditProject.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -170,12 +252,14 @@ public class ProjectDetailActivity extends AppCompatActivity {
             }
         });
 
-        btnMarkAttendance.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                transitionToMarkAttendanceActivity();
-            }
-        });
+
+    }
+
+    private void updateLabel(Calendar myCalendar) {
+        String myFormat = "dd-MM-yy"; //In which you need put here
+        SimpleDateFormat sdf = new SimpleDateFormat(myFormat, Locale.US);
+
+        ETdate.setText(sdf.format(myCalendar.getTime()));
     }
 
     private void transitionToMarkAttendanceActivity() {
@@ -404,7 +488,7 @@ public class ProjectDetailActivity extends AppCompatActivity {
 
                 }
 
-                populateTable(pWorkerList, projectTable, "inner");
+                populateTable(pWorkerList, workerTable, "inner");
                 if (parent.equals("add")){
                     DatabaseReference workerRef = mainRef.child("Worker_List");
                     workerRef.keepSynced(true);
@@ -436,7 +520,7 @@ public class ProjectDetailActivity extends AppCompatActivity {
 
                             }
                             Log.v("MAKICHUT", String.valueOf(addWorkerList.size()));
-                            populateTable(addWorkerList, projectTable2, parent);
+                            populateTable(addWorkerList, workerTable2, parent);
                         }
 
                         @Override
@@ -448,7 +532,7 @@ public class ProjectDetailActivity extends AppCompatActivity {
 //                            populateTable(pWorkerList, projectTable, "inner");
                 }
                 else {
-                    populateTable(pWorkerList, projectTable2, parent);
+                    populateTable(pWorkerList, workerTable2, parent);
 //                            populateTable(pWorkerList, projectTable, "inner");
                 }
 
@@ -462,7 +546,98 @@ public class ProjectDetailActivity extends AppCompatActivity {
     }
 
     private void populateTable(ArrayList<WorkerProfile> workerList, TableLayout table, String parentMethod) {
+
         cleanTable(table);
+
+        TableRow headerRow = new TableRow(ProjectDetailActivity.this);
+        TableRow.LayoutParams rlp = new TableRow.LayoutParams(TableRow.LayoutParams.MATCH_PARENT);
+        headerRow.setLayoutParams(rlp);
+
+        TextView nameTag = new TextView(ProjectDetailActivity.this);
+        nameTag.setText("Name");
+        nameTag.setPadding(20,20,20,20);
+        nameTag.setTextSize(20);
+        nameTag.setTextColor(Color.BLACK);
+        nameTag.setTypeface(Typeface.DEFAULT_BOLD);
+        headerRow.addView(nameTag);
+
+        TextView cardNoTag = new TextView(ProjectDetailActivity.this);
+        cardNoTag.setText("Card No.");
+        cardNoTag.setPadding(20,20,20,20);
+        cardNoTag.setTextSize(20);
+        cardNoTag.setTextColor(Color.BLACK);
+        cardNoTag.setTypeface(Typeface.DEFAULT_BOLD);
+        headerRow.addView(cardNoTag);
+
+        TextView rateTag = new TextView(ProjectDetailActivity.this);
+        rateTag.setText("Rate");
+        rateTag.setPadding(20,20,20,20);
+        rateTag.setTextSize(20);
+        rateTag.setTextColor(Color.BLACK);
+        rateTag.setTypeface(Typeface.DEFAULT_BOLD);
+        headerRow.addView(rateTag);
+
+        TextView workTypeTag = new TextView(ProjectDetailActivity.this);
+        workTypeTag.setText("Work Type");
+        workTypeTag.setPadding(20,20,20,20);
+        workTypeTag.setTextSize(20);
+        workTypeTag.setTextColor(Color.BLACK);
+        workTypeTag.setTypeface(Typeface.DEFAULT_BOLD);
+        headerRow.addView(workTypeTag);
+
+        if (table == workerTable){
+            if (pWorkerList.size() != 0){
+                if (pWorkerList.get(0).getAttendance() != null){
+                    for (String date : pWorkerList.get(0).getAttendance().keySet()){
+                        TextView dateTag = new TextView(ProjectDetailActivity.this);
+                        dateTag.setText(String.valueOf(date));
+                        dateTag.setPadding(20,20,20,20);
+                        dateTag.setTextSize(20);
+                        dateTag.setTextColor(Color.BLACK);
+                        dateTag.setTypeface(Typeface.DEFAULT_BOLD);
+                        headerRow.addView(dateTag);
+                    }
+                }
+            }
+
+
+            TextView totalShiftsTag = new TextView(ProjectDetailActivity.this);
+            totalShiftsTag.setText("Total Shifts");
+            totalShiftsTag.setPadding(20,20,20,20);
+            totalShiftsTag.setTextSize(20);
+            totalShiftsTag.setTextColor(Color.BLACK);
+            totalShiftsTag.setTypeface(Typeface.DEFAULT_BOLD);
+            headerRow.addView(totalShiftsTag);
+
+            TextView wageTag = new TextView(ProjectDetailActivity.this);
+            wageTag.setText("Wage");
+            wageTag.setPadding(20,20,20,20);
+            wageTag.setTextSize(20);
+            wageTag.setTextColor(Color.BLACK);
+            wageTag.setTypeface(Typeface.DEFAULT_BOLD);
+            headerRow.addView(wageTag);
+
+            TextView conveyanceTag = new TextView(ProjectDetailActivity.this);
+            conveyanceTag.setText("Conveyance");
+            conveyanceTag.setPadding(20,20,20,20);
+            conveyanceTag.setTextSize(20);
+            conveyanceTag.setTextColor(Color.BLACK);
+            conveyanceTag.setTypeface(Typeface.DEFAULT_BOLD);
+            headerRow.addView(conveyanceTag);
+
+            TextView totalTag = new TextView(ProjectDetailActivity.this);
+            totalTag.setText("Total");
+            totalTag.setPadding(20,20,20,20);
+            totalTag.setTextSize(20);
+            totalTag.setTextColor(Color.BLACK);
+            totalTag.setTypeface(Typeface.DEFAULT_BOLD);
+            headerRow.addView(totalTag);
+        }
+
+        table.addView(headerRow);
+        Log.d("header", parentMethod);
+
+
         for (WorkerProfile p : workerList){
             TableRow row = new TableRow(ProjectDetailActivity.this);
             TableRow.LayoutParams lp = new TableRow.LayoutParams(TableRow.LayoutParams.MATCH_PARENT);
@@ -495,7 +670,7 @@ public class ProjectDetailActivity extends AppCompatActivity {
             // Adding the row to tableLayout
             Log.v("BHENCHOD", "MADARCHOD");
 
-            if (table == projectTable2){
+            if (table == workerTable2){
                 row.setClickable(true);
                 row.setOnClickListener(new View.OnClickListener() {
 
@@ -510,16 +685,181 @@ public class ProjectDetailActivity extends AppCompatActivity {
                             removePWorker(p);
 //                            populateTable(pWorkerList, projectTable, "inner");
                         }
+                        else if (parentMethod.equals("conveyance")){
+                            openConveyanceDialog(p);
+                        }
+                        else if (parentMethod.equals("attendance")){
+                            openShiftDialog(p);
+                        }
 
 
                     }
                 });
             }
 
+            else{
+                if(p.getAttendance() != null){
+                    for (String shift : p.getAttendance().values()){
+                        TextView shifts = new TextView(ProjectDetailActivity.this);
+                        shifts.setText(String.valueOf(shift));
+                        shifts.setPadding(20,20,20,20);
+                        shifts.setTextSize(20);
+                        row.addView(shifts);
+                    }
+                }
+
+                TextView totalShifts = new TextView(ProjectDetailActivity.this);
+                if (p.calculateTotalShifts() != null){
+                    totalShifts.setText(String.valueOf(p.calculateTotalShifts()));
+                }
+                else{
+                    totalShifts.setText("0");
+                }
+
+                totalShifts.setPadding(20,20,20,20);
+                totalShifts.setTextSize(20);
+                row.addView(totalShifts);
+
+                TextView wage = new TextView(ProjectDetailActivity.this);
+                if (p.calculateTotalWage() != null){
+                    wage.setText(String.valueOf(p.calculateTotalWage()));
+                }
+                else{
+                    wage.setText("0");
+                }
+
+                wage.setPadding(20,20,20,20);
+                wage.setTextSize(20);
+                row.addView(wage);
+
+                TextView conveyance = new TextView(ProjectDetailActivity.this);
+                conveyance.setText(String.valueOf(p.getConveyance()));
+                conveyance.setPadding(20,20,20,20);
+                conveyance.setTextSize(20);
+                row.addView(conveyance);
+
+                TextView total = new TextView(ProjectDetailActivity.this);
+                total.setText(String.valueOf(p.calculateTotal()));
+                total.setPadding(20,20,20,20);
+                total.setTextSize(20);
+                row.addView(total);
+            }
+
 
             table.addView(row);
             Log.v("KIA ADD", "RANDI");
         }
+    }
+
+    private void openShiftDialog(WorkerProfile p) {
+        EditText shiftsInput = new EditText(this);
+        shiftsInput.setInputType(InputType.TYPE_CLASS_NUMBER);
+
+        AlertDialog dialog = new AlertDialog.Builder(this)
+                .setTitle(p.getName())
+                .setMessage("Enter Shifts:")
+                .setView(shiftsInput)
+                .setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        String editTextInput = shiftsInput.getText().toString();
+
+                        if (TextUtils.isEmpty(ETdate.getText().toString())) {
+                            Toast.makeText(ProjectDetailActivity.this,"Enter Date", Toast.LENGTH_SHORT).show();
+                        }
+
+                        else if (TextUtils.isEmpty(editTextInput)) {
+                            Toast.makeText(ProjectDetailActivity.this,"Enter Shift", Toast.LENGTH_SHORT).show();
+                            Log.d("debug" , editTextInput);
+
+                        }
+                        else{
+                            addWorkerAttendance(p,editTextInput);
+                        }
+                        closeKeyboard();
+                        Log.d("onclick","editext value is: "+ editTextInput);
+                    }
+                })
+                .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        closeKeyboard();
+                    }
+                })
+                .create();
+        dialog.show();
+        shiftsInput.requestFocus();
+        InputMethodManager imm = (InputMethodManager) getSystemService(this.INPUT_METHOD_SERVICE);
+        imm.showSoftInput(shiftsInput, InputMethodManager.SHOW_IMPLICIT);
+        showKeyboard();
+    }
+
+    private void openConveyanceDialog(WorkerProfile p) {
+        EditText conveyanceInput = new EditText(this);
+
+        conveyanceInput.setInputType(InputType.TYPE_CLASS_NUMBER);
+
+        AlertDialog dialog = new AlertDialog.Builder(this)
+                .setTitle(p.getName())
+                .setMessage("Enter Conveyance:")
+                .setView(conveyanceInput)
+                .setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        String editTextInput = conveyanceInput.getText().toString();
+                        if (TextUtils.isEmpty(editTextInput)) {
+
+                            Toast.makeText(ProjectDetailActivity.this,"Enter Conveyance", Toast.LENGTH_SHORT).show();
+                            Log.d("debug" , editTextInput);
+
+                        }
+                        else{
+                            addWorkerConveyance(p,editTextInput);
+                        }
+                        closeKeyboard();
+                        Log.d("onclick","editext value is: "+ editTextInput);
+                    }
+                })
+                .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        closeKeyboard();
+                    }
+                })
+                .create();
+        dialog.show();
+        conveyanceInput.requestFocus();
+        InputMethodManager imm = (InputMethodManager) getSystemService(this.INPUT_METHOD_SERVICE);
+        imm.showSoftInput(conveyanceInput, InputMethodManager.SHOW_IMPLICIT);
+        showKeyboard();
+    }
+
+    private void addWorkerConveyance(WorkerProfile worker, String editTextInput) {
+//        Integer conveyance = Integer.parseInt(worker.getTotalConveyance()) + Integer.parseInt(editTextInput);
+        DatabaseReference workerRef = mainRef.child("Project_List").child(project.getId()).child("workerList").child(worker.getId()).child("conveyance");
+        workerRef.setValue(Integer.parseInt(editTextInput));
+        getPWorkerData("conveyance");
+    }
+
+    private void addWorkerAttendance(WorkerProfile targetWorker, String editTextInput) {
+        for (WorkerProfile worker: pWorkerList){
+            if (worker.getId().equals(targetWorker.getId())){
+                DatabaseReference workerRef = mainRef.child("Project_List").child(project.getId()).child("workerList").child(worker.getId()).child("Attendance");
+                workerRef.child(String.valueOf(ETdate.getText())).setValue(editTextInput);
+                workerRef.keepSynced(true);
+            }
+            else{
+                DatabaseReference workerRef = mainRef.child("Project_List").child(project.getId()).child("workerList").child(worker.getId()).child("Attendance");
+                if (workerRef.child(String.valueOf(ETdate.getText())) == null){
+                    workerRef.child(String.valueOf(ETdate.getText())).setValue("0");
+                }
+
+                workerRef.keepSynced(true);
+            }
+        }
+        getPWorkerData("attendance");
+
+
     }
 
     private void openRateDialog(WorkerProfile w){
@@ -601,8 +941,8 @@ public class ProjectDetailActivity extends AppCompatActivity {
         int childCount = table.getChildCount();
 
         // Remove all rows except the first one
-        if (childCount > 1) {
-            table.removeViews(1, childCount - 1);
+        if (childCount > 0) {
+            table.removeViews(0, childCount );
         }
     }
 

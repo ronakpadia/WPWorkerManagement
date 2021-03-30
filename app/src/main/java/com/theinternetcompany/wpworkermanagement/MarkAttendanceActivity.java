@@ -146,8 +146,7 @@ public class MarkAttendanceActivity extends AppCompatActivity {
                 ETdate.setVisibility(View.GONE);
                 btnMarkAttendance.setVisibility(View.GONE);
                 btnAddConveyance.setVisibility(View.GONE);
-                populateTable(workerTable2, "conveyance", pWorkerList
-                );
+                populateTable(workerTable2, "conveyance", pWorkerList);
             }
         });
     }
