@@ -103,7 +103,7 @@ public class ProjectDetailActivity extends AppCompatActivity {
         projectCompany.setText(project.getCompany());
         projectLocation.setText(project.getLocation());
         projectDuration.setText(project.getPeriod());
-        btnSave.setVisibility(View.GONE);
+//        btnSave.setVisibility(View.GONE);
         layout.setVisibility(View.GONE);
         getPWorkerData("main");
         getWorkerData();
@@ -125,17 +125,17 @@ public class ProjectDetailActivity extends AppCompatActivity {
             }
         });
 
-        btnSave.setOnClickListener(new View.OnClickListener() {
-
-            @Override
-            public void onClick(View v) {
-                btnRemove.setVisibility(View.VISIBLE);
-                btnAdd.setVisibility(View.VISIBLE);
-                btnSave.setVisibility(View.GONE);
-                layout.setVisibility(View.GONE);
-
-            }
-        });
+//        btnSave.setOnClickListener(new View.OnClickListener() {
+//
+//            @Override
+//            public void onClick(View v) {
+//                btnRemove.setVisibility(View.VISIBLE);
+//                btnAdd.setVisibility(View.VISIBLE);
+//                btnSave.setVisibility(View.GONE);
+//                layout.setVisibility(View.GONE);
+//
+//            }
+//        });
 
         btnAdd.setOnClickListener(new View.OnClickListener() {
 
