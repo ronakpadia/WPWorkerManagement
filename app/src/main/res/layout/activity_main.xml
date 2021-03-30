@@ -25,6 +25,7 @@
                 android:orientation="horizontal">
 
                 <SearchView
+                    android:layout_margin="5dp"
                     android:id="@+id/searchView"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
@@ -34,10 +35,19 @@
 
                 <Button
                     android:id="@+id/btnHideShowColumns"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_margin="5dp"
-                    android:drawableLeft="@android:drawable/ic_menu_view" />
+                    android:layout_width="50dp"
+                    android:layout_height="50dp"
+                    android:stateListAnimator="@null"
+                    android:layout_marginTop="5dp"
+                    android:layout_marginRight="10dp"
+                    android:background="@drawable/roundedbutton"
+                    android:drawableLeft="@android:drawable/ic_menu_sort_by_size"
+                    app:backgroundTint="#FFFFFF"
+                    android:drawableTint="@color/purple_700"/>
+
+
+
+
 
             </LinearLayout>
 
@@ -145,44 +155,36 @@
 
         </LinearLayout>
 
-        <LinearLayout
-            android:id="@+id/LL"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_alignParentBottom="true"
-            android:orientation="horizontal"
-            app:layout_constraintBottom_toTopOf="@+id/linearLayout"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent">
 
-            <Button
-                android:id="@+id/btnEmployeeList"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="end"
-                android:layout_marginLeft="10dp"
-                android:text="Workers" />
 
-            <Button
-                android:id="@+id/btnAddNewProject"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="end"
-                android:layout_marginLeft="10dp"
-                android:layout_marginRight="10dp"
-                android:text="+ Project" />
 
-            <Button
-                android:id="@+id/btnExportProjectList"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginRight="10dp"
-                android:layout_weight="1"
-                android:drawableLeft="@android:drawable/ic_menu_share"
-                android:text="CSV" />
-
-        </LinearLayout>
     </RelativeLayout>
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/btnEmployeeList"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="10dp"
+        android:layout_marginBottom="70dp"
+        android:backgroundTint="@color/purple_700"
+        android:clickable="true"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:srcCompat="@android:drawable/ic_users_solid" />
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/btnAddNewProject"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="10dp"
+        android:layout_marginBottom="10dp"
+        android:backgroundTint="@color/purple_700"
+        android:clickable="true"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:srcCompat="@android:drawable/ic_menu_add" />
+
+
 
 
 

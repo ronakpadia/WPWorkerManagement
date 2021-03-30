@@ -231,16 +231,20 @@ public class MarkAttendanceActivity extends AppCompatActivity {
 
 
         if (table == workerTable){
-
-            for (String date : pWorkerList.get(0).getAttendance().keySet()){
-                TextView dateTag = new TextView(MarkAttendanceActivity.this);
-                dateTag.setText(String.valueOf(date));
-                dateTag.setPadding(20,20,20,20);
-                dateTag.setTextSize(20);
-                dateTag.setTextColor(Color.BLACK);
-                dateTag.setTypeface(Typeface.DEFAULT_BOLD);
-                headerRow.addView(dateTag);
+            if (pWorkerList.size() != 0){
+                if (pWorkerList.get(0).getAttendance() != null){
+                    for (String date : pWorkerList.get(0).getAttendance().keySet()){
+                        TextView dateTag = new TextView(MarkAttendanceActivity.this);
+                        dateTag.setText(String.valueOf(date));
+                        dateTag.setPadding(20,20,20,20);
+                        dateTag.setTextSize(20);
+                        dateTag.setTextColor(Color.BLACK);
+                        dateTag.setTypeface(Typeface.DEFAULT_BOLD);
+                        headerRow.addView(dateTag);
+                    }
+                }
             }
+
 
             TextView totalShiftsTag = new TextView(MarkAttendanceActivity.this);
             totalShiftsTag.setText("Total Shifts");
@@ -327,22 +331,36 @@ public class MarkAttendanceActivity extends AppCompatActivity {
                 });
             }
             else{
-                for (String shift : p.getAttendance().values()){
-                    TextView shifts = new TextView(MarkAttendanceActivity.this);
-                    shifts.setText(String.valueOf(shift));
-                    shifts.setPadding(20,20,20,20);
-                    shifts.setTextSize(20);
-                    row.addView(shifts);
+                if(p.getAttendance() != null){
+                    for (String shift : p.getAttendance().values()){
+                        TextView shifts = new TextView(MarkAttendanceActivity.this);
+                        shifts.setText(String.valueOf(shift));
+                        shifts.setPadding(20,20,20,20);
+                        shifts.setTextSize(20);
+                        row.addView(shifts);
+                    }
                 }
 
                 TextView totalShifts = new TextView(MarkAttendanceActivity.this);
-                totalShifts.setText(p.getTotalShifts());
+                if (p.calculateTotalShifts() != null){
+                    totalShifts.setText(String.valueOf(p.calculateTotalShifts()));
+                }
+                else{
+                    totalShifts.setText("0");
+                }
+
                 totalShifts.setPadding(20,20,20,20);
                 totalShifts.setTextSize(20);
                 row.addView(totalShifts);
 
                 TextView wage = new TextView(MarkAttendanceActivity.this);
-                wage.setText(p.getTotalWage());
+                if (p.calculateTotalWage() != null){
+                    wage.setText(String.valueOf(p.calculateTotalWage()));
+                }
+                else{
+                    wage.setText("0");
+                }
+
                 wage.setPadding(20,20,20,20);
                 wage.setTextSize(20);
                 row.addView(wage);
@@ -354,7 +372,7 @@ public class MarkAttendanceActivity extends AppCompatActivity {
                 row.addView(conveyance);
 
                 TextView total = new TextView(MarkAttendanceActivity.this);
-                total.setText(p.getTotal());
+                total.setText(String.valueOf(p.calculateTotal()));
                 total.setPadding(20,20,20,20);
                 total.setTextSize(20);
                 row.addView(total);
@@ -450,9 +468,9 @@ public class MarkAttendanceActivity extends AppCompatActivity {
     }
 
     private void addWorkerConveyance(WorkerProfile worker, String editTextInput) {
-        Integer conveyance = Integer.parseInt(worker.getTotalConveyance()) + Integer.parseInt(editTextInput);
+//        Integer conveyance = Integer.parseInt(worker.getTotalConveyance()) + Integer.parseInt(editTextInput);
         DatabaseReference workerRef = mainRef.child("Project_List").child(project.getId()).child("workerList").child(worker.getId()).child("conveyance");
-        workerRef.setValue(conveyance);
+//        workerRef.setValue(conveyance);
         getWorkerList("conveyance");
     }
 
@@ -465,7 +483,10 @@ public class MarkAttendanceActivity extends AppCompatActivity {
             }
             else{
                 DatabaseReference workerRef = mainRef.child("Project_List").child(project.getId()).child("workerList").child(worker.getId()).child("Attendance");
-                workerRef.child(String.valueOf(ETdate.getText())).setValue("0");
+                if (workerRef.child(String.valueOf(ETdate.getText())) == null){
+                    workerRef.child(String.valueOf(ETdate.getText())).setValue("0");
+                }
+
                 workerRef.keepSynced(true);
             }
         }

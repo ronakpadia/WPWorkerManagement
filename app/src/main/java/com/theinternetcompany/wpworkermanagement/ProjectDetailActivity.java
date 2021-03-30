@@ -53,8 +53,8 @@ public class ProjectDetailActivity extends AppCompatActivity {
     private HashMap<String, WorkerProfile> WorkerList = new HashMap<>();
     private DatabaseReference mainRef = FirebaseDatabase.getInstance().getReference();
     private TextView projectName, projectId, projectLocation, projectCompany, projectDuration;
-    private Button btnAdd, btnRemove, btnSave,btnDelete,btnMarkAttendance;
-    private FloatingActionButton btnEditProject;
+    private Button btnAdd, btnRemove, btnSave,btnMarkAttendance;
+    private FloatingActionButton btnEditProject,btnDelete;
     LinearLayout layout;
 
     @Override
@@ -314,6 +314,18 @@ public class ProjectDetailActivity extends AppCompatActivity {
         DatabaseReference workerRef = mainRef.child("Project_List").child(project.getId()).child("workerList");
         workerRef.keepSynced(true);
         WorkerProfile newWorker = new WorkerProfile(worker.getId(), worker.getName(),worker.getCardNo(), worker.getRate(), worker.getBaseRate(), worker.getWorkType() );
+        if (project.getWorkerList().size() != 0){
+            WorkerProfile randomWorker = (WorkerProfile) project.getWorkerList().values().toArray()[0];
+            Log.d("addWorker", randomWorker.getName());
+            HashMap<String,String> nullAttendance = new HashMap<>();
+            for (String date : randomWorker.getAttendance().keySet()){
+                nullAttendance.put(date, "0");
+                Log.d("addWorker", date);
+            }
+
+            newWorker.setAttendance(nullAttendance);
+        }
+
         workerRef.child(worker.getId()).setValue(newWorker);
         getPWorkerData("add");
 

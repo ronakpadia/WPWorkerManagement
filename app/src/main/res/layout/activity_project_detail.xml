@@ -297,7 +297,6 @@
                     android:id="@+id/btnRemove"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_gravity="end"
                     android:layout_marginRight="10dp"
                     android:layout_weight="1"
                     android:text="Remove" />
@@ -306,11 +305,11 @@
                     android:id="@+id/btnSave"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_gravity="end"
                     android:layout_marginLeft="0dp"
+                    android:layout_gravity="center"
                     android:layout_marginRight="0dp"
                     android:layout_weight="1"
-                    android:text="Save" />
+                    android:text="Done" />
 
                 <Button
                     android:id="@+id/btnAdd"
@@ -434,18 +433,12 @@
 
             </LinearLayout>
 
-            <Button
-                android:id="@+id/btnDelete"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="Delete"
-                android:backgroundTint="#cc0000"
-                />
 
             <Button
                 android:id="@+id/btnMarkAttendance"
-                android:layout_width="match_parent"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_gravity="center"
                 android:text="Worker Attendance"
 
                 />
@@ -469,6 +462,18 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:srcCompat="@android:drawable/ic_menu_edit" />
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/btnDelete"
+        android:backgroundTint="#cc0000"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toBottomOf="parent"
+        android:layout_marginBottom="70dp"
+        android:layout_marginEnd="10dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:clickable="true"
+        app:srcCompat="@android:drawable/ic_menu_delete" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -8,14 +8,18 @@ import java.util.HashMap;
 public class WorkerProfile implements Serializable {
 
     private String name, cardNo, rate, baseRate, workType, id;
+
+
+
+
     private Integer totalWage;
-    private Integer Total;
+    private Integer total;
 
 
 
     private Integer totalShifts;
     private Integer conveyance;
-    private HashMap<String, String> Attendance = new HashMap<>();
+    private HashMap<String, String> Attendance;
 
 
     public WorkerProfile(){
@@ -31,6 +35,8 @@ public class WorkerProfile implements Serializable {
         this.workType = workType;
         this.conveyance = 0;
         this.totalShifts = 0;
+        this.totalWage = 0;
+        this.total = 0;
     }
 
     public String getName() {
@@ -102,34 +108,53 @@ public class WorkerProfile implements Serializable {
     }
 
 
-    public String getTotalConveyance() {
-        return String.valueOf(conveyance);
-    }
-
-    public String getTotalWage() {
-        totalWage = 0;
-        for (String shift : Attendance.values()){
-            totalWage += Integer.parseInt(shift)* Integer.parseInt(rate);
-        }
-        return String.valueOf(totalWage);
-    }
-
-    public String getTotal() {
-        Total = 0;
-        Total = conveyance + totalWage;
-        return String.valueOf(Total);
-    }
-
-    public String getTotalShifts() {
-        totalShifts = 0;
-        for (String shift : Attendance.values()){
-            totalShifts += Integer.parseInt(shift);
-        }
-        return String.valueOf(totalShifts);
+    public Integer getTotalShifts() {
+        return totalShifts;
     }
 
     public void setTotalShifts(Integer totalShifts) {
         this.totalShifts = totalShifts;
     }
 
+    public Integer getTotalWage() {
+        return totalWage;
+    }
+
+    public void setTotalWage(Integer totalWage) {
+        this.totalWage = totalWage;
+    }
+
+    public Integer calculateTotalShifts(){
+        Integer tempShifts = 0;
+        if( Attendance != null){
+            for (String shift : Attendance.values()){
+                tempShifts += Integer.parseInt(shift);
+            }
+        }
+        setTotalShifts(tempShifts);
+        return tempShifts;
+    }
+
+    public Integer calculateTotalWage(){
+        Integer tempWage = 0;
+        Integer shifts = this.totalShifts;
+        tempWage += shifts * Integer.parseInt(rate);
+        setTotalWage(tempWage);
+        return tempWage;
+    }
+
+    public Integer calculateTotal(){
+        Integer tempTotal = 0;
+        tempTotal += this.totalWage + this.conveyance;
+        setTotal(tempTotal);
+        return tempTotal;
+    }
+
+    public Integer getTotal() {
+        return total;
+    }
+
+    public void setTotal(Integer total) {
+        this.total = total;
+    }
 }
