@@ -19,6 +19,7 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.WindowManager;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.DatePicker;
@@ -53,14 +54,14 @@ public class ProjectDetailActivity extends AppCompatActivity {
     private Project project = new Project();
     TableLayout workerTable, workerTable2;
     private EditText ETdate;
-    private SearchView searchView, addSearchView;
+    private SearchView workerRemoveSearchView, workerAddSearchView,workerConveyanceSearchView, workerAttendanceSearchView, pWorkerSearchView;
     private ArrayList<WorkerProfile> workerList = new ArrayList<>();
     private ArrayList<WorkerProfile> pWorkerList = new ArrayList<>();
     private ArrayList<WorkerProfile> addWorkerList = new ArrayList<>();
     private ArrayList<WorkerProfile> removeWorkerList = new ArrayList<>();
     private HashMap<String, WorkerProfile> WorkerList = new HashMap<>();
     private DatabaseReference mainRef = FirebaseDatabase.getInstance().getReference();
-    private TextView projectName, projectId, projectLocation, projectCompany, projectDuration;
+    private TextView projectName, projectId, projectLocation, projectCompany, projectDuration, twWagesConveyance,twCashExpenses,twChequePayments,twTotalExpenses;
     private Button btnAdd, btnRemove,btnMarkAttendance, btnAddConveyance;
     private FloatingActionButton btnEditProject,btnDelete, btnDone;
     LinearLayout layout, dateLL, buttonsLL;
@@ -88,19 +89,27 @@ public class ProjectDetailActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_project_detail);
+        getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN);
         projectName = findViewById(R.id.twProjectName);
         projectId = findViewById(R.id.twProjectId);
         workerTable = findViewById(R.id.projectTable);
         workerTable2 = findViewById(R.id.projectTable2);
         ETdate = findViewById(R.id.ETdate);
-        searchView = findViewById(R.id.searchView);
-        addSearchView = findViewById(R.id.addSearchView);
+        pWorkerSearchView = findViewById(R.id.pWorkerSearchView);
+        workerRemoveSearchView = findViewById(R.id.workerRemoveSearchView);
+        workerAddSearchView = findViewById(R.id.workerAddSearchView);
+        workerConveyanceSearchView = findViewById(R.id.workerConveyanceSearchView);
+        workerAttendanceSearchView = findViewById(R.id.workerAttendanceSearchView);
         layout = findViewById(R.id.linearLayoutT);
         dateLL = findViewById(R.id.dateLL);
         buttonsLL = findViewById(R.id.buttonsLL);
         projectCompany = findViewById(R.id.twProjectCompany);
         projectDuration = findViewById(R.id.twProjectDuration);
         projectLocation = findViewById(R.id.twProjectLocation);
+        twCashExpenses = findViewById(R.id.twCashExpenses);
+        twChequePayments = findViewById(R.id.twChequePayments);
+        twWagesConveyance = findViewById(R.id.twWagesConveyance);
+        twTotalExpenses = findViewById(R.id.twTotalExpenses);
         btnAdd = findViewById(R.id.btnAdd);
         btnRemove = findViewById(R.id.btnRemove);
         btnAddConveyance = findViewById(R.id.btnConveyance);
@@ -117,9 +126,12 @@ public class ProjectDetailActivity extends AppCompatActivity {
         projectCompany.setText(project.getCompany());
         projectLocation.setText(project.getLocation());
         projectDuration.setText(project.getPeriod());
+        twCashExpenses.setText(project);
         btnDone.setVisibility(View.GONE);
-        searchView.setVisibility(View.GONE);
-        searchView.setVisibility(View.GONE);
+        workerRemoveSearchView.setVisibility(View.GONE);
+        workerAddSearchView.setVisibility(View.GONE);
+        workerConveyanceSearchView.setVisibility(View.GONE);
+        workerAttendanceSearchView.setVisibility(View.GONE);
         layout.setVisibility(View.GONE);
         dateLL.setVisibility(View.GONE);
         getPWorkerData("main");
@@ -143,6 +155,25 @@ public class ProjectDetailActivity extends AppCompatActivity {
 
         };
 
+        pWorkerSearchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String s) {
+                doMySearch(s, pWorkerList, "null");
+                return false;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String s) {
+                if(s.equals("")){
+                    this.onQueryTextSubmit("");
+                }
+                else{
+                    doMySearch(s, pWorkerList, "null");
+                }
+                return false;
+            }
+        });
+
         ETdate.setOnClickListener(new View.OnClickListener() {
 
             @Override
@@ -163,6 +194,10 @@ public class ProjectDetailActivity extends AppCompatActivity {
                 btnEditProject.setVisibility(View.GONE);
                 btnDelete.setVisibility(View.GONE);
                 dateLL.setVisibility(View.GONE);
+                workerAddSearchView.setVisibility(View.GONE);
+                workerConveyanceSearchView.setVisibility(View.GONE);
+                workerAttendanceSearchView.setVisibility(View.GONE);
+                workerRemoveSearchView.setVisibility(View.VISIBLE);
                 btnDone.setVisibility(View.VISIBLE);
                 getPWorkerData("remove");
                 layout .setVisibility(View.VISIBLE);
@@ -183,6 +218,10 @@ public class ProjectDetailActivity extends AppCompatActivity {
                 btnEditProject.setVisibility(View.GONE);
                 btnDelete.setVisibility(View.GONE);
                 dateLL.setVisibility(View.GONE);
+                workerConveyanceSearchView.setVisibility(View.GONE);
+                workerAttendanceSearchView.setVisibility(View.GONE);
+                workerRemoveSearchView.setVisibility(View.GONE);
+                workerAddSearchView.setVisibility(View.VISIBLE);
                 btnDone.setVisibility(View.VISIBLE);
                 getPWorkerData("add");
                 layout .setVisibility(View.VISIBLE);
@@ -199,6 +238,10 @@ public class ProjectDetailActivity extends AppCompatActivity {
                 btnEditProject.setVisibility(View.GONE);
                 btnDelete.setVisibility(View.GONE);
                 dateLL.setVisibility(View.GONE);
+                workerConveyanceSearchView.setVisibility(View.VISIBLE);
+                workerAttendanceSearchView.setVisibility(View.GONE);
+                workerRemoveSearchView.setVisibility(View.GONE);
+                workerAddSearchView.setVisibility(View.GONE);
                 btnDone.setVisibility(View.VISIBLE);
                 layout .setVisibility(View.VISIBLE);
                 getPWorkerData("conveyance");
@@ -211,6 +254,10 @@ public class ProjectDetailActivity extends AppCompatActivity {
                 buttonsLL.setVisibility(View.GONE);
                 btnEditProject.setVisibility(View.GONE);
                 btnDelete.setVisibility(View.GONE);
+                workerConveyanceSearchView.setVisibility(View.GONE);
+                workerAttendanceSearchView.setVisibility(View.VISIBLE);
+                workerRemoveSearchView.setVisibility(View.GONE);
+                workerAddSearchView.setVisibility(View.GONE);
                 dateLL.setVisibility(View.VISIBLE);
                 btnDone.setVisibility(View.VISIBLE);
                 layout .setVisibility(View.VISIBLE);
@@ -226,9 +273,89 @@ public class ProjectDetailActivity extends AppCompatActivity {
                 btnEditProject.setVisibility(View.VISIBLE);
                 btnDelete.setVisibility(View.VISIBLE);
                 dateLL.setVisibility(View.GONE);
+                workerConveyanceSearchView.setVisibility(View.GONE);
+                workerAttendanceSearchView.setVisibility(View.GONE);
+                workerRemoveSearchView.setVisibility(View.GONE);
+                workerAddSearchView.setVisibility(View.GONE);
                 btnDone.setVisibility(View.GONE);
                 layout .setVisibility(View.GONE);
 
+            }
+        });
+
+        workerRemoveSearchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String s) {
+                doMySearch(s, pWorkerList, "remove");
+                return false;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String s) {
+                if(s.equals("")){
+                    this.onQueryTextSubmit("");
+                }
+                else{
+                    doMySearch(s, pWorkerList, "remove");
+                }
+                return false;
+            }
+        });
+
+        workerAddSearchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String s) {
+                doMySearch(s, workerList, "add");
+                return false;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String s) {
+                if(s.equals("")){
+                    this.onQueryTextSubmit("");
+                }
+                else{
+                    doMySearch(s, pWorkerList, "add");
+                }
+                return false;
+            }
+        });
+
+        workerConveyanceSearchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String s) {
+                doMySearch(s, pWorkerList, "conveyance");
+                return false;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String s) {
+                if(s.equals("")){
+                    this.onQueryTextSubmit("");
+                }
+                else{
+                    doMySearch(s, pWorkerList, "conveyance");
+                }
+                return false;
+            }
+        });
+
+        workerAttendanceSearchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String s) {
+                doMySearch(s, pWorkerList, "attendance");
+                return false;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String s) {
+                if(s.equals("")){
+                    this.onQueryTextSubmit("");
+                }
+                else{
+                    doMySearch(s, pWorkerList, "attendance");
+                }
+                return false;
             }
         });
 
@@ -253,6 +380,44 @@ public class ProjectDetailActivity extends AppCompatActivity {
         });
 
 
+    }
+
+    private void doMySearch(String query, ArrayList<WorkerProfile> pWorkerList, String parent) {
+        ArrayList<WorkerProfile> filteredList = new ArrayList<>();
+        if(query == null || query.length() == 0)
+        {
+            filteredList.addAll(pWorkerList);
+            populateTable(filteredList, workerTable , parent);
+        }
+        else
+        {
+            String filterPattern = query.toLowerCase().trim();
+            Log.v("tag1",filterPattern);
+            for  (WorkerProfile worker : pWorkerList)
+            {
+
+                if(worker.getName().toLowerCase().contains(filterPattern))
+                {
+                    filteredList.add(worker);
+                }
+                else if(worker.getWorkType().toLowerCase().contains(filterPattern))
+                {
+                    filteredList.add(worker);
+                }else if(worker.getCardNo().toLowerCase().contains(filterPattern))
+                {
+                    filteredList.add(worker);
+                }
+
+            }
+
+            if (parent.equals("null")){
+                populateTable(filteredList, workerTable , parent);
+            }
+            else{
+                populateTable(filteredList, workerTable2 , parent);
+            }
+
+        }
     }
 
     private void updateLabel(Calendar myCalendar) {
@@ -398,6 +563,7 @@ public class ProjectDetailActivity extends AppCompatActivity {
         DatabaseReference workerRef = mainRef.child("Project_List").child(project.getId()).child("workerList");
         workerRef.keepSynced(true);
         WorkerProfile newWorker = new WorkerProfile(worker.getId(), worker.getName(),worker.getCardNo(), worker.getRate(), worker.getBaseRate(), worker.getWorkType() );
+        workerRef.child(worker.getId()).setValue(newWorker);
         if (project.getWorkerList().size() != 0){
             WorkerProfile randomWorker = (WorkerProfile) project.getWorkerList().values().toArray()[0];
             Log.d("addWorker", randomWorker.getName());
@@ -407,10 +573,8 @@ public class ProjectDetailActivity extends AppCompatActivity {
                 Log.d("addWorker", date);
             }
 
-            newWorker.setAttendance(nullAttendance);
+            workerRef.child(worker.getId()).child("Attendance").setValue(nullAttendance);
         }
-
-        workerRef.child(worker.getId()).setValue(newWorker);
         getPWorkerData("add");
 
     }
@@ -835,9 +999,9 @@ public class ProjectDetailActivity extends AppCompatActivity {
     }
 
     private void addWorkerConveyance(WorkerProfile worker, String editTextInput) {
-//        Integer conveyance = Integer.parseInt(worker.getTotalConveyance()) + Integer.parseInt(editTextInput);
+        Integer conveyance = worker.getConveyance() + Integer.parseInt(editTextInput);
         DatabaseReference workerRef = mainRef.child("Project_List").child(project.getId()).child("workerList").child(worker.getId()).child("conveyance");
-        workerRef.setValue(Integer.parseInt(editTextInput));
+        workerRef.setValue(conveyance);
         getPWorkerData("conveyance");
     }
 

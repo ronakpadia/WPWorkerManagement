@@ -138,7 +138,7 @@ public class WorkerProfile implements Serializable {
     public Integer calculateTotalWage(){
         Integer tempWage = 0;
         Integer shifts = this.totalShifts;
-        tempWage += shifts * Integer.parseInt(rate);
+         tempWage += shifts * Integer.parseInt(rate);
         setTotalWage(tempWage);
         return tempWage;
     }
