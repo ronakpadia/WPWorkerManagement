@@ -37,22 +37,57 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_gravity="center|center_horizontal|center_vertical"
+                android:layout_margin="15dp"
+                android:foregroundGravity="center_vertical|center_horizontal"
+                android:gravity="center|center_horizontal|center_vertical"
                 android:orientation="horizontal">
 
-                <SearchView
-                    android:id="@+id/searchView"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1">
 
-                </SearchView>
-
-                <Button
-                    android:id="@+id/btnHideShowColumns"
-                    android:layout_width="wrap_content"
+                <LinearLayout
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_margin="5dp"
-                    android:drawableLeft="@android:drawable/ic_menu_view" />
+                    android:layout_weight="0.2"
+                    android:orientation="vertical">
+
+
+                    <SearchView
+                        android:id="@+id/searchView"
+                        android:layout_width="250dp"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="5dp">
+
+                    </SearchView>
+
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:orientation="vertical">
+
+                    <com.google.android.material.button.MaterialButton
+                        android:id="@+id/btnHideShowColumns"
+                        style="@style/Widget.MaterialComponents.Button.Icon"
+                        android:layout_width="48dp"
+                        android:layout_height="48dp"
+                        android:layout_gravity="center"
+                        android:backgroundTint="@color/white"
+                        android:insetLeft="0dp"
+                        android:insetTop="0dp"
+                        android:insetRight="0dp"
+                        android:insetBottom="0dp"
+                        app:backgroundTint="#000000"
+                        app:icon="@mipmap/column_hide_foreground"
+                        app:iconPadding="0dp"
+                        app:iconSize="24dp"
+                        app:iconTint="#000000"
+                        app:shapeAppearanceOverlay="@style/ShapeAppearanceOverlay.MyApp.Button.Rounded" />
+
+                </LinearLayout>
+
 
             </LinearLayout>
 
