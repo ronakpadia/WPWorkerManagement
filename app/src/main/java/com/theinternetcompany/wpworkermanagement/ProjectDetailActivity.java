@@ -25,6 +25,7 @@ import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.LinearLayout;
+import android.widget.ScrollView;
 import android.widget.SearchView;
 import android.widget.TableLayout;
 import android.widget.TableRow;
@@ -89,7 +90,7 @@ public class ProjectDetailActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_project_detail);
-        getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN);
+//        getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN);
         projectName = findViewById(R.id.twProjectName);
         projectId = findViewById(R.id.twProjectId);
         workerTable = findViewById(R.id.projectTable);
@@ -126,7 +127,7 @@ public class ProjectDetailActivity extends AppCompatActivity {
         projectCompany.setText(project.getCompany());
         projectLocation.setText(project.getLocation());
         projectDuration.setText(project.getPeriod());
-        twCashExpenses.setText(project);
+//        twCashExpenses.setText(project);
         btnDone.setVisibility(View.GONE);
         workerRemoveSearchView.setVisibility(View.GONE);
         workerAddSearchView.setVisibility(View.GONE);
@@ -1061,6 +1062,21 @@ public class ProjectDetailActivity extends AppCompatActivity {
     }
 
     public void showKeyboard(){
+        ScrollView scroll = (ScrollView) this.findViewById(R.id.scroll);
+//        scroll.scrollTo(5, scroll.getBottom());
+        scroll.scrollTo(0, scroll.getTop());
+        scroll.post(new Runnable() {
+            @Override
+            public void run() {
+                scroll.scrollTo(0, scroll.getTop());
+//                scroll.fullScroll(ScrollView.FOCUS_DOWN);
+            }
+        });
+//        mScrollView.post(new Runnable() {
+//            public void run() {
+//                mScrollView.scrollTo(0, mScrollView.getBottom());
+//            }
+//        });
         InputMethodManager inputMethodManager = (InputMethodManager) this.getSystemService(Context.INPUT_METHOD_SERVICE);
         inputMethodManager.toggleSoftInput(InputMethodManager.SHOW_FORCED, 0);
     }
