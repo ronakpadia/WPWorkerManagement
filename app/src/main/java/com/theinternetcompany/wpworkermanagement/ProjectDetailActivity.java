@@ -91,7 +91,7 @@ public class ProjectDetailActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_project_detail);
-//        getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN);
+        getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN);
         projectName = findViewById(R.id.twProjectName);
         projectId = findViewById(R.id.twProjectId);
         workerTable = findViewById(R.id.projectTable);
@@ -163,6 +163,24 @@ public class ProjectDetailActivity extends AppCompatActivity {
             }
 
         };
+
+//        pWorkerSearchView.setOnSearchClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                btnEditProject.setVisibility(View.GONE);
+//                btnDelete.setVisibility(View.GONE);
+//
+//            }
+//        });
+//
+//        pWorkerSearchView.setOnCloseListener(new SearchView.OnCloseListener() {
+//            @Override
+//            public boolean onClose() {
+//                btnEditProject.setVisibility(View.VISIBLE);
+//                btnDelete.setVisibility(View.VISIBLE);
+//                return false;
+//            }
+//        });
 
         pWorkerSearchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
@@ -323,7 +341,12 @@ public class ProjectDetailActivity extends AppCompatActivity {
         workerAddSearchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String s) {
-                doMySearch(s, workerList, "add");
+                if(s.equals("")){
+
+                }
+                else{
+                    doMySearch(s, pWorkerList, "add");
+                }
                 return false;
             }
 
@@ -400,7 +423,7 @@ public class ProjectDetailActivity extends AppCompatActivity {
 
     }
 
-    private void doMySearch(String query, ArrayList<WorkerProfile> pWorkerList, String parent) {
+    private void  doMySearch(String query, ArrayList<WorkerProfile> pWorkerList, String parent) {
         ArrayList<WorkerProfile> filteredList = new ArrayList<>();
         if(query == null || query.length() == 0)
         {
