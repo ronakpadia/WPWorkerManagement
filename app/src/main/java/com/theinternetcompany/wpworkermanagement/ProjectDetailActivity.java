@@ -4,6 +4,7 @@ import androidx.annotation.IntegerRes;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.app.DatePickerDialog;
 import android.content.Context;
@@ -51,6 +52,9 @@ import java.util.Calendar;
 import java.util.HashMap;
 import java.util.Locale;
 
+import static android.graphics.Color.BLACK;
+import static android.graphics.Color.WHITE;
+
 public class ProjectDetailActivity extends AppCompatActivity {
 
     private Project project = new Project();
@@ -63,7 +67,7 @@ public class ProjectDetailActivity extends AppCompatActivity {
     private ArrayList<WorkerProfile> removeWorkerList = new ArrayList<>();
     private HashMap<String, WorkerProfile> WorkerList = new HashMap<>();
     private DatabaseReference mainRef = FirebaseDatabase.getInstance().getReference();
-    private TextView projectName, projectId, projectLocation, projectCompany, projectDuration, twConveyance, twWages,twCashExpenses,twChequePayments,twTotalExpenses, tableTitle;
+    private TextView projectName, projectId, projectLocation, projectCompany, projectDuration, twConveyance, twWages,twCashExpenses,twChequePayments,twTotalExpenses, tableTitle, tvWorkers, tvCash, tvCheque;
     private Button btnAdd, btnRemove,btnMarkAttendance, btnAddConveyance;
     private FloatingActionButton btnEditProject,btnDelete, btnDone;
     LinearLayout layout, dateLL, buttonsLL;
@@ -98,6 +102,9 @@ public class ProjectDetailActivity extends AppCompatActivity {
         workerTable2 = findViewById(R.id.projectTable2);
         tableTitle = findViewById(R.id.tableTitle);
         ETdate = findViewById(R.id.ETdate);
+        tvWorkers = findViewById(R.id.tvWorkers);
+        tvCash = findViewById(R.id.tvCash);
+        tvCheque = findViewById(R.id.tvCheque);
         pWorkerSearchView = findViewById(R.id.pWorkerSearchView);
         workerRemoveSearchView = findViewById(R.id.workerRemoveSearchView);
         workerAddSearchView = findViewById(R.id.workerAddSearchView);
@@ -135,6 +142,8 @@ public class ProjectDetailActivity extends AppCompatActivity {
         twCashExpenses.setText(String.valueOf(project.getCash()));
         twChequePayments.setText(String.valueOf(project.getCheque()));
         twTotalExpenses.setText(String.valueOf(project.calculateTotal()));
+        tvWorkers.setBackgroundResource(R.drawable.roundedbutton);
+        tvWorkers.setTextColor(BLACK);
         btnDone.setVisibility(View.GONE);
         tableTitle.setVisibility(View.GONE);
         workerRemoveSearchView.setVisibility(View.GONE);
@@ -164,23 +173,48 @@ public class ProjectDetailActivity extends AppCompatActivity {
 
         };
 
-//        pWorkerSearchView.setOnSearchClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//                btnEditProject.setVisibility(View.GONE);
-//                btnDelete.setVisibility(View.GONE);
-//
-//            }
-//        });
-//
-//        pWorkerSearchView.setOnCloseListener(new SearchView.OnCloseListener() {
-//            @Override
-//            public boolean onClose() {
-//                btnEditProject.setVisibility(View.VISIBLE);
-//                btnDelete.setVisibility(View.VISIBLE);
-//                return false;
-//            }
-//        });
+        tvWorkers.setOnClickListener(new View.OnClickListener() {
+
+            @SuppressLint("ResourceAsColor")
+            @Override
+            public void onClick(View v) {
+                tvCash.setBackgroundResource(R.color.grey);
+                tvCash.setTextColor(R.color.dark_grey);
+                tvCheque.setBackgroundResource(R.color.grey);
+                tvCheque.setTextColor(R.color.dark_grey);
+                tvWorkers.setBackgroundResource(R.drawable.roundedbutton);
+                tvWorkers.setTextColor(BLACK);
+                buttonsLL.setVisibility(View.VISIBLE);            }
+        });
+
+        tvCash.setOnClickListener(new View.OnClickListener() {
+
+            @SuppressLint("ResourceAsColor")
+            @Override
+            public void onClick(View v) {
+                tvWorkers.setBackgroundResource(R.color.grey);
+                tvWorkers.setTextColor(R.color.dark_grey);
+                tvCheque.setBackgroundResource(R.color.grey);
+                tvCheque.setTextColor(R.color.dark_grey);
+                tvCash.setBackgroundResource(R.drawable.roundedbutton);
+                tvCash.setTextColor(BLACK);
+                buttonsLL.setVisibility(View.GONE);            }
+        });
+
+        tvCheque.setOnClickListener(new View.OnClickListener() {
+
+            @SuppressLint("ResourceAsColor")
+            @Override
+            public void onClick(View v) {
+                tvCash.setBackgroundResource(R.color.grey);
+                tvCash.setTextColor(R.color.dark_grey);
+                tvWorkers.setBackgroundResource(R.color.grey);
+                tvWorkers.setTextColor(R.color.dark_grey);
+                tvCheque.setBackgroundResource(R.drawable.roundedbutton);
+                tvCheque.setTextColor(BLACK);
+                buttonsLL.setVisibility(View.GONE);
+            }
+        });
 
         pWorkerSearchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
@@ -742,7 +776,7 @@ public class ProjectDetailActivity extends AppCompatActivity {
         nameTag.setText("Name");
         nameTag.setPadding(20,20,20,20);
         nameTag.setTextSize(20);
-        nameTag.setTextColor(Color.BLACK);
+        nameTag.setTextColor(BLACK);
         nameTag.setTypeface(Typeface.DEFAULT_BOLD);
         headerRow.addView(nameTag);
 
@@ -750,7 +784,7 @@ public class ProjectDetailActivity extends AppCompatActivity {
         cardNoTag.setText("Card No.");
         cardNoTag.setPadding(20,20,20,20);
         cardNoTag.setTextSize(20);
-        cardNoTag.setTextColor(Color.BLACK);
+        cardNoTag.setTextColor(BLACK);
         cardNoTag.setTypeface(Typeface.DEFAULT_BOLD);
         headerRow.addView(cardNoTag);
 
@@ -758,7 +792,7 @@ public class ProjectDetailActivity extends AppCompatActivity {
         rateTag.setText("Rate");
         rateTag.setPadding(20,20,20,20);
         rateTag.setTextSize(20);
-        rateTag.setTextColor(Color.BLACK);
+        rateTag.setTextColor(BLACK);
         rateTag.setTypeface(Typeface.DEFAULT_BOLD);
         headerRow.addView(rateTag);
 
@@ -766,7 +800,7 @@ public class ProjectDetailActivity extends AppCompatActivity {
         workTypeTag.setText("Work Type");
         workTypeTag.setPadding(20,20,20,20);
         workTypeTag.setTextSize(20);
-        workTypeTag.setTextColor(Color.BLACK);
+        workTypeTag.setTextColor(BLACK);
         workTypeTag.setTypeface(Typeface.DEFAULT_BOLD);
         headerRow.addView(workTypeTag);
 
@@ -778,7 +812,7 @@ public class ProjectDetailActivity extends AppCompatActivity {
                         dateTag.setText(String.valueOf(date));
                         dateTag.setPadding(20,20,20,20);
                         dateTag.setTextSize(20);
-                        dateTag.setTextColor(Color.BLACK);
+                        dateTag.setTextColor(BLACK);
                         dateTag.setTypeface(Typeface.DEFAULT_BOLD);
                         headerRow.addView(dateTag);
                     }
@@ -790,7 +824,7 @@ public class ProjectDetailActivity extends AppCompatActivity {
             totalShiftsTag.setText("Total Shifts");
             totalShiftsTag.setPadding(20,20,20,20);
             totalShiftsTag.setTextSize(20);
-            totalShiftsTag.setTextColor(Color.BLACK);
+            totalShiftsTag.setTextColor(BLACK);
             totalShiftsTag.setTypeface(Typeface.DEFAULT_BOLD);
             headerRow.addView(totalShiftsTag);
 
@@ -798,7 +832,7 @@ public class ProjectDetailActivity extends AppCompatActivity {
             wageTag.setText("Wage");
             wageTag.setPadding(20,20,20,20);
             wageTag.setTextSize(20);
-            wageTag.setTextColor(Color.BLACK);
+            wageTag.setTextColor(BLACK);
             wageTag.setTypeface(Typeface.DEFAULT_BOLD);
             headerRow.addView(wageTag);
 
@@ -806,7 +840,7 @@ public class ProjectDetailActivity extends AppCompatActivity {
             conveyanceTag.setText("Conveyance");
             conveyanceTag.setPadding(20,20,20,20);
             conveyanceTag.setTextSize(20);
-            conveyanceTag.setTextColor(Color.BLACK);
+            conveyanceTag.setTextColor(BLACK);
             conveyanceTag.setTypeface(Typeface.DEFAULT_BOLD);
             headerRow.addView(conveyanceTag);
 
@@ -814,7 +848,7 @@ public class ProjectDetailActivity extends AppCompatActivity {
             totalTag.setText("Total");
             totalTag.setPadding(20,20,20,20);
             totalTag.setTextSize(20);
-            totalTag.setTextColor(Color.BLACK);
+            totalTag.setTextColor(BLACK);
             totalTag.setTypeface(Typeface.DEFAULT_BOLD);
             headerRow.addView(totalTag);
         }
