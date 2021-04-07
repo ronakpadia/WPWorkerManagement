@@ -12,6 +12,7 @@ public class Project implements Serializable {
 
     private Integer wage, conveyance, cash, cheque, total;
     private HashMap<String, WorkerProfile> workerList = new HashMap<>();
+    private HashMap<String, CashExpense> cashExpenseList = new HashMap<>();
 
     public Project(){
         // Default constructor required for calls to DataSnapshot.getValue(Order.class)
@@ -162,5 +163,13 @@ public class Project implements Serializable {
         }
         this.conveyance = conveyance;
         return conveyance;
+    }
+
+    public HashMap<String, CashExpense> getCashExpenseList() {
+        return cashExpenseList;
+    }
+
+    public void setCashExpenseList(HashMap<String, CashExpense> cashExpenseList) {
+        this.cashExpenseList = cashExpenseList;
     }
 }

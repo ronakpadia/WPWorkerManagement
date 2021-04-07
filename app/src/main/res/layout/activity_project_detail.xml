@@ -232,10 +232,8 @@
                         android:id="@+id/tvCash"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-
                         android:padding="5dp"
                         android:text="Cash"
-
                         android:background="@color/grey"
                         android:layout_weight="1"
                         android:textStyle="bold"
@@ -247,7 +245,6 @@
                         android:id="@+id/tvCheque"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-
                         android:padding="5dp"
                         android:background="@color/grey"
                         android:text="Cheque"
@@ -259,6 +256,16 @@
                         android:textSize="20dp"/>
 
                 </LinearLayout>
+
+                <TextView
+                    android:id="@+id/operationTitle"
+                    android:layout_marginTop="10dp"
+                    android:textSize="18dp"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center_horizontal"
+                    android:layout_gravity="center_vertical"
+                    android:textColor="@color/black"/>
 
 
 
@@ -275,7 +282,7 @@
                     <HorizontalScrollView
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
-                        android:layout_marginTop="10dp">
+                        android:layout_marginTop="5dp">
 
                         <ScrollView
                             android:layout_width="wrap_content"
@@ -322,7 +329,7 @@
                     android:id="@+id/buttonsLL"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_margin="15dp"
+                    android:layout_marginTop="15dp"
                     android:orientation="horizontal">
 
                     <LinearLayout
@@ -465,6 +472,130 @@
 
 
                 </LinearLayout>
+
+
+                <LinearLayout
+                    android:id="@+id/buttonsLL2"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="15dp"
+                    android:orientation="horizontal">
+
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:orientation="vertical">
+
+
+                        <com.google.android.material.button.MaterialButton
+                            android:id="@+id/btnDeleteEntry"
+                            style="@style/Widget.MaterialComponents.Button.Icon"
+                            android:layout_width="48dp"
+                            android:layout_height="48dp"
+                            android:layout_gravity="center"
+                            android:backgroundTint="@color/purple_500"
+                            android:drawableTint="@color/white"
+                            android:insetLeft="0dp"
+                            android:insetTop="0dp"
+                            android:insetRight="0dp"
+                            android:insetBottom="0dp"
+                            app:icon="@mipmap/delete_foreground"
+                            app:iconPadding="0dp"
+                            app:iconSize="24dp"
+                            app:shapeAppearanceOverlay="@style/ShapeAppearanceOverlay.MyApp.Button.Rounded"
+                            />
+
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:layout_marginTop="4dp"
+                            android:text="Delete Entry"
+                            android:textColor="@color/black"
+                            android:textSize="12dp" />
+
+
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:orientation="vertical">
+
+
+                        <com.google.android.material.button.MaterialButton
+                            android:id="@+id/btnEditEntry"
+                            style="@style/Widget.MaterialComponents.Button.Icon"
+                            android:layout_width="48dp"
+                            android:layout_height="48dp"
+                            android:layout_gravity="center"
+                            android:backgroundTint="@color/purple_500"
+                            android:drawableTint="@color/white"
+                            android:insetLeft="0dp"
+                            android:insetTop="0dp"
+                            android:insetRight="0dp"
+                            android:insetBottom="0dp"
+                            app:icon="@mipmap/edit_foreground"
+                            app:iconPadding="0dp"
+                            app:iconSize="24dp"
+                            app:shapeAppearanceOverlay="@style/ShapeAppearanceOverlay.MyApp.Button.Rounded"
+                            app:srcCompat="@mipmap/edit_foreground" />
+
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:layout_marginTop="4dp"
+                            android:text="Edit Entry"
+                            android:textColor="@color/black"
+                            android:textSize="12dp" />
+
+
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:gravity="center_horizontal"
+                        android:orientation="vertical">
+
+                        <com.google.android.material.button.MaterialButton
+                            android:id="@+id/btnAddEntry"
+                            style="@style/Widget.MaterialComponents.Button.Icon"
+                            android:layout_width="48dp"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:backgroundTint="@color/purple_500"
+                            android:insetLeft="0dp"
+                            android:insetTop="0dp"
+                            android:insetRight="0dp"
+                            android:insetBottom="0dp"
+                            app:icon="@mipmap/add_foreground"
+                            app:iconPadding="0dp"
+                            app:iconSize="24dp"
+                            app:shapeAppearanceOverlay="@style/ShapeAppearanceOverlay.MyApp.Button.Rounded" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="4dp"
+                            android:layout_gravity="center"
+                            android:text="Add Entry"
+                            android:textColor="@color/black"
+                            android:textSize="12dp" />
+
+                    </LinearLayout>
+
+
+                </LinearLayout>
+
+
 
                 <TextView
                     android:id="@+id/tableTitle"
@@ -670,6 +801,34 @@
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/btnDone"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="10dp"
+        android:layout_marginBottom="20dp"
+        android:clickable="true"
+        android:tint="@color/purple_700"
+        app:backgroundTint="@color/white"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:rippleColor="@color/purple_500"
+        app:srcCompat="@mipmap/done_foreground" />
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/btnCashDone"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="10dp"
+        android:layout_marginBottom="20dp"
+        android:clickable="true"
+        android:tint="@color/purple_700"
+        app:backgroundTint="@color/white"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:rippleColor="@color/purple_500"
+        app:srcCompat="@mipmap/done_foreground" />
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/btnChequeDone"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginEnd="10dp"
