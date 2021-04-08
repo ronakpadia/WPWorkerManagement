@@ -136,132 +136,161 @@
 
                             <LinearLayout
                                 android:layout_width="match_parent"
-                                android:layout_height="match_parent"
-                                android:orientation="horizontal"
-                                android:paddingTop="5dp">
+                                android:layout_height="wrap_content"
+                                android:orientation="vertical">
 
                                 <LinearLayout
                                     android:layout_width="match_parent"
                                     android:layout_height="match_parent"
-                                    android:layout_weight="1"
-                                    android:orientation="vertical">
+                                    android:orientation="horizontal"
+                                    android:paddingTop="5dp">
 
                                     <LinearLayout
                                         android:layout_width="match_parent"
                                         android:layout_height="match_parent"
-                                        android:layout_marginEnd="5dp"
                                         android:layout_weight="1"
-                                        android:orientation="horizontal">
+                                        android:orientation="vertical">
 
-                                        <TextView
-                                            android:id="@+id/cashtext"
-                                            android:layout_width="wrap_content"
+                                        <LinearLayout
+                                            android:layout_width="match_parent"
                                             android:layout_height="wrap_content"
-                                            android:layout_weight="1"
-                                            android:text="Cash"
-                                            android:textSize="16sp" />
+                                            android:layout_marginEnd="5dp"
+                                            android:orientation="horizontal">
 
-                                        <TextView
-                                            android:id="@+id/twCashExpenses"
-                                            android:layout_width="wrap_content"
+                                            <TextView
+                                                android:id="@+id/cashtext"
+                                                android:layout_width="wrap_content"
+                                                android:layout_height="wrap_content"
+                                                android:layout_weight="1"
+                                                android:text="Cash"
+                                                android:textSize="16sp" />
+
+                                            <TextView
+                                                android:id="@+id/twCashExpenses"
+                                                android:layout_width="wrap_content"
+                                                android:layout_height="wrap_content"
+                                                android:layout_weight="1"
+                                                android:gravity="right"
+                                                android:textColor="#4CAF50"
+                                                android:textSize="16sp" />
+                                        </LinearLayout>
+
+                                        <LinearLayout
+                                            android:layout_width="match_parent"
                                             android:layout_height="wrap_content"
-                                            android:layout_weight="1"
-                                            android:gravity="right"
-                                            android:text="TextView"
-                                            android:textColor="#4CAF50"
-                                            android:textSize="16sp" />
+                                            android:layout_marginEnd="5dp"
+                                            android:orientation="horizontal">
+
+                                            <TextView
+                                                android:id="@+id/wagestext"
+                                                android:layout_width="wrap_content"
+                                                android:layout_height="wrap_content"
+                                                android:layout_weight="1"
+                                                android:text="Wages"
+                                                android:textSize="16sp" />
+
+                                            <TextView
+                                                android:id="@+id/twWages"
+                                                android:layout_width="wrap_content"
+                                                android:layout_height="wrap_content"
+                                                android:layout_weight="1"
+                                                android:gravity="right"
+                                                android:text="TextView"
+                                                android:textColor="#4CAF50"
+                                                android:textSize="16sp" />
+
+
+                                        </LinearLayout>
+
+
+
+
+
+
                                     </LinearLayout>
 
                                     <LinearLayout
                                         android:layout_width="match_parent"
                                         android:layout_height="match_parent"
-                                        android:layout_marginEnd="5dp"
                                         android:layout_weight="1"
-                                        android:orientation="horizontal">
+                                        android:orientation="vertical">
 
-                                        <TextView
-                                            android:id="@+id/wagestext"
-                                            android:layout_width="wrap_content"
+                                        <LinearLayout
+                                            android:layout_width="match_parent"
                                             android:layout_height="wrap_content"
-                                            android:layout_weight="1"
-                                            android:text="Wages"
-                                            android:textSize="16sp" />
+                                            android:layout_marginEnd="5dp"
+                                            android:orientation="horizontal">
 
-                                        <TextView
-                                            android:id="@+id/twWages"
-                                            android:layout_width="wrap_content"
+                                            <TextView
+                                                android:id="@+id/chequetext"
+                                                android:layout_width="match_parent"
+                                                android:layout_height="wrap_content"
+                                                android:layout_weight="1"
+                                                android:text="Cheque"
+                                                android:textSize="16sp" />
+
+                                            <TextView
+                                                android:id="@+id/twChequePayments"
+                                                android:layout_width="match_parent"
+                                                android:layout_height="wrap_content"
+                                                android:layout_weight="1"
+                                                android:gravity="right"
+                                                android:text="TextView"
+                                                android:textColor="#4CAF50"
+                                                android:textSize="16sp" />
+                                        </LinearLayout>
+
+                                        <LinearLayout
+                                            android:layout_width="match_parent"
                                             android:layout_height="wrap_content"
-                                            android:layout_weight="1"
-                                            android:gravity="right"
-                                            android:text="TextView"
-                                            android:textColor="#4CAF50"
-                                            android:textSize="16sp" />
+                                            android:layout_marginEnd="5dp"
+                                            android:orientation="horizontal">
+
+                                            <TextView
+                                                android:id="@+id/conveyancetext"
+                                                android:layout_width="wrap_content"
+                                                android:layout_height="wrap_content"
+                                                android:layout_weight="1"
+                                                android:text="Conveyance"
+                                                android:textSize="16sp" />
+
+                                            <TextView
+                                                android:id="@+id/twConveyance"
+                                                android:layout_width="wrap_content"
+                                                android:layout_height="wrap_content"
+                                                android:layout_weight="1"
+                                                android:gravity="right"
+                                                android:text="TextView"
+                                                android:textColor="#4CAF50"
+                                                android:textSize="16sp" />
+                                        </LinearLayout>
+
+
                                     </LinearLayout>
 
-                                    <LinearLayout
-                                        android:layout_width="match_parent"
-                                        android:layout_height="match_parent"
-                                        android:layout_marginEnd="5dp"
-                                        android:layout_weight="1"
-                                        android:orientation="horizontal">
-
-                                        <TextView
-                                            android:id="@+id/conveyancetext"
-                                            android:layout_width="wrap_content"
-                                            android:layout_height="wrap_content"
-                                            android:layout_weight="1"
-                                            android:text="Conveyance"
-                                            android:textSize="16sp" />
-
-                                        <TextView
-                                            android:id="@+id/twConveyance"
-                                            android:layout_width="wrap_content"
-                                            android:layout_height="wrap_content"
-                                            android:layout_weight="1"
-                                            android:gravity="right"
-                                            android:text="TextView"
-                                            android:textColor="#4CAF50"
-                                            android:textSize="16sp" />
-                                    </LinearLayout>
 
                                 </LinearLayout>
 
+                                <View
+                                    android:layout_width="match_parent"
+                                    android:layout_marginTop="10dp"
+                                    android:layout_marginBottom="5dp"
+                                    android:layout_marginLeft="7dp"
+                                    android:layout_marginRight="7dp"
+                                    android:layout_height="1dp"
+                                    android:background="#c0c0c0"/>
+
+
                                 <LinearLayout
                                     android:layout_width="match_parent"
-                                    android:layout_height="match_parent"
-                                    android:layout_weight="1"
-                                    android:orientation="vertical">
+                                    android:layout_height="wrap_content"
+                                    android:orientation="horizontal">
+
 
                                     <LinearLayout
                                         android:layout_width="match_parent"
-                                        android:layout_height="match_parent"
-                                        android:layout_marginStart="5dp"
-                                        android:layout_weight="1"
-                                        android:orientation="horizontal">
-
-                                        <TextView
-                                            android:id="@+id/chequetext"
-                                            android:layout_width="match_parent"
-                                            android:layout_height="wrap_content"
-                                            android:layout_weight="1"
-                                            android:text="Cheque"
-                                            android:textSize="16sp" />
-
-                                        <TextView
-                                            android:id="@+id/twChequePayments"
-                                            android:layout_width="match_parent"
-                                            android:layout_height="wrap_content"
-                                            android:layout_weight="1"
-                                            android:gravity="right"
-                                            android:text="TextView"
-                                            android:textColor="#4CAF50"
-                                            android:textSize="16sp" />
-                                    </LinearLayout>
-
-                                    <LinearLayout
-                                        android:layout_width="match_parent"
-                                        android:layout_height="match_parent"
-                                        android:layout_marginStart="5dp"
+                                        android:layout_height="wrap_content"
+                                        android:layout_marginEnd="5dp"
                                         android:layout_weight="1"
                                         android:orientation="horizontal">
 
@@ -270,25 +299,42 @@
                                             android:layout_width="wrap_content"
                                             android:layout_height="wrap_content"
                                             android:layout_weight="1"
-                                            android:gravity="bottom"
+                                            android:paddingEnd="2dp"
+                                            android:gravity="end"
                                             android:text="Total"
                                             android:textAlignment="gravity"
                                             android:textColor="@color/black"
-                                            android:textSize="24sp" />
+                                            android:textSize="22sp" />
+
+
+                                    </LinearLayout>
+
+                                    <LinearLayout
+                                        android:layout_width="match_parent"
+                                        android:layout_height="match_parent"
+                                        android:orientation="vertical"
+                                        android:layout_weight="1">
 
                                         <TextView
                                             android:id="@+id/twTotalExpenses"
                                             android:layout_width="wrap_content"
                                             android:layout_height="wrap_content"
                                             android:layout_weight="1"
+                                            android:paddingStart="2dp"
                                             android:gravity="right"
-                                            android:text="TextView"
                                             android:textColor="#4CAF50"
-                                            android:textSize="24sp" />
+                                            android:textSize="22sp" />
+
+
                                     </LinearLayout>
+
+
                                 </LinearLayout>
 
+
                             </LinearLayout>
+
+
                         </LinearLayout>
                     </androidx.cardview.widget.CardView>
                 </androidx.constraintlayout.widget.ConstraintLayout>
@@ -367,6 +413,7 @@
                         android:layout_marginTop="5dp">
 
                         <ScrollView
+                            android:id="@+id/tableScrollView"
                             android:layout_width="wrap_content"
                             android:layout_height="150dp">
 
@@ -647,6 +694,126 @@
 
                         <com.google.android.material.button.MaterialButton
                             android:id="@+id/btnAddEntry"
+                            style="@style/Widget.MaterialComponents.Button.Icon"
+                            android:layout_width="48dp"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:backgroundTint="@color/purple_500"
+                            android:insetLeft="0dp"
+                            android:insetTop="0dp"
+                            android:insetRight="0dp"
+                            android:insetBottom="0dp"
+                            app:icon="@mipmap/add_foreground"
+                            app:iconPadding="0dp"
+                            app:iconSize="24dp"
+                            app:shapeAppearanceOverlay="@style/ShapeAppearanceOverlay.MyApp.Button.Rounded" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:layout_marginTop="4dp"
+                            android:text="Add Entry"
+                            android:textColor="@color/black"
+                            android:textSize="12dp" />
+
+                    </LinearLayout>
+
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/buttonsLL3"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="15dp"
+                    android:orientation="horizontal">
+
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:orientation="vertical">
+
+
+                        <com.google.android.material.button.MaterialButton
+                            android:id="@+id/btnDeleteChequeEntry"
+                            style="@style/Widget.MaterialComponents.Button.Icon"
+                            android:layout_width="48dp"
+                            android:layout_height="48dp"
+                            android:layout_gravity="center"
+                            android:backgroundTint="@color/purple_500"
+                            android:drawableTint="@color/white"
+                            android:insetLeft="0dp"
+                            android:insetTop="0dp"
+                            android:insetRight="0dp"
+                            android:insetBottom="0dp"
+                            app:icon="@mipmap/delete_foreground"
+                            app:iconPadding="0dp"
+                            app:iconSize="24dp"
+                            app:shapeAppearanceOverlay="@style/ShapeAppearanceOverlay.MyApp.Button.Rounded" />
+
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:layout_marginTop="4dp"
+                            android:text="Delete Entry"
+                            android:textColor="@color/black"
+                            android:textSize="12dp" />
+
+
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:orientation="vertical">
+
+
+                        <com.google.android.material.button.MaterialButton
+                            android:id="@+id/btnEditChequeEntry"
+                            style="@style/Widget.MaterialComponents.Button.Icon"
+                            android:layout_width="48dp"
+                            android:layout_height="48dp"
+                            android:layout_gravity="center"
+                            android:backgroundTint="@color/purple_500"
+                            android:drawableTint="@color/white"
+                            android:insetLeft="0dp"
+                            android:insetTop="0dp"
+                            android:insetRight="0dp"
+                            android:insetBottom="0dp"
+                            app:icon="@mipmap/edit_foreground"
+                            app:iconPadding="0dp"
+                            app:iconSize="24dp"
+                            app:shapeAppearanceOverlay="@style/ShapeAppearanceOverlay.MyApp.Button.Rounded"
+                            app:srcCompat="@mipmap/edit_foreground" />
+
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:layout_marginTop="4dp"
+                            android:text="Edit Entry"
+                            android:textColor="@color/black"
+                            android:textSize="12dp" />
+
+
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:gravity="center_horizontal"
+                        android:orientation="vertical">
+
+                        <com.google.android.material.button.MaterialButton
+                            android:id="@+id/btnAddChequeEntry"
                             style="@style/Widget.MaterialComponents.Button.Icon"
                             android:layout_width="48dp"
                             android:layout_height="wrap_content"

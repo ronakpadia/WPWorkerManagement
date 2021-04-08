@@ -19,10 +19,12 @@ import android.provider.Settings;
 import android.text.InputType;
 import android.text.TextUtils;
 import android.util.Log;
+import android.util.TypedValue;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
@@ -46,6 +48,7 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.theinternetcompany.wpworkermanagement.Models.CashExpense;
+import com.theinternetcompany.wpworkermanagement.Models.ChequeExpense;
 import com.theinternetcompany.wpworkermanagement.Models.Project;
 import com.theinternetcompany.wpworkermanagement.Models.WorkerProfile;
 
@@ -72,12 +75,13 @@ public class ProjectDetailActivity extends AppCompatActivity {
     private ArrayList<WorkerProfile> removeWorkerList = new ArrayList<>();
     private HashMap<String, WorkerProfile> WorkerList = new HashMap<>();
     private ArrayList<CashExpense> cashExpenseList = new ArrayList<>();
+    private ArrayList<ChequeExpense> chequeExpenseList = new ArrayList<>();
     private DatabaseReference mainRef = FirebaseDatabase.getInstance().getReference();
     private TextView projectName, projectId, projectLocation, projectCompany, projectDuration, twConveyance, twWages,twCashExpenses,twChequePayments,twTotalExpenses, tableTitle, tvWorkers, tvCash, tvCheque, tvOperationTitle;
-    private Button btnAdd, btnRemove,btnMarkAttendance, btnAddConveyance, btnAddEntry, btnEditEntry, btnDeleteEntry;
+    private Button btnAdd, btnRemove,btnMarkAttendance, btnAddConveyance, btnAddEntry, btnEditEntry, btnDeleteEntry, btnAddChequeEntry, btnEditChequeEntry, btnDeleteChequeEntry;
     private FloatingActionButton btnEditProject,btnDelete, btnDone, btnCashDone, btnChequeDone;
-
-    LinearLayout layout, dateLL, buttonsLL, buttonsLL2;
+    ScrollView tableScollView;
+    LinearLayout layout, dateLL, buttonsLL, buttonsLL2, buttonsLL3;
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -121,6 +125,7 @@ public class ProjectDetailActivity extends AppCompatActivity {
         dateLL = findViewById(R.id.dateLL);
         buttonsLL = findViewById(R.id.buttonsLL);
         buttonsLL2 = findViewById(R.id.buttonsLL2);
+        buttonsLL3 = findViewById(R.id.buttonsLL3);
         projectCompany = findViewById(R.id.twProjectCompany);
         projectDuration = findViewById(R.id.twProjectDuration);
         projectLocation = findViewById(R.id.twProjectLocation);
@@ -140,27 +145,33 @@ public class ProjectDetailActivity extends AppCompatActivity {
         btnAddEntry = findViewById(R.id.btnAddEntry);
         btnEditEntry = findViewById(R.id.btnEditEntry);
         btnDeleteEntry = findViewById(R.id.btnDeleteEntry);
+        btnAddChequeEntry = findViewById(R.id.btnAddChequeEntry);
+        btnEditChequeEntry = findViewById(R.id.btnEditChequeEntry);
+        btnDeleteChequeEntry = findViewById(R.id.btnDeleteChequeEntry);
         btnCashDone = findViewById(R.id.btnCashDone);
         btnChequeDone = findViewById(R.id.btnChequeDone);
         tvOperationTitle = findViewById(R.id.operationTitle);
+        tableScollView = findViewById(R.id.tableScrollView);
 
         Intent i = getIntent();
         project = (Project) i.getSerializableExtra("project");
-        projectName.setText(project.getName());
-        projectId.setText(project.getId());
-        projectCompany.setText(project.getCompany());
-        projectLocation.setText(project.getLocation());
-        projectDuration.setText(project.getPeriod());
-        twConveyance.setText(String.valueOf(project.calculateConveyance()));
-        twWages.setText(String.valueOf(project.calculateWage()));
-        twCashExpenses.setText(String.valueOf(project.getCash()));
-        twChequePayments.setText(String.valueOf(project.getCheque()));
-        twTotalExpenses.setText(String.valueOf(project.calculateTotal()));
+//        projectName.setText(project.getName());
+//        projectId.setText(project.getId());
+//        projectCompany.setText(project.getCompany());
+//        projectLocation.setText(project.getLocation());
+//        projectDuration.setText(project.getPeriod());
+//        twConveyance.setText(String.valueOf(project.calculateConveyance()));
+//        twWages.setText(String.valueOf(project.calculateWage()));
+//        twCashExpenses.setText(String.valueOf(project.getCash()));
+//        twChequePayments.setText(String.valueOf(project.getCheque()));
+//        twTotalExpenses.setText(String.valueOf(project.calculateTotal()));
+        refreshProjectDetails();
         tvWorkers.setBackgroundResource(R.drawable.roundedbutton);
         tvWorkers.setTextColor(BLACK);
         btnDone.setVisibility(View.GONE);
         tableTitle.setVisibility(View.GONE);
         buttonsLL2.setVisibility(View.GONE);
+        buttonsLL3.setVisibility(View.GONE);
         workerRemoveSearchView.setVisibility(View.GONE);
         workerAddSearchView.setVisibility(View.GONE);
         workerConveyanceSearchView.setVisibility(View.GONE);
@@ -207,6 +218,7 @@ public class ProjectDetailActivity extends AppCompatActivity {
                 btnCashDone.setVisibility(View.GONE);
                 btnChequeDone.setVisibility(View.GONE);
                 buttonsLL2.setVisibility(View.GONE);
+                buttonsLL3.setVisibility(View.GONE);
                 buttonsLL.setVisibility(View.VISIBLE);
                 btnEditProject.setVisibility(View.VISIBLE);
                 btnDelete.setVisibility(View.VISIBLE);
@@ -218,6 +230,10 @@ public class ProjectDetailActivity extends AppCompatActivity {
                 workerAttendanceSearchView.setVisibility(View.GONE);
                 layout.setVisibility(View.GONE);
                 dateLL.setVisibility(View.GONE);
+                ViewGroup.LayoutParams params = tableScollView.getLayoutParams();
+                params.height = dP(150);
+                tableScollView.setLayoutParams(params);
+                tableScollView.requestLayout();
             }
         });
 
@@ -237,6 +253,7 @@ public class ProjectDetailActivity extends AppCompatActivity {
                 btnChequeDone.setVisibility(View.GONE);
                 pWorkerSearchView.setVisibility(View.GONE);
                 buttonsLL2.setVisibility(View.VISIBLE);
+                buttonsLL3.setVisibility(View.GONE);
                 btnEditProject.setVisibility(View.VISIBLE);
                 btnDelete.setVisibility(View.VISIBLE);
                 buttonsLL.setVisibility(View.GONE);
@@ -248,7 +265,12 @@ public class ProjectDetailActivity extends AppCompatActivity {
                 workerConveyanceSearchView.setVisibility(View.GONE);
                 workerAttendanceSearchView.setVisibility(View.GONE);
                 layout.setVisibility(View.GONE);
-                dateLL.setVisibility(View.GONE);           }
+                dateLL.setVisibility(View.GONE);
+                ViewGroup.LayoutParams params = tableScollView.getLayoutParams();
+                params.height = dP(300);
+                tableScollView.setLayoutParams(params);
+                tableScollView.requestLayout();
+            }
         });
 
         tvCheque.setOnClickListener(new View.OnClickListener() {
@@ -256,13 +278,15 @@ public class ProjectDetailActivity extends AppCompatActivity {
             @SuppressLint("ResourceAsColor")
             @Override
             public void onClick(View v) {
+                getChequeExpenseData("none");
                 tvCash.setBackgroundResource(R.color.grey);
                 tvCash.setTextColor(R.color.dark_grey);
                 tvWorkers.setBackgroundResource(R.color.grey);
                 tvWorkers.setTextColor(R.color.dark_grey);
                 tvCheque.setBackgroundResource(R.drawable.roundedbutton);
                 tvCheque.setTextColor(BLACK);
-                buttonsLL2.setVisibility(View.VISIBLE);
+                buttonsLL2.setVisibility(View.GONE);
+                buttonsLL3.setVisibility(View.VISIBLE);
                 btnEditProject.setVisibility(View.VISIBLE);
                 btnDelete.setVisibility(View.VISIBLE);
                 buttonsLL.setVisibility(View.GONE);
@@ -278,6 +302,10 @@ public class ProjectDetailActivity extends AppCompatActivity {
                 workerAttendanceSearchView.setVisibility(View.GONE);
                 layout.setVisibility(View.GONE);
                 dateLL.setVisibility(View.GONE);
+                ViewGroup.LayoutParams params = tableScollView.getLayoutParams();
+                params.height = dP(300);
+                tableScollView.setLayoutParams(params);
+                tableScollView.requestLayout();
             }
         });
 
@@ -293,6 +321,18 @@ public class ProjectDetailActivity extends AppCompatActivity {
             }
         });
 
+        btnAddChequeEntry.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                btnCashDone.setVisibility(View.GONE);
+                btnChequeDone.setVisibility(View.GONE);
+                btnDelete.setVisibility(View.VISIBLE);
+                btnEditProject.setVisibility(View.VISIBLE);
+                tvOperationTitle.setVisibility(View.GONE);
+                openAddChequeEntryDialogue("add", new ChequeExpense());
+            }
+        });
+
         btnEditEntry.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -303,7 +343,22 @@ public class ProjectDetailActivity extends AppCompatActivity {
                 tvOperationTitle.setVisibility(View.VISIBLE);
                 tvOperationTitle.setText("Select entry to edit");
                 buttonsLL2.setVisibility(View.GONE);
-                populateCashTable(workerTable, "edit");
+                populateCashTable(workerTable, "edit", cashExpenseList);
+
+            }
+        });
+
+        btnEditChequeEntry.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                btnCashDone.setVisibility(View.GONE);
+                btnChequeDone.setVisibility(View.VISIBLE);
+                btnDelete.setVisibility(View.GONE);
+                btnEditProject.setVisibility(View.GONE);
+                tvOperationTitle.setVisibility(View.VISIBLE);
+                tvOperationTitle.setText("Select entry to edit");
+                buttonsLL3.setVisibility(View.GONE);
+                populateChequeTable(workerTable, "edit", chequeExpenseList);
 
             }
         });
@@ -317,8 +372,23 @@ public class ProjectDetailActivity extends AppCompatActivity {
                 btnEditProject.setVisibility(View.GONE);
                 tvOperationTitle.setVisibility(View.VISIBLE);
                 tvOperationTitle.setText("Select entry to delete");
-                buttonsLL2.setVisibility(View.GONE);
-                populateCashTable(workerTable, "delete");
+                buttonsLL3.setVisibility(View.GONE);
+                populateCashTable(workerTable, "delete", cashExpenseList);
+
+            }
+        });
+
+        btnDeleteChequeEntry.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                btnCashDone.setVisibility(View.GONE);
+                btnChequeDone.setVisibility(View.VISIBLE);
+                btnDelete.setVisibility(View.GONE);
+                btnEditProject.setVisibility(View.GONE);
+                tvOperationTitle.setVisibility(View.VISIBLE);
+                tvOperationTitle.setText("Select entry to delete");
+                buttonsLL3.setVisibility(View.GONE);
+                populateChequeTable(workerTable, "delete", chequeExpenseList);
 
             }
         });
@@ -476,7 +546,23 @@ public class ProjectDetailActivity extends AppCompatActivity {
                 btnChequeDone.setVisibility(View.GONE);
                 layout .setVisibility(View.GONE);
                 tvOperationTitle.setVisibility(View.GONE);
-                populateCashTable(workerTable,"none");
+                populateCashTable(workerTable,"none", cashExpenseList);
+
+            }
+        });
+
+        btnChequeDone.setOnClickListener(new View.OnClickListener() {
+
+            @Override
+            public void onClick(View v) {
+                buttonsLL3.setVisibility(View.VISIBLE);
+                btnEditProject.setVisibility(View.VISIBLE);
+                btnDelete.setVisibility(View.VISIBLE);
+                btnCashDone.setVisibility(View.GONE);
+                btnChequeDone.setVisibility(View.GONE);
+                layout .setVisibility(View.GONE);
+                tvOperationTitle.setVisibility(View.GONE);
+                populateChequeTable(workerTable,"none", chequeExpenseList);
 
             }
         });
@@ -671,14 +757,16 @@ public class ProjectDetailActivity extends AppCompatActivity {
         particulars.setLayoutParams(params);
         amount.setLayoutParams(params);
 
-        partyName.setText(cashExpense.getPartyName());
-        if (cashExpense.getParticulars() != null){
-            particulars.setText(cashExpense.getParticulars());
-        }
-        if (cashExpense.getCredit() != null){
-            amount.setText(String.valueOf(cashExpense.getCredit()));
-        }else if (cashExpense.getDebit() != null){
-            amount.setText(String.valueOf(cashExpense.getDebit()));
+        if (cashExpense != null){
+            partyName.setText(cashExpense.getPartyName());
+            if (cashExpense.getParticulars() != null){
+                particulars.setText(cashExpense.getParticulars());
+            }
+            if (cashExpense.getCredit() != null){
+                amount.setText(String.valueOf(cashExpense.getCredit()));
+            }else if (cashExpense.getDebit() != null){
+                amount.setText(String.valueOf(cashExpense.getDebit()));
+            }
         }
 
         String msg = "";
@@ -762,6 +850,148 @@ public class ProjectDetailActivity extends AppCompatActivity {
                     cashExpenseEntry.setId(id);
                     mainRef.child("Project_List").child(project.getId()).child("cashExpenseList").child(cashExpenseEntry.getId()).setValue(cashExpenseEntry);
                     getCashExpenseData(parentMethod);
+                    refreshProjectDetails();
+
+                }
+
+                //you logic here
+
+
+                dialog.dismiss();
+
+            }
+        });
+        projectName.requestFocus();
+        InputMethodManager imm = (InputMethodManager) getSystemService(this.INPUT_METHOD_SERVICE);
+        imm.showSoftInput(projectName, InputMethodManager.SHOW_IMPLICIT);
+        showKeyboard();
+    }
+
+
+
+    private void openAddChequeEntryDialogue(String parentMethod, ChequeExpense chequeExpense) {
+        LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(
+                LinearLayout.LayoutParams.MATCH_PARENT,
+                LinearLayout.LayoutParams.MATCH_PARENT
+        );
+        LinearLayout.LayoutParams tagParams = new LinearLayout.LayoutParams(
+                LinearLayout.LayoutParams.MATCH_PARENT,
+                LinearLayout.LayoutParams.MATCH_PARENT
+        );
+        params.setMargins(40,15,40,15);
+        tagParams.setMargins(30,15,30,15);
+        LinearLayout addChequeEntryLL = new LinearLayout(this);
+        addChequeEntryLL.setOrientation(LinearLayout.VERTICAL);
+        EditText partyName = new EditText(this);
+        EditText amount = new EditText(this);
+        EditText discount = new EditText(this);
+        amount.setInputType(InputType.TYPE_TEXT_FLAG_NO_SUGGESTIONS);
+        TextView partyNameTag = new TextView(this);
+        TextView amountTag = new TextView(this);
+        TextView discountTag = new TextView(this);
+
+        partyNameTag.setText("Party Name:");
+        amountTag.setText("Amount:");
+        discountTag.setText("Discount:");
+        partyNameTag.setLayoutParams(tagParams);
+        amountTag.setLayoutParams(tagParams);
+        discountTag.setLayoutParams(tagParams);
+
+        partyName.setLayoutParams(params);
+        discount.setLayoutParams(params);
+        amount.setLayoutParams(params);
+
+        if (chequeExpense != null){
+            partyName.setText(chequeExpense.getName());
+            if (chequeExpense.getAmount() != null){
+                amount.setText(String.valueOf(chequeExpense.getAmount()));
+            }
+            if (chequeExpense.getDiscount() != null){
+                discount.setText(String.valueOf(chequeExpense.getDiscount()));
+            }
+        }
+
+
+
+        String msg = "";
+
+        if (parentMethod.equals("add")){
+            msg = "Add Entry";
+        }else if(parentMethod.equals("edit")){
+            msg = "Edit Entry";
+        }
+
+        addChequeEntryLL.addView(partyNameTag);
+        addChequeEntryLL.addView(partyName);
+        addChequeEntryLL.addView(amountTag);
+        addChequeEntryLL.addView(amount);
+        addChequeEntryLL.addView(discountTag);
+        addChequeEntryLL.addView(discount);
+
+
+        AlertDialog dialog = new AlertDialog.Builder(this)
+                .setTitle("Cheque Expense")
+                .setMessage(msg)
+                .setView(addChequeEntryLL)
+                .setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+//
+                    }
+                })
+                .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        closeKeyboard();
+                    }
+                })
+                .create();
+        dialog.show();
+        dialog.getButton(AlertDialog.BUTTON_POSITIVE).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                closeKeyboard();
+
+                ChequeExpense chequeExpenseEntry = new ChequeExpense();
+                String strPartyName = partyName.getText().toString().trim();
+                String strDiscount= discount.getText().toString().trim();
+                String strAmount = amount.getText().toString().trim();
+
+
+                if (TextUtils.isEmpty(strDiscount)) {
+                    chequeExpenseEntry.setDiscount(0);
+                }
+
+
+                if (TextUtils.isEmpty(strPartyName)) {
+                    //this will stop your dialog from closing
+                    partyName.setError("This field is required!");
+                    return;
+
+                }
+                else if (TextUtils.isEmpty(strAmount)) {
+                    //this will stop your dialog from closing
+                    amount.setError("This field is required!");
+                    return;
+
+                }
+                else{
+                    chequeExpenseEntry.setName(strPartyName);
+                    if (strDiscount != null && !strDiscount.equals("")){
+                        chequeExpenseEntry.setDiscount(Integer.parseInt(strDiscount));
+                    }
+                    chequeExpenseEntry.setAmount(Integer.parseInt(strAmount));
+                    String id = "";
+                    if (parentMethod.equals("add")){
+                        id = mainRef.child("Project_List").child(project.getId()).child("chequeExpenseList").push().getKey();
+                    }else{
+                        id = chequeExpense.getId();
+
+                    }
+                    chequeExpenseEntry.setId(id);
+                    mainRef.child("Project_List").child(project.getId()).child("chequeExpenseList").child(chequeExpenseEntry.getId()).setValue(chequeExpenseEntry);
+                    getChequeExpenseData(parentMethod);
+                    refreshProjectDetails();
 
                 }
 
@@ -1002,11 +1232,40 @@ public class ProjectDetailActivity extends AppCompatActivity {
                 for(DataSnapshot snap : snapshot.getChildren()) {
                     cashExpenseList.add(snap.getValue(CashExpense.class));
                 }
-                populateCashTable(workerTable, parentMethod);
+                populateCashTable(workerTable, parentMethod, cashExpenseList);
 
-                if (parentMethod.equals("remove") || parentMethod.equals("edit")){
-                    populateCashTable(workerTable2, parentMethod);
+//                if (parentMethod.equals("remove") || parentMethod.equals("edit")){
+//                    populateCashTable(workerTable2, parentMethod);
+//                }
+
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
+    }
+
+
+    private void getChequeExpenseData(String parentMethod) {
+
+
+
+
+        DatabaseReference chequeExpenseRef = mainRef.child("Project_List").child(project.getId()).child("chequeExpenseList");
+        chequeExpenseRef.keepSynced(true);
+
+        chequeExpenseRef.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                chequeExpenseList.clear();
+                for(DataSnapshot snap : snapshot.getChildren()) {
+                    chequeExpenseList.add(snap.getValue(ChequeExpense.class));
                 }
+                populateChequeTable(workerTable, parentMethod, chequeExpenseList);
+
+
 
             }
 
@@ -1090,7 +1349,7 @@ public class ProjectDetailActivity extends AppCompatActivity {
         });
     }
 
-    private void populateCashTable(TableLayout table, String parentMethod){
+    private void populateCashTable(TableLayout table, String parentMethod, ArrayList<CashExpense> cashExpenseList){
         cleanTable(table);
 
 
@@ -1205,6 +1464,112 @@ public class ProjectDetailActivity extends AppCompatActivity {
                             }
                             else if (parentMethod.equals("delete")){
                                 openDeleteEntryDialog("delete", cashExpense);
+//                            populateTable(pWorkerList, projectTable, "inner");
+                            }
+                        }
+                    });
+                }
+            }
+
+        }
+
+    }
+
+    private void populateChequeTable(TableLayout table, String parentMethod, ArrayList<ChequeExpense> chequeExpenseList){
+        cleanTable(table);
+
+
+
+        TableRow headerRow = new TableRow(ProjectDetailActivity.this);
+        TableRow.LayoutParams rlp = new TableRow.LayoutParams(TableRow.LayoutParams.MATCH_PARENT);
+        headerRow.setLayoutParams(rlp);
+
+        TextView nameTag = new TextView(ProjectDetailActivity.this);
+        nameTag.setText("Name");
+        nameTag.setPadding(20,20,20,20);
+        nameTag.setTextSize(20);
+        nameTag.setTextColor(BLACK);
+        nameTag.setTypeface(Typeface.DEFAULT_BOLD);
+        headerRow.addView(nameTag);
+
+        TextView amountTag = new TextView(ProjectDetailActivity.this);
+        amountTag.setText("Amount");
+        amountTag.setPadding(20,20,20,20);
+        amountTag.setTextSize(20);
+        amountTag.setTextColor(BLACK);
+        amountTag.setTypeface(Typeface.DEFAULT_BOLD);
+        headerRow.addView(amountTag);
+
+        TextView discountTag = new TextView(ProjectDetailActivity.this);
+        discountTag.setText("Dicount");
+        discountTag.setPadding(20,20,20,20);
+        discountTag.setTextSize(20);
+        discountTag.setTextColor(BLACK);
+        discountTag.setTypeface(Typeface.DEFAULT_BOLD);
+        headerRow.addView(discountTag);
+
+        TextView finalAmountTag = new TextView(ProjectDetailActivity.this);
+        finalAmountTag.setText("Final Amount");
+        finalAmountTag.setPadding(20,20,20,20);
+        finalAmountTag.setTextSize(20);
+        finalAmountTag.setTextColor(BLACK);
+        finalAmountTag.setTypeface(Typeface.DEFAULT_BOLD);
+        headerRow.addView(nameTag);
+        headerRow.addView(amountTag);
+        headerRow.addView(discountTag);
+        headerRow.addView(finalAmountTag);
+
+
+        table.addView(headerRow);
+
+        if (chequeExpenseList != null){
+            Integer intBalacnce = 0;
+
+            for (ChequeExpense chequeExpense : chequeExpenseList){
+                TableRow row = new TableRow(ProjectDetailActivity.this);
+                TableRow.LayoutParams lp = new TableRow.LayoutParams(TableRow.LayoutParams.MATCH_PARENT);
+                row.setLayoutParams(lp);
+
+                TextView partyName = new TextView(ProjectDetailActivity.this);
+                partyName.setText(chequeExpense.getName());
+                partyName.setPadding(20,20,20,20);
+                partyName.setTextSize(20);
+
+                TextView amount = new TextView(ProjectDetailActivity.this);
+                amount.setText(String.valueOf(chequeExpense.getAmount()));
+                amount.setPadding(20,20,20,20);
+                amount.setTextSize(20);
+
+
+                TextView discount = new TextView(ProjectDetailActivity.this);
+                discount.setText(String.valueOf(chequeExpense.getDiscount()));
+                discount.setPadding(20,20,20,20);
+                discount.setTextSize(20);
+
+                TextView finalAmount = new TextView(ProjectDetailActivity.this);
+                finalAmount.setText(String.valueOf(chequeExpense.calculateFinalAmount()));
+                finalAmount.setPadding(20,20,20,20);
+                finalAmount.setTextSize(20);
+
+                row.addView(partyName);
+                row.addView(amount);
+                row.addView(discount);
+                row.addView(finalAmount);
+
+                table.addView(row);
+
+                if (parentMethod.equals("edit") || parentMethod.equals("delete")){
+                    row.setClickable(true);
+                    row.setOnClickListener(new View.OnClickListener() {
+
+                        @Override
+                        public void onClick(View v) {
+                            if (parentMethod.equals("edit")){
+                                openAddChequeEntryDialogue("edit", chequeExpense);
+//                            populateTable(pWorkerList, projectTable, "inner");
+                            }
+                            else if (parentMethod.equals("delete")){
+                                openDeleteChequeEntryDialog("delete", chequeExpense);
 //                            populateTable(pWorkerList, projectTable, "inner");
                             }
                         }
@@ -1547,7 +1912,7 @@ public class ProjectDetailActivity extends AppCompatActivity {
                         if(worker.getAttendance() != null){
                             if (worker.getAttendance().containsKey(ETdate)){
                                 if (worker.getAttendance().get(ETdate).equals("0")){
-                                    projectRef.child("workerList").child(worker.getId()).child("Attendance").child(ETdate).setValue(editTextInput);
+                                    projectRef.child("workerList").child(worker.getId()).child("attendance").child(ETdate).setValue(editTextInput);
                                     refreshProjectDetails();
                                     projectRef.keepSynced(true);
                                 }else{
@@ -1556,13 +1921,13 @@ public class ProjectDetailActivity extends AppCompatActivity {
 
                             }
                             else{
-                                projectRef.child("workerList").child(worker.getId()).child("Attendance").child(ETdate).setValue(editTextInput);
+                                projectRef.child("workerList").child(worker.getId()).child("attendance").child(ETdate).setValue(editTextInput);
                                 refreshProjectDetails();
                                 projectRef.keepSynced(true);
 
                             }
                         }else{
-                            projectRef.child("workerList").child(worker.getId()).child("Attendance").child(ETdate).setValue(editTextInput);
+                            projectRef.child("workerList").child(worker.getId()).child("attendance").child(ETdate).setValue(editTextInput);
                             refreshProjectDetails();
                             projectRef.keepSynced(true);
 
@@ -1571,7 +1936,7 @@ public class ProjectDetailActivity extends AppCompatActivity {
 
                     }
                     else{
-                        DatabaseReference workerRef = mainRef.child("Project_List").child(project.getId()).child("workerList").child(worker.getId()).child("Attendance");
+                        DatabaseReference workerRef = mainRef.child("Project_List").child(project.getId()).child("workerList").child(worker.getId()).child("attendance");
                         workerRef.keepSynced(true);
                         if (worker.getAttendance() != null){
                             if (!worker.getAttendance().containsKey(ETdate)){
@@ -1649,8 +2014,8 @@ public class ProjectDetailActivity extends AppCompatActivity {
                 projectDuration.setText(updatedProject.getPeriod());
                 twConveyance.setText(String.valueOf(updatedProject.calculateConveyance()));
                 twWages.setText(String.valueOf(updatedProject.calculateWage()));
-                twCashExpenses.setText(String.valueOf(updatedProject.getCash()));
-                twChequePayments.setText(String.valueOf(updatedProject.getCheque()));
+                twCashExpenses.setText(String.valueOf(updatedProject.calculateCashExpense()));
+                twChequePayments.setText(String.valueOf(updatedProject.calculateChequeExpense()));
                 twTotalExpenses.setText(String.valueOf(updatedProject.calculateTotal()));
             }
 
@@ -1800,6 +2165,38 @@ public class ProjectDetailActivity extends AppCompatActivity {
                         cashExpenseRef.keepSynced(true);
                         cashExpenseRef.removeValue();
                         getCashExpenseData("delete");
+                        refreshProjectDetails();
+                    }
+                })
+                .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                    }
+                })
+                .create();
+        dialog.show();
+
+    }
+
+    private void openDeleteChequeEntryDialog(String parentMethod, ChequeExpense chequeExpense) {
+        LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(
+                LinearLayout.LayoutParams.WRAP_CONTENT,
+                LinearLayout.LayoutParams.WRAP_CONTENT
+        );
+        params.setMargins(15,15,15,15);
+        LinearLayout editProjectLL = new LinearLayout(this);
+        AlertDialog dialog = new AlertDialog.Builder(this)
+                .setTitle("Delete Cheque Entry")
+                .setMessage("Are you sure you want to delete this entry? This action is irreversible, you may lose data permanently.")
+                .setView(editProjectLL)
+                .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        DatabaseReference chequeExpenseRef = mainRef.child("Project_List").child(project.getId()).child("chequeExpenseList").child(chequeExpense.getId());
+                        chequeExpenseRef.keepSynced(true);
+                        chequeExpenseRef.removeValue();
+                        getChequeExpenseData(parentMethod);
+                        refreshProjectDetails();
                     }
                 })
                 .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
@@ -1824,6 +2221,12 @@ public class ProjectDetailActivity extends AppCompatActivity {
 
     private void refreshDatabase(){
         mainRef = FirebaseDatabase.getInstance().getReference();
+    }
+
+    private int dP(int P){
+        // Converting From int(pixels) To DP
+        int dimensionInDp = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, P, getResources().getDisplayMetrics());
+        return dimensionInDp;
     }
 
 

@@ -14,6 +14,10 @@ public class Project implements Serializable {
     private HashMap<String, WorkerProfile> workerList = new HashMap<>();
     private HashMap<String, CashExpense> cashExpenseList = new HashMap<>();
 
+
+
+    private HashMap<String, ChequeExpense> chequeExpenseList = new HashMap<>();
+
     public Project(){
         // Default constructor required for calls to DataSnapshot.getValue(Order.class)
     }
@@ -127,6 +131,14 @@ public class Project implements Serializable {
         this.expenses = expenses;
     }
 
+    public HashMap<String, ChequeExpense> getChequeExpenseList() {
+        return chequeExpenseList;
+    }
+
+    public void setChequeExpenseList(HashMap<String, ChequeExpense> chequeExpenseList) {
+        this.chequeExpenseList = chequeExpenseList;
+    }
+
     public HashMap<String, WorkerProfile> getWorkerList() {
         return workerList;
     }
@@ -152,6 +164,33 @@ public class Project implements Serializable {
         }
         this.wage = totalWage;
         return totalWage;
+    }
+
+    public Integer calculateCashExpense() {
+        Integer totalCashExpense = 0;
+        if (this.getCashExpenseList().size() != 0){
+            for (CashExpense cashExpense: this.getCashExpenseList().values()){
+                if (cashExpense.getCredit() != null){
+                    totalCashExpense += cashExpense.getCredit();
+                }else if( cashExpense.getDebit() != null){
+                    totalCashExpense -= cashExpense.getDebit();
+                }
+
+            }
+        }
+        this.cash = totalCashExpense;
+        return totalCashExpense;
+    }
+
+    public Integer calculateChequeExpense(){
+        Integer totalChequeExpense = 0;
+        if (this.getChequeExpenseList().size() != 0){
+            for (ChequeExpense chequeExpense: this.getChequeExpenseList().values()){
+                totalChequeExpense += chequeExpense.calculateFinalAmount();
+            }
+        }
+        this.cheque = totalChequeExpense;
+        return totalChequeExpense;
     }
 
     public Integer calculateConveyance() {
