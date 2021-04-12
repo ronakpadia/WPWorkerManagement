@@ -5,6 +5,9 @@ import java.io.Serializable;
 public class CashExpense implements Serializable {
     private String particulars,partyName, id;
 
+
+    public Boolean paid;
+
     public String getParticulars() {
         return particulars;
     }
@@ -47,15 +50,26 @@ public class CashExpense implements Serializable {
 
     private Integer credit, debit, balance;
 
-    public CashExpense(){}
+    public CashExpense(){
+        this.paid = false;
+    }
 
     public CashExpense(String partyName, String particulars, Integer credit, Integer debit){
         this.partyName = partyName;
         this.particulars = particulars;
         this.credit = credit;
         this.debit = debit;
+        this.paid = false;
     }
 
+
+    public Boolean getPaid() {
+        return paid;
+    }
+
+    public void setPaid(Boolean paid) {
+        this.paid = paid;
+    }
 
     public String getId() {
         return id;

@@ -20,6 +20,7 @@ public class WorkerProfile implements Serializable {
     private Integer totalShifts;
     private Integer conveyance;
     private HashMap<String, String> Attendance;
+    public Boolean paid;
 
 
     public WorkerProfile(){
@@ -37,6 +38,7 @@ public class WorkerProfile implements Serializable {
         this.totalShifts = 0;
         this.totalWage = 0;
         this.total = 0;
+        this.paid = false;
     }
 
     public String getName() {
@@ -156,5 +158,13 @@ public class WorkerProfile implements Serializable {
 
     public void setTotal(Integer total) {
         this.total = total;
+    }
+
+    public Boolean getPaid() {
+        return paid;
+    }
+
+    public void setPaid(Boolean paid) {
+        this.paid = paid;
     }
 }

@@ -3,6 +3,7 @@ package com.theinternetcompany.wpworkermanagement;
 import androidx.annotation.IntegerRes;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.content.ContextCompat;
 
 import android.annotation.SuppressLint;
 import android.app.AlertDialog;
@@ -62,6 +63,7 @@ import java.util.Locale;
 
 import static android.graphics.Color.BLACK;
 import static android.graphics.Color.WHITE;
+import static android.graphics.Color.green;
 
 public class ProjectDetailActivity extends AppCompatActivity {
 
@@ -220,6 +222,7 @@ public class ProjectDetailActivity extends AppCompatActivity {
                 buttonsLL2.setVisibility(View.GONE);
                 buttonsLL3.setVisibility(View.GONE);
                 buttonsLL.setVisibility(View.VISIBLE);
+                pWorkerSearchView.setVisibility(View.VISIBLE);
                 btnEditProject.setVisibility(View.VISIBLE);
                 btnDelete.setVisibility(View.VISIBLE);
                 btnDone.setVisibility(View.GONE);
@@ -438,7 +441,7 @@ public class ProjectDetailActivity extends AppCompatActivity {
                 workerConveyanceSearchView.setVisibility(View.GONE);
                 workerAttendanceSearchView.setVisibility(View.GONE);
                 tableTitle.setVisibility(View.VISIBLE);
-                tableTitle.setText("Remove Worker: ");
+                tableTitle.setText("Select Worker To Remove: ");
                 workerRemoveSearchView.setVisibility(View.VISIBLE);
                 btnDone.setVisibility(View.VISIBLE);
                 getPWorkerData("remove");
@@ -465,7 +468,7 @@ public class ProjectDetailActivity extends AppCompatActivity {
                 workerAttendanceSearchView.setVisibility(View.GONE);
                 workerRemoveSearchView.setVisibility(View.GONE);
                 tableTitle.setVisibility(View.VISIBLE);
-                tableTitle.setText("Add Worker: ");
+                tableTitle.setText("Select Worker To Add: ");
                 workerAddSearchView.setVisibility(View.VISIBLE);
                 btnDone.setVisibility(View.VISIBLE);
                 getPWorkerData("add");
@@ -489,7 +492,7 @@ public class ProjectDetailActivity extends AppCompatActivity {
                 workerRemoveSearchView.setVisibility(View.GONE);
                 workerAddSearchView.setVisibility(View.GONE);
                 tableTitle.setVisibility(View.VISIBLE);
-                tableTitle.setText("Add Conveyance");
+                tableTitle.setText("Select Worker To Add Conveyance");
                 btnDone.setVisibility(View.VISIBLE);
                 layout .setVisibility(View.VISIBLE);
                 getPWorkerData("conveyance");
@@ -508,7 +511,7 @@ public class ProjectDetailActivity extends AppCompatActivity {
                 workerRemoveSearchView.setVisibility(View.GONE);
                 workerAddSearchView.setVisibility(View.GONE);
                 tableTitle.setVisibility(View.VISIBLE);
-                tableTitle.setText("Mark Attendance");
+                tableTitle.setText("Select Worker To Mark Attendance");
                 dateLL.setVisibility(View.VISIBLE);
                 btnDone.setVisibility(View.VISIBLE);
                 layout .setVisibility(View.VISIBLE);
@@ -1194,18 +1197,25 @@ public class ProjectDetailActivity extends AppCompatActivity {
         WorkerProfile newWorker = new WorkerProfile(worker.getId(), worker.getName(),worker.getCardNo(), worker.getRate(), worker.getBaseRate(), worker.getWorkType() );
         workerRef.child(worker.getId()).setValue(newWorker);
         if (project.getWorkerList().size() != 0){
-            WorkerProfile randomWorker = (WorkerProfile) project.getWorkerList().values().toArray()[0];
-            Log.d("addWorker", randomWorker.getName());
+            Integer i;
+            WorkerProfile randomWorker = new WorkerProfile();
             HashMap<String,String> nullAttendance = new HashMap<>();
-            for (String date : randomWorker.getAttendance().keySet()){
-                nullAttendance.put(date, "0");
-                Log.d("addWorker", date);
+            for (i=0; i<=project.getWorkerList().size(); i++ ){
+                randomWorker = (WorkerProfile) project.getWorkerList().values().toArray()[i];
+                if (randomWorker.getAttendance() != null){
+                    for (String date : randomWorker.getAttendance().keySet()){
+                        nullAttendance.put(date, "0");
+                        Log.d("addWorker", date);
+                    }
+
+                }
+                break;
             }
-
             workerRef.child(worker.getId()).child("Attendance").setValue(nullAttendance);
-        }
-        getPWorkerData("add");
+            getPWorkerData("add");
+            Log.d("addWorker", randomWorker.getName());
 
+        }
     }
 
     private void removePWorker(WorkerProfile worker) {
@@ -1469,6 +1479,27 @@ public class ProjectDetailActivity extends AppCompatActivity {
                         }
                     });
                 }
+
+                Button pay = new Button(ProjectDetailActivity.this);
+//                pay.setPadding(20,20,20,20);
+                pay.setTextSize(16);
+                if (cashExpense.getPaid()){
+                    pay.setText("Paid");
+                    pay.setTextColor(Color.parseColor("#00A300"));
+                }else{
+                    pay.setText("Pay");
+                    pay.setTextColor(Color.parseColor("#CC0000"));
+                }
+
+//                pay.setBackgroundColor(Color.parseColor("#00A300"));
+                pay.setTypeface(Typeface.DEFAULT_BOLD);
+                pay.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        markCashEntryPaid(cashExpense);
+                    }
+                });
+                row.addView(pay);
             }
 
         }
@@ -1575,6 +1606,27 @@ public class ProjectDetailActivity extends AppCompatActivity {
                         }
                     });
                 }
+
+                Button pay = new Button(ProjectDetailActivity.this);
+//                pay.setPadding(20,20,20,20);
+                pay.setTextSize(16);
+                if (chequeExpense.getPaid()){
+                    pay.setText("Paid");
+                    pay.setTextColor(Color.parseColor("#00A300"));
+                }else{
+                    pay.setText("Pay");
+                    pay.setTextColor(Color.parseColor("#CC0000"));
+                }
+
+//                pay.setBackgroundColor(Color.parseColor("#00A300"));
+                pay.setTypeface(Typeface.DEFAULT_BOLD);
+                pay.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        markChequeEntryPaid(chequeExpense);
+                    }
+                });
+                row.addView(pay);
             }
 
         }
@@ -1782,6 +1834,28 @@ public class ProjectDetailActivity extends AppCompatActivity {
                 total.setPadding(20,20,20,20);
                 total.setTextSize(20);
                 row.addView(total);
+
+                Button pay = new Button(ProjectDetailActivity.this);
+//                pay.setPadding(20,20,20,20);
+                pay.setTextSize(16);
+                if (p.getPaid()){
+                    pay.setText("Paid");
+                    pay.setTextColor(Color.parseColor("#00A300"));
+                }else{
+                    pay.setText("Pay");
+                    pay.setTextColor(Color.parseColor("#CC0000"));
+                }
+
+//                pay.setBackgroundColor(Color.parseColor("#00A300"));
+                pay.setTypeface(Typeface.DEFAULT_BOLD);
+                pay.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        markWorkerPaid(p);
+                    }
+                });
+                row.addView(pay);
+
             }
 
 
@@ -1789,6 +1863,131 @@ public class ProjectDetailActivity extends AppCompatActivity {
             Log.v("KIA ADD", "RANDI");
         }
     }
+
+    private void markWorkerPaid(WorkerProfile p) {
+        LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(
+                LinearLayout.LayoutParams.WRAP_CONTENT,
+                LinearLayout.LayoutParams.WRAP_CONTENT
+        );
+        String msg = "";
+        if (p.getPaid()){
+            msg = "Do you want to unmark " + p.getName() + "'s entry as paid?";
+        }else{
+            msg = "Do you want to mark " + p.getName() + "'s entry as paid?";
+        }
+        params.setMargins(15,15,15,15);
+        LinearLayout editProjectLL = new LinearLayout(this);
+        AlertDialog dialog = new AlertDialog.Builder(this)
+                .setTitle("Pay Worker")
+                .setMessage(msg)
+                .setView(editProjectLL)
+                .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        if (p.getPaid()){
+                            p.setPaid(false);
+                        }else{
+                            p.setPaid(true);
+                        }
+
+                        DatabaseReference workerRef = mainRef.child("Project_List").child(project.getId()).child("workerList").child(p.getId());
+                        workerRef.setValue(p);
+                        getPWorkerData("none");
+                    }
+                })
+                .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                    }
+                })
+                .create();
+        dialog.show();
+
+    }
+
+    private void markChequeEntryPaid(ChequeExpense p) {
+        LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(
+                LinearLayout.LayoutParams.WRAP_CONTENT,
+                LinearLayout.LayoutParams.WRAP_CONTENT
+        );
+        String msg = "";
+        if (p.getPaid()){
+            msg = "Do you want to unmark " + p.getName() + "'s entry as paid?";
+        }else{
+            msg = "Do you want to mark " + p.getName() + "'s entry as paid?";
+        }
+        params.setMargins(15,15,15,15);
+        LinearLayout editProjectLL = new LinearLayout(this);
+        AlertDialog dialog = new AlertDialog.Builder(this)
+                .setTitle("Pay Cheque Entry")
+                .setMessage(msg)
+                .setView(editProjectLL)
+                .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        if (p.getPaid()){
+                            p.setPaid(false);
+                        }else{
+                            p.setPaid(true);
+                        }
+
+                        DatabaseReference workerRef = mainRef.child("Project_List").child(project.getId()).child("chequeExpenseList").child(p.getId());
+                        workerRef.setValue(p);
+                        getChequeExpenseData("none");
+                    }
+                })
+                .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                    }
+                })
+                .create();
+        dialog.show();
+
+    }
+
+    private void markCashEntryPaid(CashExpense p) {
+        LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(
+                LinearLayout.LayoutParams.WRAP_CONTENT,
+                LinearLayout.LayoutParams.WRAP_CONTENT
+        );
+        String msg = "";
+        if (p.getPaid()){
+            msg = "Do you want to unmark " + p.getPartyName() + "'s entry as paid?";
+        }else{
+            msg = "Do you want to mark " + p.getPartyName() + "'s entry as paid?";
+        }
+        params.setMargins(15,15,15,15);
+        LinearLayout editProjectLL = new LinearLayout(this);
+        AlertDialog dialog = new AlertDialog.Builder(this)
+                .setTitle("Pay Cash Entry")
+                .setMessage(msg)
+                .setView(editProjectLL)
+                .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        if (p.getPaid()){
+                            p.setPaid(false);
+                        }else{
+                            p.setPaid(true);
+                        }
+
+                        DatabaseReference workerRef = mainRef.child("Project_List").child(project.getId()).child("cashExpenseList").child(p.getId());
+                        workerRef.setValue(p);
+                        getChequeExpenseData("none");
+                    }
+                })
+                .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                    }
+                })
+                .create();
+        dialog.show();
+
+    }
+
+
 
     private void openShiftDialog(WorkerProfile p) {
         EditText shiftsInput = new EditText(this);

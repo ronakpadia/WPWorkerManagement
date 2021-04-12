@@ -379,7 +379,7 @@ public class MainActivity extends AppCompatActivity {
             pperiod.setPadding(20,20,20,20);
             pperiod.setTextSize(20);
             TextView pexpenses = new TextView(MainActivity.this);
-            pexpenses.setText(p.getExpenses());
+            pexpenses.setText(String.valueOf(p.calculateTotal()));
             pexpenses.setPadding(20,20,20,20);
             pexpenses.setTextSize(20);
             // Adding TextViews

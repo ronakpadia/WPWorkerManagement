@@ -3,6 +3,15 @@ package com.theinternetcompany.wpworkermanagement.Models;
 import java.io.Serializable;
 
 public class ChequeExpense implements Serializable {
+    public Boolean getPaid() {
+        return paid;
+    }
+
+    public void setPaid(Boolean paid) {
+        this.paid = paid;
+    }
+
+    public Boolean paid;
     public String getName() {
         return name;
     }
@@ -47,7 +56,7 @@ public class ChequeExpense implements Serializable {
     private Integer amount, discount, finalAmount;
 
     public ChequeExpense(){
-
+        this.paid = false;
     }
 
     public ChequeExpense(String name, String id, Integer amount, Integer discount){
@@ -55,6 +64,7 @@ public class ChequeExpense implements Serializable {
         this.id = id;
         this.amount = amount;
         this.discount = discount;
+        this.paid = false;
     }
 
     public Integer calculateFinalAmount(){

@@ -147,7 +147,7 @@ public class Project implements Serializable {
         this.workerList = workerList;
     }
     public Integer calculateTotal() {
-        Integer total = this.wage+ this.conveyance+ this.cash + this.cheque;
+        Integer total = calculateWage()+ calculateConveyance()+ calculateCashExpense() + calculateChequeExpense();
         return total;
     }
     public Integer calculateWage() {
@@ -170,11 +170,12 @@ public class Project implements Serializable {
         Integer totalCashExpense = 0;
         if (this.getCashExpenseList().size() != 0){
             for (CashExpense cashExpense: this.getCashExpenseList().values()){
-                if (cashExpense.getCredit() != null){
-                    totalCashExpense += cashExpense.getCredit();
-                }else if( cashExpense.getDebit() != null){
-                    totalCashExpense -= cashExpense.getDebit();
+                if( cashExpense.getDebit() != null){
+                    totalCashExpense += cashExpense.getDebit();
                 }
+//                else if (cashExpense.getCredit() != null){
+//                    totalCashExpense += cashExpense.getCredit();
+//                }
 
             }
         }
