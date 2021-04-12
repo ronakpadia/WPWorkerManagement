@@ -110,10 +110,13 @@
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
                                     android:padding="5dp"
+                                    android:paddingStart="10dp"
+                                    android:paddingEnd="10dp"
                                     android:text="Name"
+                                    android:background="@drawable/dark_grey_table_divider"
                                     android:textAppearance="?android:attr/textAppearanceMedium"
-                                    android:textColor="@color/black"
-                                    android:textSize="20dp"
+                                    android:textColor="@color/yellow"
+                                    android:textSize="20sp"
                                     android:textStyle="bold"></TextView>
 
                                 <TextView
@@ -121,10 +124,13 @@
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
                                     android:padding="5dp"
+                                    android:paddingStart="10dp"
+                                    android:paddingEnd="10dp"
                                     android:text="Company"
+                                    android:background="@drawable/dark_grey_table_divider"
                                     android:textAppearance="?android:attr/textAppearanceMedium"
-                                    android:textColor="@color/black"
-                                    android:textSize="20dp"
+                                    android:textColor="@color/yellow"
+                                    android:textSize="20sp"
                                     android:textStyle="bold"></TextView>
 
                                 <TextView
@@ -132,10 +138,13 @@
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
                                     android:padding="5dp"
+                                    android:paddingStart="10dp"
+                                    android:paddingEnd="10dp"
                                     android:text="Location"
+                                    android:background="@drawable/dark_grey_table_divider"
                                     android:textAppearance="?android:attr/textAppearanceMedium"
-                                    android:textColor="@color/black"
-                                    android:textSize="20dp"
+                                    android:textColor="@color/yellow"
+                                    android:textSize="20sp"
                                     android:textStyle="bold"></TextView>
 
                                 <TextView
@@ -143,10 +152,13 @@
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
                                     android:padding="5dp"
+                                    android:paddingStart="10dp"
+                                    android:paddingEnd="10dp"
                                     android:text="Period"
+                                    android:background="@drawable/dark_grey_table_divider"
                                     android:textAppearance="?android:attr/textAppearanceMedium"
-                                    android:textColor="@color/black"
-                                    android:textSize="20dp"
+                                    android:textColor="@color/yellow"
+                                    android:textSize="20sp"
                                     android:textStyle="bold"></TextView>
 
                                 <TextView
@@ -154,10 +166,13 @@
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
                                     android:padding="5dp"
+                                    android:paddingStart="10dp"
+                                    android:paddingEnd="10dp"
                                     android:text="Expenses"
+                                    android:background="@drawable/dark_grey_table_divider"
                                     android:textAppearance="?android:attr/textAppearanceMedium"
-                                    android:textColor="@color/black"
-                                    android:textSize="20dp"
+                                    android:textColor="@color/yellow"
+                                    android:textSize="20sp"
                                     android:textStyle="bold"></TextView>
 
                             </TableRow>

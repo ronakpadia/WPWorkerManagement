@@ -5,15 +5,19 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.app.AppCompatDelegate;
 import androidx.core.content.FileProvider;
 
+import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.SearchManager;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.res.Resources;
+import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.ContactsContract;
 import android.util.Log;
+import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -60,6 +64,15 @@ public class MainActivity extends AppCompatActivity {
         // FORCE DAY MODE
         AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
         setContentView(R.layout.activity_main);
+
+
+        int actionBarTitleId = Resources.getSystem().getIdentifier("action_bar_title", "id", "android");
+        if (actionBarTitleId > 0) {
+            TextView title = (TextView) findViewById(actionBarTitleId);
+            if (title != null) {
+                title.setTextColor(Color.parseColor("#deb103"));
+            }
+        }
 
 
         searchView = findViewById(R.id.searchView);
@@ -365,23 +378,42 @@ public class MainActivity extends AppCompatActivity {
             TextView pname = new TextView(MainActivity.this);
             pname.setText(p.getName());
             pname.setPadding(20,20,20,20);
-            pname.setTextSize(20);
+            pname.setTextSize(TypedValue.COMPLEX_UNIT_SP, 20);
             TextView pcompany = new TextView(MainActivity.this);
             pcompany.setText(p.getCompany());
             pcompany.setPadding(20,20,20,20);
-            pcompany.setTextSize(20);
+            pcompany.setTextSize(TypedValue.COMPLEX_UNIT_SP, 20);
             TextView plocation = new TextView(MainActivity.this);
             plocation.setText(p.getLocation());
             plocation.setPadding(20,20,20,20);
-            plocation.setTextSize(20);
+            plocation.setTextSize(TypedValue.COMPLEX_UNIT_SP, 20);
             TextView pperiod = new TextView(MainActivity.this);
             pperiod.setText(p.getPeriod());
             pperiod.setPadding(20,20,20,20);
-            pperiod.setTextSize(20);
+            pperiod.setTextSize(TypedValue.COMPLEX_UNIT_SP, 20);
+
             TextView pexpenses = new TextView(MainActivity.this);
             pexpenses.setText(String.valueOf(p.calculateTotal()));
             pexpenses.setPadding(20,20,20,20);
-            pexpenses.setTextSize(20);
+            pexpenses.setTextSize(TypedValue.COMPLEX_UNIT_SP, 20);
+
+            int index = projectTable.getChildCount();
+            if(index % 2 != 0){
+                pname.setBackgroundResource(R.drawable.table_divider);
+                pcompany.setBackgroundResource(R.drawable.table_divider);
+                plocation.setBackgroundResource(R.drawable.table_divider);
+                pperiod.setBackgroundResource(R.drawable.table_divider);
+                pexpenses.setBackgroundResource(R.drawable.table_divider);
+
+            }else{
+                pname.setBackgroundResource(R.drawable.grey_table_divider);
+                pcompany.setBackgroundResource(R.drawable.grey_table_divider);
+                plocation.setBackgroundResource(R.drawable.grey_table_divider);
+                pperiod.setBackgroundResource(R.drawable.grey_table_divider);
+                pexpenses.setBackgroundResource(R.drawable.grey_table_divider);
+
+            }
+
             // Adding TextViews
 //            row.addView(pid);
             row.addView(pname);
@@ -403,6 +435,7 @@ public class MainActivity extends AppCompatActivity {
             });
             // Adding the row to tableLayout
             Log.v("BHENCHOD", "MADARCHOD");
+
             projectTable.addView(row);
             Log.v("KIA ADD", "RANDI");
         }
@@ -428,5 +461,6 @@ public class MainActivity extends AppCompatActivity {
             table.removeViews(1, childCount - 1);
         }
     }
+
 
 }

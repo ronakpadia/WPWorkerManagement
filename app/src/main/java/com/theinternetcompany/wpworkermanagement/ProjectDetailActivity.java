@@ -1371,41 +1371,54 @@ public class ProjectDetailActivity extends AppCompatActivity {
         TextView nameTag = new TextView(ProjectDetailActivity.this);
         nameTag.setText("Name");
         nameTag.setPadding(20,20,20,20);
-        nameTag.setTextSize(20);
-        nameTag.setTextColor(BLACK);
+        nameTag.setTextSize(TypedValue.COMPLEX_UNIT_SP, 20);
+        nameTag.setTextColor(getResources().getColor(R.color.yellow));
         nameTag.setTypeface(Typeface.DEFAULT_BOLD);
         headerRow.addView(nameTag);
 
         TextView particularsTag = new TextView(ProjectDetailActivity.this);
         particularsTag.setText("Particulars");
         particularsTag.setPadding(20,20,20,20);
-        particularsTag.setTextSize(20);
-        particularsTag.setTextColor(BLACK);
+        particularsTag.setTextSize(TypedValue.COMPLEX_UNIT_SP, 20);
+        particularsTag.setTextColor(getResources().getColor(R.color.yellow));
         particularsTag.setTypeface(Typeface.DEFAULT_BOLD);
         headerRow.addView(particularsTag);
 
         TextView creditTag = new TextView(ProjectDetailActivity.this);
         creditTag.setText("Credit");
         creditTag.setPadding(20,20,20,20);
-        creditTag.setTextSize(20);
-        creditTag.setTextColor(BLACK);
+        creditTag.setTextSize(TypedValue.COMPLEX_UNIT_SP, 20);
+        creditTag.setTextColor(getResources().getColor(R.color.yellow));
         creditTag.setTypeface(Typeface.DEFAULT_BOLD);
         headerRow.addView(creditTag);
 
         TextView debitTag = new TextView(ProjectDetailActivity.this);
         debitTag.setText("Debit");
         debitTag.setPadding(20,20,20,20);
-        debitTag.setTextSize(20);
-        debitTag.setTextColor(BLACK);
+        debitTag.setTextSize(TypedValue.COMPLEX_UNIT_SP, 20);
+        debitTag.setTextColor(getResources().getColor(R.color.yellow));
         debitTag.setTypeface(Typeface.DEFAULT_BOLD);
         headerRow.addView(debitTag);
 
         TextView balanceTag = new TextView(ProjectDetailActivity.this);
         balanceTag.setText("Balance");
         balanceTag.setPadding(20,20,20,20);
-        balanceTag.setTextSize(20);
-        balanceTag.setTextColor(BLACK);
+        balanceTag.setTextSize(TypedValue.COMPLEX_UNIT_SP, 20);
+        balanceTag.setTextColor(getResources().getColor(R.color.yellow));
         balanceTag.setTypeface(Typeface.DEFAULT_BOLD);
+
+        TextView payTag = new TextView(ProjectDetailActivity.this);
+        payTag.setPadding(20,20,20,20);
+        payTag.setText("");
+        payTag.setTextSize(TypedValue.COMPLEX_UNIT_SP, 20);
+        payTag.setTypeface(Typeface.DEFAULT_BOLD);
+        payTag.setBackgroundResource(R.drawable.dark_grey_table_divider);
+
+        nameTag.setBackgroundResource(R.drawable.dark_grey_table_divider);
+        particularsTag.setBackgroundResource(R.drawable.dark_grey_table_divider);
+        creditTag.setBackgroundResource(R.drawable.dark_grey_table_divider);
+        debitTag.setBackgroundResource(R.drawable.dark_grey_table_divider);
+        balanceTag.setBackgroundResource(R.drawable.dark_grey_table_divider);
         headerRow.addView(nameTag);
         headerRow.addView(particularsTag);
         headerRow.addView(creditTag);
@@ -1426,12 +1439,12 @@ public class ProjectDetailActivity extends AppCompatActivity {
                 TextView partyName = new TextView(ProjectDetailActivity.this);
                 partyName.setText(cashExpense.getPartyName());
                 partyName.setPadding(20,20,20,20);
-                partyName.setTextSize(20);
+                partyName.setTextSize(TypedValue.COMPLEX_UNIT_SP, 20);
 
                 TextView particulars = new TextView(ProjectDetailActivity.this);
                 particulars.setText(cashExpense.getParticulars());
                 particulars.setPadding(20,20,20,20);
-                particulars.setTextSize(20);
+                particulars.setTextSize(TypedValue.COMPLEX_UNIT_SP, 20);
 
                 TextView credit = new TextView(ProjectDetailActivity.this);
                 if (cashExpense.getCredit() != null){
@@ -1439,7 +1452,7 @@ public class ProjectDetailActivity extends AppCompatActivity {
                     credit.setText(String.valueOf(cashExpense.getCredit()));
                 }
                 credit.setPadding(20,20,20,20);
-                credit.setTextSize(20);
+                credit.setTextSize(TypedValue.COMPLEX_UNIT_SP, 20);
 
                 TextView debit = new TextView(ProjectDetailActivity.this);
                 if (cashExpense.getDebit() != null){
@@ -1447,12 +1460,27 @@ public class ProjectDetailActivity extends AppCompatActivity {
                     debit.setText(String.valueOf(cashExpense.getDebit()));
                 }
                 debit.setPadding(20,20,20,20);
-                debit.setTextSize(20);
+                debit.setTextSize(TypedValue.COMPLEX_UNIT_SP, 20);
 
                 TextView balance = new TextView(ProjectDetailActivity.this);
                 balance.setText(String.valueOf(intBalacnce));
                 balance.setPadding(20,20,20,20);
-                balance.setTextSize(20);
+                balance.setTextSize(TypedValue.COMPLEX_UNIT_SP, 20);
+
+                int index = table.getChildCount();
+                if(index % 2 != 0){
+                    partyName.setBackgroundResource(R.drawable.table_divider);
+                    particulars.setBackgroundResource(R.drawable.table_divider);
+                    credit.setBackgroundResource(R.drawable.table_divider);
+                    debit.setBackgroundResource(R.drawable.table_divider);
+                    balance.setBackgroundResource(R.drawable.table_divider);
+                }else{
+                    partyName.setBackgroundResource(R.drawable.grey_table_divider);
+                    particulars.setBackgroundResource(R.drawable.grey_table_divider);
+                    credit.setBackgroundResource(R.drawable.grey_table_divider);
+                    debit.setBackgroundResource(R.drawable.grey_table_divider);
+                    balance.setBackgroundResource(R.drawable.grey_table_divider);
+                }
 
                 row.addView(partyName);
                 row.addView(particulars);
@@ -1480,9 +1508,9 @@ public class ProjectDetailActivity extends AppCompatActivity {
                     });
                 }
 
-                Button pay = new Button(ProjectDetailActivity.this);
-//                pay.setPadding(20,20,20,20);
-                pay.setTextSize(16);
+                TextView pay = new TextView(ProjectDetailActivity.this);
+                pay.setPadding(30,20,30,20);
+                pay.setTextSize(TypedValue.COMPLEX_UNIT_SP, 20);
                 if (cashExpense.getPaid()){
                     pay.setText("Paid");
                     pay.setTextColor(Color.parseColor("#00A300"));
@@ -1499,6 +1527,11 @@ public class ProjectDetailActivity extends AppCompatActivity {
                         markCashEntryPaid(cashExpense);
                     }
                 });
+                if(index % 2 != 0) {
+                    pay.setBackgroundResource(R.drawable.table_divider);
+                }else{
+                    pay.setBackgroundResource(R.drawable.grey_table_divider);
+                }
                 row.addView(pay);
             }
 
@@ -1608,8 +1641,8 @@ public class ProjectDetailActivity extends AppCompatActivity {
                 }
 
                 Button pay = new Button(ProjectDetailActivity.this);
-//                pay.setPadding(20,20,20,20);
-                pay.setTextSize(16);
+                pay.setPadding(20,20,20,20);
+                pay.setTextSize(TypedValue.COMPLEX_UNIT_SP, 20);
                 if (chequeExpense.getPaid()){
                     pay.setText("Paid");
                     pay.setTextColor(Color.parseColor("#00A300"));
@@ -1645,33 +1678,37 @@ public class ProjectDetailActivity extends AppCompatActivity {
         TextView nameTag = new TextView(ProjectDetailActivity.this);
         nameTag.setText("Name");
         nameTag.setPadding(20,20,20,20);
-        nameTag.setTextSize(20);
-        nameTag.setTextColor(BLACK);
+        nameTag.setTextSize(TypedValue.COMPLEX_UNIT_SP, 20);
+        nameTag.setTextColor(getResources().getColor(R.color.yellow));
         nameTag.setTypeface(Typeface.DEFAULT_BOLD);
+        nameTag.setBackgroundResource(R.drawable.dark_grey_table_divider);
         headerRow.addView(nameTag);
 
         TextView cardNoTag = new TextView(ProjectDetailActivity.this);
         cardNoTag.setText("Card No.");
         cardNoTag.setPadding(20,20,20,20);
-        cardNoTag.setTextSize(20);
-        cardNoTag.setTextColor(BLACK);
+        cardNoTag.setTextSize(TypedValue.COMPLEX_UNIT_SP, 20);
+        cardNoTag.setTextColor(getResources().getColor(R.color.yellow));
         cardNoTag.setTypeface(Typeface.DEFAULT_BOLD);
+        cardNoTag.setBackgroundResource(R.drawable.dark_grey_table_divider);
         headerRow.addView(cardNoTag);
 
         TextView rateTag = new TextView(ProjectDetailActivity.this);
         rateTag.setText("Rate");
         rateTag.setPadding(20,20,20,20);
-        rateTag.setTextSize(20);
-        rateTag.setTextColor(BLACK);
+        rateTag.setTextSize(TypedValue.COMPLEX_UNIT_SP, 20);
+        rateTag.setTextColor(getResources().getColor(R.color.yellow));
         rateTag.setTypeface(Typeface.DEFAULT_BOLD);
+        rateTag.setBackgroundResource(R.drawable.dark_grey_table_divider);
         headerRow.addView(rateTag);
 
         TextView workTypeTag = new TextView(ProjectDetailActivity.this);
         workTypeTag.setText("Work Type");
         workTypeTag.setPadding(20,20,20,20);
-        workTypeTag.setTextSize(20);
-        workTypeTag.setTextColor(BLACK);
+        workTypeTag.setTextSize(TypedValue.COMPLEX_UNIT_SP, 20);
+        workTypeTag.setTextColor(getResources().getColor(R.color.yellow));
         workTypeTag.setTypeface(Typeface.DEFAULT_BOLD);
+        workTypeTag.setBackgroundResource(R.drawable.dark_grey_table_divider);
         headerRow.addView(workTypeTag);
 
         if (table == workerTable){
@@ -1681,9 +1718,10 @@ public class ProjectDetailActivity extends AppCompatActivity {
                         TextView dateTag = new TextView(ProjectDetailActivity.this);
                         dateTag.setText(String.valueOf(date));
                         dateTag.setPadding(20,20,20,20);
-                        dateTag.setTextSize(20);
-                        dateTag.setTextColor(BLACK);
+                        dateTag.setTextSize(TypedValue.COMPLEX_UNIT_SP, 20);
+                        dateTag.setTextColor(getResources().getColor(R.color.yellow));
                         dateTag.setTypeface(Typeface.DEFAULT_BOLD);
+                        dateTag.setBackgroundResource(R.drawable.dark_grey_table_divider);
                         headerRow.addView(dateTag);
                     }
                 }
@@ -1693,34 +1731,46 @@ public class ProjectDetailActivity extends AppCompatActivity {
             TextView totalShiftsTag = new TextView(ProjectDetailActivity.this);
             totalShiftsTag.setText("Total Shifts");
             totalShiftsTag.setPadding(20,20,20,20);
-            totalShiftsTag.setTextSize(20);
-            totalShiftsTag.setTextColor(BLACK);
+            totalShiftsTag.setTextSize(TypedValue.COMPLEX_UNIT_SP, 20);
+            totalShiftsTag.setTextColor(getResources().getColor(R.color.yellow));
             totalShiftsTag.setTypeface(Typeface.DEFAULT_BOLD);
+            totalShiftsTag.setBackgroundResource(R.drawable.dark_grey_table_divider);
             headerRow.addView(totalShiftsTag);
 
             TextView wageTag = new TextView(ProjectDetailActivity.this);
             wageTag.setText("Wage");
             wageTag.setPadding(20,20,20,20);
-            wageTag.setTextSize(20);
-            wageTag.setTextColor(BLACK);
+            wageTag.setTextSize(TypedValue.COMPLEX_UNIT_SP, 20);
+            wageTag.setTextColor(getResources().getColor(R.color.yellow));
             wageTag.setTypeface(Typeface.DEFAULT_BOLD);
+            wageTag.setBackgroundResource(R.drawable.dark_grey_table_divider);
             headerRow.addView(wageTag);
 
             TextView conveyanceTag = new TextView(ProjectDetailActivity.this);
             conveyanceTag.setText("Conveyance");
             conveyanceTag.setPadding(20,20,20,20);
-            conveyanceTag.setTextSize(20);
-            conveyanceTag.setTextColor(BLACK);
+            conveyanceTag.setTextSize(TypedValue.COMPLEX_UNIT_SP, 20);
+            conveyanceTag.setTextColor(getResources().getColor(R.color.yellow));
             conveyanceTag.setTypeface(Typeface.DEFAULT_BOLD);
+            conveyanceTag.setBackgroundResource(R.drawable.dark_grey_table_divider);
             headerRow.addView(conveyanceTag);
 
             TextView totalTag = new TextView(ProjectDetailActivity.this);
             totalTag.setText("Total");
             totalTag.setPadding(20,20,20,20);
-            totalTag.setTextSize(20);
-            totalTag.setTextColor(BLACK);
+            totalTag.setTextSize(TypedValue.COMPLEX_UNIT_SP, 20);
+            totalTag.setTextColor(getResources().getColor(R.color.yellow));
             totalTag.setTypeface(Typeface.DEFAULT_BOLD);
+            totalTag.setBackgroundResource(R.drawable.dark_grey_table_divider);
             headerRow.addView(totalTag);
+
+            TextView payTag = new TextView(ProjectDetailActivity.this);
+            payTag.setPadding(20,20,20,20);
+            payTag.setText("");
+            payTag.setTextSize(TypedValue.COMPLEX_UNIT_SP, 20);
+            payTag.setTypeface(Typeface.DEFAULT_BOLD);
+            payTag.setBackgroundResource(R.drawable.dark_grey_table_divider);
+            headerRow.addView(payTag);
 
 
         }
@@ -1739,21 +1789,37 @@ public class ProjectDetailActivity extends AppCompatActivity {
             TextView wName = new TextView(ProjectDetailActivity.this);
             wName.setText(p.getName());
             wName.setPadding(20,20,20,20);
-            wName.setTextSize(20);
+            wName.setTextSize(TypedValue.COMPLEX_UNIT_SP, 20);
             TextView card = new TextView(ProjectDetailActivity.this);
             card.setText(p.getCardNo());
             card.setPadding(20,20,20,20);
-            card.setTextSize(20);
+            card.setTextSize(TypedValue.COMPLEX_UNIT_SP, 20);
             TextView rate = new TextView(ProjectDetailActivity.this);
             rate.setText(p.getRate());
             rate.setPadding(20,20,20,20);
-            rate.setTextSize(20);
+            rate.setTextSize(TypedValue.COMPLEX_UNIT_SP, 20);
             TextView workType = new TextView(ProjectDetailActivity.this);
             workType.setText(p.getWorkType());
             workType.setPadding(20,20,20,20);
-            workType.setTextSize(20);
+            workType.setTextSize(TypedValue.COMPLEX_UNIT_SP, 20);
             // Adding TextViews
 //            row.addView(pid);
+
+            int index = table.getChildCount();
+            if(index % 2 != 0){
+                wName.setBackgroundResource(R.drawable.table_divider);
+                card.setBackgroundResource(R.drawable.table_divider);
+                rate.setBackgroundResource(R.drawable.table_divider);
+                workType.setBackgroundResource(R.drawable.table_divider);
+            }else{
+                wName.setBackgroundResource(R.drawable.grey_table_divider);
+                card.setBackgroundResource(R.drawable.grey_table_divider);
+                rate.setBackgroundResource(R.drawable.grey_table_divider);
+                workType.setBackgroundResource(R.drawable.grey_table_divider);
+
+            }
+
+
             row.addView(wName);
             row.addView(card);
             row.addView(rate);
@@ -1794,7 +1860,7 @@ public class ProjectDetailActivity extends AppCompatActivity {
                         TextView shifts = new TextView(ProjectDetailActivity.this);
                         shifts.setText(String.valueOf(shift));
                         shifts.setPadding(20,20,20,20);
-                        shifts.setTextSize(20);
+                        shifts.setTextSize(TypedValue.COMPLEX_UNIT_SP, 20);
                         row.addView(shifts);
                     }
                 }
@@ -1808,8 +1874,8 @@ public class ProjectDetailActivity extends AppCompatActivity {
                 }
 
                 totalShifts.setPadding(20,20,20,20);
-                totalShifts.setTextSize(20);
-                row.addView(totalShifts);
+                totalShifts.setTextSize(TypedValue.COMPLEX_UNIT_SP, 20);
+
 
                 TextView wage = new TextView(ProjectDetailActivity.this);
                 if (p.calculateTotalWage() != null){
@@ -1820,24 +1886,24 @@ public class ProjectDetailActivity extends AppCompatActivity {
                 }
 
                 wage.setPadding(20,20,20,20);
-                wage.setTextSize(20);
-                row.addView(wage);
+                wage.setTextSize(TypedValue.COMPLEX_UNIT_SP, 20);
+
 
                 TextView conveyance = new TextView(ProjectDetailActivity.this);
                 conveyance.setText(String.valueOf(p.getConveyance()));
                 conveyance.setPadding(20,20,20,20);
-                conveyance.setTextSize(20);
-                row.addView(conveyance);
+                conveyance.setTextSize(TypedValue.COMPLEX_UNIT_SP, 20);
+
 
                 TextView total = new TextView(ProjectDetailActivity.this);
                 total.setText(String.valueOf(p.calculateTotal()));
                 total.setPadding(20,20,20,20);
-                total.setTextSize(20);
-                row.addView(total);
+                total.setTextSize(TypedValue.COMPLEX_UNIT_SP, 20);
 
-                Button pay = new Button(ProjectDetailActivity.this);
-//                pay.setPadding(20,20,20,20);
-                pay.setTextSize(16);
+
+                TextView pay = new TextView(ProjectDetailActivity.this);
+                pay.setPadding(20,20,20,20);
+                pay.setTextSize(TypedValue.COMPLEX_UNIT_SP, 20);
                 if (p.getPaid()){
                     pay.setText("Paid");
                     pay.setTextColor(Color.parseColor("#00A300"));
@@ -1854,6 +1920,25 @@ public class ProjectDetailActivity extends AppCompatActivity {
                         markWorkerPaid(p);
                     }
                 });
+
+                if(index % 2 != 0){
+                    totalShifts.setBackgroundResource(R.drawable.table_divider);
+                    wage.setBackgroundResource(R.drawable.table_divider);
+                    conveyance.setBackgroundResource(R.drawable.table_divider);
+                    total.setBackgroundResource(R.drawable.table_divider);
+                    pay.setBackgroundResource(R.drawable.table_divider);
+                }else{
+                    totalShifts.setBackgroundResource(R.drawable.grey_table_divider);
+                    wage.setBackgroundResource(R.drawable.grey_table_divider);
+                    conveyance.setBackgroundResource(R.drawable.grey_table_divider);
+                    total.setBackgroundResource(R.drawable.grey_table_divider);
+                    pay.setBackgroundResource(R.drawable.grey_table_divider);
+                }
+
+                row.addView(totalShifts);
+                row.addView(wage);
+                row.addView(conveyance);
+                row.addView(total);
                 row.addView(pay);
 
             }
