@@ -10,7 +10,7 @@ public class Project implements Serializable {
 
 
 
-    private Integer wage, conveyance, cash, cheque, total;
+    private Integer wage, conveyance, cash, cheque, total, balance;
     private HashMap<String, WorkerProfile> workerList = new HashMap<>();
     private HashMap<String, CashExpense> cashExpenseList = new HashMap<>();
 
@@ -36,6 +36,7 @@ public class Project implements Serializable {
         this.cash = 0;
         this.cheque = 0;
         this.total = 0;
+        this.balance = 0;
 
 
     }
@@ -148,6 +149,7 @@ public class Project implements Serializable {
     }
     public Integer calculateTotal() {
         Integer total = calculateWage()+ calculateConveyance()+ calculateCashExpense() + calculateChequeExpense();
+        this.total = total;
         return total;
     }
     public Integer calculateWage() {
@@ -181,6 +183,20 @@ public class Project implements Serializable {
         }
         this.cash = totalCashExpense;
         return totalCashExpense;
+    }
+
+    public Integer calculateBalance() {
+        Integer totalBalance = 0;
+        if (this.getCashExpenseList().size() != 0){
+            for (CashExpense cashExpense: this.getCashExpenseList().values()){
+                if (cashExpense.getCredit() != null){
+                    totalBalance += cashExpense.getCredit();
+                }
+
+            }
+        }
+        this.balance = totalBalance - calculateTotal();
+        return this.balance;
     }
 
     public Integer calculateChequeExpense(){

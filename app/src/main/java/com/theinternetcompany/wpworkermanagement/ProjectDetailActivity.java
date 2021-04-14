@@ -57,8 +57,10 @@ import org.w3c.dom.Text;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Calendar;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Locale;
 
 import static android.graphics.Color.BLACK;
@@ -70,7 +72,7 @@ public class ProjectDetailActivity extends AppCompatActivity {
     private Project project = new Project();
     TableLayout workerTable, workerTable2;
     private EditText  ETdate;
-    private SearchView workerRemoveSearchView, workerAddSearchView,workerConveyanceSearchView, workerAttendanceSearchView, pWorkerSearchView;
+    private SearchView workerRemoveSearchView, workerAddSearchView,workerConveyanceSearchView, workerAttendanceSearchView, pWorkerSearchView, cashSearchView, chequeSearchView;
     private ArrayList<WorkerProfile> workerList = new ArrayList<>();
     private ArrayList<WorkerProfile> pWorkerList = new ArrayList<>();
     private ArrayList<WorkerProfile> addWorkerList = new ArrayList<>();
@@ -80,7 +82,7 @@ public class ProjectDetailActivity extends AppCompatActivity {
     private ArrayList<ChequeExpense> chequeExpenseList = new ArrayList<>();
     private DatabaseReference mainRef = FirebaseDatabase.getInstance().getReference();
     private TextView projectName, projectId, projectLocation, projectCompany, projectDuration, twConveyance, twWages,twCashExpenses,twChequePayments,twTotalExpenses, tableTitle, tvWorkers, tvCash, tvCheque, tvOperationTitle;
-    private Button btnAdd, btnRemove,btnMarkAttendance, btnAddConveyance, btnAddEntry, btnEditEntry, btnDeleteEntry, btnAddChequeEntry, btnEditChequeEntry, btnDeleteChequeEntry;
+    private Button btnAdd, btnRemove,btnMarkAttendance, btnAddConveyance, btnAddEntry, btnEditEntry, btnDeleteEntry, btnAddChequeEntry, btnEditChequeEntry, btnDeleteChequeEntry, btnHideShowColumns;
     private FloatingActionButton btnEditProject,btnDelete, btnDone, btnCashDone, btnChequeDone;
     ScrollView tableScollView;
     LinearLayout layout, dateLL, buttonsLL, buttonsLL2, buttonsLL3;
@@ -119,6 +121,9 @@ public class ProjectDetailActivity extends AppCompatActivity {
         tvCash = findViewById(R.id.tvCash);
         tvCheque = findViewById(R.id.tvCheque);
         pWorkerSearchView = findViewById(R.id.pWorkerSearchView);
+        cashSearchView = findViewById(R.id.cashSearchView);
+        btnHideShowColumns = findViewById(R.id.btnHideShowColumns);
+        chequeSearchView = findViewById(R.id.chequeSearchView);
         workerRemoveSearchView = findViewById(R.id.workerRemoveSearchView);
         workerAddSearchView = findViewById(R.id.workerAddSearchView);
         workerConveyanceSearchView = findViewById(R.id.workerConveyanceSearchView);
@@ -183,7 +188,17 @@ public class ProjectDetailActivity extends AppCompatActivity {
         tvOperationTitle.setVisibility(View.GONE);
         btnCashDone.setVisibility(View.GONE);
         btnChequeDone.setVisibility(View.GONE);
+        cashSearchView.setVisibility(View.GONE);
+        chequeSearchView.setVisibility(View.GONE);
         getPWorkerData("main");
+
+//        ViewGroup.LayoutParams params = tableScollView.getLayoutParams();
+//        if (params.height > dP(150)){
+//            params.height = dP(150);
+//        }
+//
+//        tableScollView.setLayoutParams(params);
+//        tableScollView.requestLayout();
 //        getWorkerData();
 //        populateTable(pWorkerList, workerTable, "main");
 
@@ -231,12 +246,19 @@ public class ProjectDetailActivity extends AppCompatActivity {
                 workerAddSearchView.setVisibility(View.GONE);
                 workerConveyanceSearchView.setVisibility(View.GONE);
                 workerAttendanceSearchView.setVisibility(View.GONE);
+                pWorkerSearchView.setVisibility(View.VISIBLE);
+                btnHideShowColumns.setVisibility(View.VISIBLE);
+                cashSearchView.setVisibility(View.GONE);
+                chequeSearchView.setVisibility(View.GONE);
                 layout.setVisibility(View.GONE);
                 dateLL.setVisibility(View.GONE);
-                ViewGroup.LayoutParams params = tableScollView.getLayoutParams();
-                params.height = dP(150);
-                tableScollView.setLayoutParams(params);
-                tableScollView.requestLayout();
+//                ViewGroup.LayoutParams params = tableScollView.getLayoutParams();
+//                if (params.height > dP(150)){
+//                    params.height = dP(150);
+//                }
+//
+//                tableScollView.setLayoutParams(params);
+//                tableScollView.requestLayout();
             }
         });
 
@@ -269,10 +291,15 @@ public class ProjectDetailActivity extends AppCompatActivity {
                 workerAttendanceSearchView.setVisibility(View.GONE);
                 layout.setVisibility(View.GONE);
                 dateLL.setVisibility(View.GONE);
+                btnHideShowColumns.setVisibility(View.GONE);
+                pWorkerSearchView.setVisibility(View.GONE);
+                cashSearchView.setVisibility(View.VISIBLE);
+                chequeSearchView.setVisibility(View.GONE);
                 ViewGroup.LayoutParams params = tableScollView.getLayoutParams();
                 params.height = dP(300);
                 tableScollView.setLayoutParams(params);
                 tableScollView.requestLayout();
+
             }
         });
 
@@ -294,6 +321,7 @@ public class ProjectDetailActivity extends AppCompatActivity {
                 btnDelete.setVisibility(View.VISIBLE);
                 buttonsLL.setVisibility(View.GONE);
                 pWorkerSearchView.setVisibility(View.GONE);
+                btnHideShowColumns.setVisibility(View.GONE);
                 btnDone.setVisibility(View.GONE);
                 btnCashDone.setVisibility(View.GONE);
                 btnChequeDone.setVisibility(View.GONE);
@@ -305,6 +333,9 @@ public class ProjectDetailActivity extends AppCompatActivity {
                 workerAttendanceSearchView.setVisibility(View.GONE);
                 layout.setVisibility(View.GONE);
                 dateLL.setVisibility(View.GONE);
+                pWorkerSearchView.setVisibility(View.GONE);
+                cashSearchView.setVisibility(View.GONE);
+                chequeSearchView.setVisibility(View.VISIBLE);
                 ViewGroup.LayoutParams params = tableScollView.getLayoutParams();
                 params.height = dP(300);
                 tableScollView.setLayoutParams(params);
@@ -396,6 +427,76 @@ public class ProjectDetailActivity extends AppCompatActivity {
             }
         });
 
+        btnHideShowColumns.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                // setup the alert builder
+                final List<Integer> selectedItems = new ArrayList<Integer>();
+                AlertDialog.Builder builder = new AlertDialog.Builder(ProjectDetailActivity.this);
+                builder.setTitle("Choose Tags");
+                // add a checkbox list
+//                String[] tags = {};
+                ArrayList<String> tagsList = new ArrayList<String>(
+                        Arrays.asList("Name", "Card No.", "Rate", "Work Type"));
+
+                if (pWorkerList.size() != 0) {
+                    if (pWorkerList.get(0).getAttendance() != null) {
+                        for (String date : pWorkerList.get(0).getAttendance().keySet()) {
+                            tagsList.add(String.valueOf(date));
+                        }
+                    }
+                }
+
+                tagsList.add("Total Shifts");
+                tagsList.add("Wage");
+                tagsList.add("Conveyance");
+                tagsList.add("Total");
+
+
+                String[] tags = new String[tagsList.size()];
+                tagsList.toArray(tags);
+
+
+
+
+                builder.setMultiChoiceItems(tags, null, new DialogInterface.OnMultiChoiceClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which, boolean isChecked) {
+                        // user checked or unchecked a box
+                        if (isChecked) {
+                            // If the user checked the item, add it to the selected items
+                            selectedItems.add(which);
+                        } else if (selectedItems.contains(which)) {
+                            // Else, if the item is already in the array, remove it
+                            selectedItems.remove(Integer.valueOf(which));
+                        }
+                    }
+                });
+                // add OK and Cancel buttons
+                builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        // user clicked OK
+                        int i;
+                        for (i=0; i<=(tags.length-1); i++){
+                            if (selectedItems.contains(i)){
+                                showColumn(i);
+                            }
+                            else{
+                                collapseColumn(i);
+                            }
+                        }
+
+                    }
+                });
+                builder.setNegativeButton("Cancel", null);
+                // create and show the alert dialog
+                AlertDialog dialog = builder.create();
+                dialog.show();
+
+            }
+        });
+
 
         pWorkerSearchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
@@ -411,6 +512,44 @@ public class ProjectDetailActivity extends AppCompatActivity {
                 }
                 else{
                     doMySearch(s, pWorkerList, "null");
+                }
+                return false;
+            }
+        });
+
+        cashSearchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String s) {
+                doMySearchCash(s, cashExpenseList);
+                return false;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String s) {
+                if(s.equals("")){
+                    this.onQueryTextSubmit("");
+                }
+                else{
+                    doMySearchCash(s, cashExpenseList);
+                }
+                return false;
+            }
+        });
+
+        chequeSearchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String s) {
+                doMySearchCheque(s, chequeExpenseList);
+                return false;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String s) {
+                if(s.equals("")){
+                    this.onQueryTextSubmit("");
+                }
+                else{
+                    doMySearchCheque(s, chequeExpenseList);
                 }
                 return false;
             }
@@ -707,6 +846,7 @@ public class ProjectDetailActivity extends AppCompatActivity {
         EditText particulars = new EditText(this);
 
         RadioGroup radioGroup = new RadioGroup(this);
+        radioGroup.setLayoutParams(tagParams);
         RadioButton radioButtonCredit = new RadioButton(this);
         radioButtonCredit.setText("Credit");
         RadioButton radioButtonDebit = new RadioButton(this);
@@ -744,7 +884,7 @@ public class ProjectDetailActivity extends AppCompatActivity {
 
 
         EditText amount = new EditText(this);
-        amount.setInputType(InputType.TYPE_TEXT_FLAG_NO_SUGGESTIONS);
+        amount.setInputType(InputType.TYPE_CLASS_NUMBER);
         TextView partyNameTag = new TextView(this);
         TextView particularsTag = new TextView(this);
         TextView amountTag = new TextView(this);
@@ -887,8 +1027,9 @@ public class ProjectDetailActivity extends AppCompatActivity {
         addChequeEntryLL.setOrientation(LinearLayout.VERTICAL);
         EditText partyName = new EditText(this);
         EditText amount = new EditText(this);
+        amount.setInputType(InputType.TYPE_CLASS_NUMBER);
         EditText discount = new EditText(this);
-        amount.setInputType(InputType.TYPE_TEXT_FLAG_NO_SUGGESTIONS);
+        discount.setInputType(InputType.TYPE_CLASS_NUMBER);
         TextView partyNameTag = new TextView(this);
         TextView amountTag = new TextView(this);
         TextView discountTag = new TextView(this);
@@ -1045,6 +1186,60 @@ public class ProjectDetailActivity extends AppCompatActivity {
             else{
                 populateTable(filteredList, workerTable2 , parent);
             }
+
+        }
+    }
+
+    private void  doMySearchCash(String query, ArrayList<CashExpense> cashExpenseList) {
+        ArrayList<CashExpense> filteredList = new ArrayList<>();
+        if(query == null || query.length() == 0)
+        {
+            filteredList.addAll(cashExpenseList);
+            populateCashTable( workerTable ,"null" , filteredList);
+        }
+        else
+        {
+            String filterPattern = query.toLowerCase().trim();
+            Log.v("tag1",filterPattern);
+            for  (CashExpense cashExpense : cashExpenseList)
+            {
+
+                if(cashExpense.getPartyName().toLowerCase().contains(filterPattern))
+                {
+                    filteredList.add(cashExpense);
+                }
+
+
+            }
+
+            populateCashTable( workerTable ,"null" , filteredList);
+
+        }
+    }
+
+    private void  doMySearchCheque(String query, ArrayList<ChequeExpense> chequeExpenseList) {
+        ArrayList<ChequeExpense> filteredList = new ArrayList<>();
+        if(query == null || query.length() == 0)
+        {
+            filteredList.addAll(chequeExpenseList);
+            populateChequeTable( workerTable ,"null" , filteredList);
+        }
+        else
+        {
+            String filterPattern = query.toLowerCase().trim();
+            Log.v("tag1",filterPattern);
+            for  (ChequeExpense chequeExpense : chequeExpenseList)
+            {
+
+                if(chequeExpense.getName().toLowerCase().contains(filterPattern))
+                {
+                    filteredList.add(chequeExpense);
+                }
+
+
+            }
+
+            populateChequeTable( workerTable ,"null" , filteredList);
 
         }
     }
@@ -1414,6 +1609,7 @@ public class ProjectDetailActivity extends AppCompatActivity {
         payTag.setTypeface(Typeface.DEFAULT_BOLD);
         payTag.setBackgroundResource(R.drawable.dark_grey_table_divider);
 
+
         nameTag.setBackgroundResource(R.drawable.dark_grey_table_divider);
         particularsTag.setBackgroundResource(R.drawable.dark_grey_table_divider);
         creditTag.setBackgroundResource(R.drawable.dark_grey_table_divider);
@@ -1424,6 +1620,9 @@ public class ProjectDetailActivity extends AppCompatActivity {
         headerRow.addView(creditTag);
         headerRow.addView(debitTag);
         headerRow.addView(balanceTag);
+        headerRow.addView(payTag);
+
+
 
 
         table.addView(headerRow);
@@ -1537,6 +1736,11 @@ public class ProjectDetailActivity extends AppCompatActivity {
 
         }
 
+        Integer i;
+        for (i = 0; i<=headerRow.getChildCount(); i++){
+            showColumn(i);
+        }
+
     }
 
     private void populateChequeTable(TableLayout table, String parentMethod, ArrayList<ChequeExpense> chequeExpenseList){
@@ -1551,37 +1755,49 @@ public class ProjectDetailActivity extends AppCompatActivity {
         TextView nameTag = new TextView(ProjectDetailActivity.this);
         nameTag.setText("Name");
         nameTag.setPadding(20,20,20,20);
-        nameTag.setTextSize(20);
-        nameTag.setTextColor(BLACK);
+        nameTag.setTextSize(TypedValue.COMPLEX_UNIT_SP, 20);
+        nameTag.setTextColor(getResources().getColor(R.color.yellow));
+        nameTag.setBackgroundResource(R.drawable.dark_grey_table_divider);
         nameTag.setTypeface(Typeface.DEFAULT_BOLD);
         headerRow.addView(nameTag);
 
         TextView amountTag = new TextView(ProjectDetailActivity.this);
         amountTag.setText("Amount");
         amountTag.setPadding(20,20,20,20);
-        amountTag.setTextSize(20);
-        amountTag.setTextColor(BLACK);
+        amountTag.setTextSize(TypedValue.COMPLEX_UNIT_SP, 20);
+        amountTag.setTextColor(getResources().getColor(R.color.yellow));
+        amountTag.setBackgroundResource(R.drawable.dark_grey_table_divider);
         amountTag.setTypeface(Typeface.DEFAULT_BOLD);
         headerRow.addView(amountTag);
 
         TextView discountTag = new TextView(ProjectDetailActivity.this);
         discountTag.setText("Dicount");
         discountTag.setPadding(20,20,20,20);
-        discountTag.setTextSize(20);
-        discountTag.setTextColor(BLACK);
+        discountTag.setTextSize(TypedValue.COMPLEX_UNIT_SP, 20);
+        discountTag.setTextColor(getResources().getColor(R.color.yellow));
+        discountTag.setBackgroundResource(R.drawable.dark_grey_table_divider);
         discountTag.setTypeface(Typeface.DEFAULT_BOLD);
         headerRow.addView(discountTag);
 
         TextView finalAmountTag = new TextView(ProjectDetailActivity.this);
         finalAmountTag.setText("Final Amount");
         finalAmountTag.setPadding(20,20,20,20);
-        finalAmountTag.setTextSize(20);
-        finalAmountTag.setTextColor(BLACK);
+        finalAmountTag.setTextSize(TypedValue.COMPLEX_UNIT_SP, 20);
+        finalAmountTag.setTextColor(getResources().getColor(R.color.yellow));
+        finalAmountTag.setBackgroundResource(R.drawable.dark_grey_table_divider);
         finalAmountTag.setTypeface(Typeface.DEFAULT_BOLD);
         headerRow.addView(nameTag);
         headerRow.addView(amountTag);
         headerRow.addView(discountTag);
         headerRow.addView(finalAmountTag);
+
+        TextView payTag = new TextView(ProjectDetailActivity.this);
+        payTag.setPadding(20,20,20,20);
+        payTag.setText("");
+        payTag.setTextSize(TypedValue.COMPLEX_UNIT_SP, 20);
+        payTag.setTypeface(Typeface.DEFAULT_BOLD);
+        payTag.setBackgroundResource(R.drawable.dark_grey_table_divider);
+        headerRow.addView(payTag);
 
 
         table.addView(headerRow);
@@ -1597,28 +1813,42 @@ public class ProjectDetailActivity extends AppCompatActivity {
                 TextView partyName = new TextView(ProjectDetailActivity.this);
                 partyName.setText(chequeExpense.getName());
                 partyName.setPadding(20,20,20,20);
-                partyName.setTextSize(20);
+                partyName.setTextSize(TypedValue.COMPLEX_UNIT_SP, 20);
 
                 TextView amount = new TextView(ProjectDetailActivity.this);
                 amount.setText(String.valueOf(chequeExpense.getAmount()));
                 amount.setPadding(20,20,20,20);
-                amount.setTextSize(20);
+                amount.setTextSize(TypedValue.COMPLEX_UNIT_SP, 20);
 
 
                 TextView discount = new TextView(ProjectDetailActivity.this);
                 discount.setText(String.valueOf(chequeExpense.getDiscount()));
                 discount.setPadding(20,20,20,20);
-                discount.setTextSize(20);
+                discount.setTextSize(TypedValue.COMPLEX_UNIT_SP, 20);
 
                 TextView finalAmount = new TextView(ProjectDetailActivity.this);
                 finalAmount.setText(String.valueOf(chequeExpense.calculateFinalAmount()));
                 finalAmount.setPadding(20,20,20,20);
-                finalAmount.setTextSize(20);
+                finalAmount.setTextSize(TypedValue.COMPLEX_UNIT_SP, 20);
 
                 row.addView(partyName);
                 row.addView(amount);
                 row.addView(discount);
                 row.addView(finalAmount);
+
+                int index = table.getChildCount();
+                if(index % 2 != 0){
+                    partyName.setBackgroundResource(R.drawable.table_divider);
+                    amount.setBackgroundResource(R.drawable.table_divider);
+                    discount.setBackgroundResource(R.drawable.table_divider);
+                    finalAmount.setBackgroundResource(R.drawable.table_divider);
+                }else{
+                    partyName.setBackgroundResource(R.drawable.grey_table_divider);
+                    amount.setBackgroundResource(R.drawable.grey_table_divider);
+                    discount.setBackgroundResource(R.drawable.grey_table_divider);
+                    finalAmount.setBackgroundResource(R.drawable.grey_table_divider);
+
+                }
 
                 table.addView(row);
 
@@ -1640,8 +1870,8 @@ public class ProjectDetailActivity extends AppCompatActivity {
                     });
                 }
 
-                Button pay = new Button(ProjectDetailActivity.this);
-                pay.setPadding(20,20,20,20);
+                TextView pay = new TextView(ProjectDetailActivity.this);
+                pay.setPadding(30,20,30,20);
                 pay.setTextSize(TypedValue.COMPLEX_UNIT_SP, 20);
                 if (chequeExpense.getPaid()){
                     pay.setText("Paid");
@@ -1659,9 +1889,18 @@ public class ProjectDetailActivity extends AppCompatActivity {
                         markChequeEntryPaid(chequeExpense);
                     }
                 });
+                if(index % 2 != 0) {
+                    pay.setBackgroundResource(R.drawable.table_divider);
+                }else{
+                    pay.setBackgroundResource(R.drawable.grey_table_divider);
+                }
                 row.addView(pay);
             }
 
+        }
+        Integer i;
+        for (i = 0; i<=headerRow.getChildCount(); i++){
+            showColumn(i);
         }
 
     }
@@ -1670,6 +1909,7 @@ public class ProjectDetailActivity extends AppCompatActivity {
     private void populateTable(ArrayList<WorkerProfile> workerList, TableLayout table, String parentMethod) {
 
         cleanTable(table);
+
 
         TableRow headerRow = new TableRow(ProjectDetailActivity.this);
         TableRow.LayoutParams rlp = new TableRow.LayoutParams(TableRow.LayoutParams.MATCH_PARENT);
@@ -1861,6 +2101,11 @@ public class ProjectDetailActivity extends AppCompatActivity {
                         shifts.setText(String.valueOf(shift));
                         shifts.setPadding(20,20,20,20);
                         shifts.setTextSize(TypedValue.COMPLEX_UNIT_SP, 20);
+                        if(index % 2 != 0){
+                            row.setBackgroundResource(R.drawable.table_divider);
+                        }else{
+                            row.setBackgroundResource(R.drawable.grey_table_divider);
+                        }
                         row.addView(shifts);
                     }
                 }
@@ -1947,6 +2192,19 @@ public class ProjectDetailActivity extends AppCompatActivity {
             table.addView(row);
             Log.v("KIA ADD", "RANDI");
         }
+
+        Integer i;
+        for (i = 0; i<=headerRow.getChildCount(); i++){
+            showColumn(i);
+        }
+
+//        ViewGroup.LayoutParams params = tableScollView.getLayoutParams();
+//        if (params.height > dP(150)){
+//            params.height = dP(150);
+//        }
+//
+//        tableScollView.setLayoutParams(params);
+//        tableScollView.requestLayout();
     }
 
     private void markWorkerPaid(WorkerProfile p) {
@@ -2501,6 +2759,17 @@ public class ProjectDetailActivity extends AppCompatActivity {
         if (childCount > 0) {
             table.removeViews(0, childCount );
         }
+    }
+
+    private void collapseColumn(Integer tag) {
+        workerTable.setColumnCollapsed(tag, true);
+
+    }
+
+    private void showColumn(Integer tag) {
+
+        workerTable.setColumnCollapsed(tag, false);
+
     }
 
     private void refreshDatabase(){

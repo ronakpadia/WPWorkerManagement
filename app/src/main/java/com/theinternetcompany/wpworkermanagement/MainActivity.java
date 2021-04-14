@@ -146,22 +146,6 @@ public class MainActivity extends AppCompatActivity {
                 AlertDialog dialog = builder.create();
                 dialog.show();
 
-
-
-//                AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
-//                ViewGroup viewGroup = findViewById(android.R.id.content);
-//                View dialogView = LayoutInflater.from(view.getContext()).inflate(R.layout.dialog_hide_show_columns, viewGroup, false);
-//                builder.setView(dialogView);
-//                AlertDialog alertDialog = builder.create();
-//                alertDialog.show();
-//                Button btnIdHideShow;
-//                btnIdHideShow = findViewById(R.id.btnViewColID);
-//                btnIdHideShow.setOnClickListener(new View.OnClickListener() {
-//                    @Override
-//                    public void onClick(View view) {
-//                        collapseId();
-//                    }
-//                });
             }
         });
 
@@ -211,6 +195,9 @@ public class MainActivity extends AppCompatActivity {
             public boolean onQueryTextChange(String s) {
                 if(s.equals("")){
                     this.onQueryTextSubmit("");
+                }
+                else{
+                    doMySearch(s);
                 }
                 return false;
             }

@@ -60,7 +60,7 @@
                     android:layout_height="wrap_content"
                     android:ems="10"
                     android:hint="Enter Card Number"
-                    android:inputType="text|textCapSentences" />
+                    android:inputType="number" />
 
                 <TextView
                     android:id="@+id/newWorkTypeTag"
@@ -91,7 +91,7 @@
                     android:layout_height="wrap_content"
                     android:ems="10"
                     android:hint="Enter Base Rate"
-                    android:inputType="text|textCapSentences" />
+                    android:inputType="number" />
 
 
             </LinearLayout>
