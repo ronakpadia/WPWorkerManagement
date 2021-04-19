@@ -75,7 +75,7 @@ public class WorkerListActivity extends AppCompatActivity {
         getWorkerData();
 
         btnHideShowColumns.setOnClickListener(new View.OnClickListener() {
-            @Override
+            @Override  
             public void onClick(View view) {
                 // setup the alert builder
                 final List<Integer> selectedItems = new ArrayList<Integer>();

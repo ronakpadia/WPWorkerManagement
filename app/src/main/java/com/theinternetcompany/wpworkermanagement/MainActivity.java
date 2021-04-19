@@ -16,16 +16,22 @@ import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.ContactsContract;
+import android.text.TextUtils;
 import android.util.Log;
 import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
+import android.widget.EditText;
+import android.widget.LinearLayout;
+import android.widget.ScrollView;
 import android.widget.SearchView;
 import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.database.DataSnapshot;
@@ -90,7 +96,8 @@ public class MainActivity extends AppCompatActivity {
         btnAddNewProject.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                transitionToNewProjectActivity();
+                openNewProjectDialog();
+
             }
         });
 
@@ -149,40 +156,40 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        nameTag.setOnClickListener(new View.OnClickListener(){
-            @Override
-            public void onClick(View view) {
-                collapseColumn(0);
-            }
-        });
-
-        companyTag.setOnClickListener(new View.OnClickListener(){
-            @Override
-            public void onClick(View view) {
-                collapseColumn(1);
-            }
-        });
-
-        locationTag.setOnClickListener(new View.OnClickListener(){
-            @Override
-            public void onClick(View view) {
-                collapseColumn(2);
-            }
-        });
-
-        periodTag.setOnClickListener(new View.OnClickListener(){
-            @Override
-            public void onClick(View view) {
-                collapseColumn(3);
-            }
-        });
-
-        expensesTag.setOnClickListener(new View.OnClickListener(){
-            @Override
-            public void onClick(View view) {
-                collapseColumn(4);
-            }
-        });
+//        nameTag.setOnClickListener(new View.OnClickListener(){
+//            @Override
+//            public void onClick(View view) {
+//                collapseColumn(0);
+//            }
+//        });
+//
+//        companyTag.setOnClickListener(new View.OnClickListener(){
+//            @Override
+//            public void onClick(View view) {
+//                collapseColumn(1);
+//            }
+//        });
+//
+//        locationTag.setOnClickListener(new View.OnClickListener(){
+//            @Override
+//            public void onClick(View view) {
+//                collapseColumn(2);
+//            }
+//        });
+//
+//        periodTag.setOnClickListener(new View.OnClickListener(){
+//            @Override
+//            public void onClick(View view) {
+//                collapseColumn(3);
+//            }
+//        });
+//
+//        expensesTag.setOnClickListener(new View.OnClickListener(){
+//            @Override
+//            public void onClick(View view) {
+//                collapseColumn(4);
+//            }
+//        });
 
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
@@ -428,6 +435,136 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
+    private void openNewProjectDialog() {
+
+        LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(
+                LinearLayout.LayoutParams.MATCH_PARENT,
+                LinearLayout.LayoutParams.MATCH_PARENT
+        );
+        LinearLayout.LayoutParams tagParams = new LinearLayout.LayoutParams(
+                LinearLayout.LayoutParams.MATCH_PARENT,
+                LinearLayout.LayoutParams.MATCH_PARENT
+        );
+        params.setMargins(40,15,40,15);
+        tagParams.setMargins(30,15,30,15);
+        LinearLayout editProjectLL = new LinearLayout(this);
+        editProjectLL.setOrientation(LinearLayout.VERTICAL);
+        EditText projectName = new EditText(this);
+        EditText projectCompany = new EditText(this);
+        EditText projectLocation = new EditText(this);
+        EditText projectPeriod = new EditText(this);
+        TextView nameTag = new TextView(this);
+        TextView companyTag = new TextView(this);
+        TextView locationTag = new TextView(this);
+        TextView periodTag = new TextView(this);
+        nameTag.setText("Name:");
+        companyTag.setText("Company:");
+        locationTag.setText("Location:");
+        periodTag.setText("Period:");
+        nameTag.setLayoutParams(tagParams);
+        companyTag.setLayoutParams(tagParams);
+        locationTag.setLayoutParams(tagParams);
+        periodTag.setLayoutParams(tagParams);
+        projectName.setLayoutParams(params);
+        projectCompany.setLayoutParams(params);
+        projectLocation.setLayoutParams(params);
+        projectPeriod.setLayoutParams(params);
+        editProjectLL.addView(nameTag);
+        editProjectLL.addView(projectName);
+        editProjectLL.addView(companyTag);
+        editProjectLL.addView(projectCompany);
+        editProjectLL.addView(locationTag);
+        editProjectLL.addView(projectLocation);
+        editProjectLL.addView(periodTag);
+        editProjectLL.addView(projectPeriod);
+        AlertDialog dialog = new AlertDialog.Builder(this)
+                .setTitle("WP Management")
+                .setMessage("New Project")
+                .setView(editProjectLL)
+                .setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+
+
+
+//                        String editTextInput = rateInput.getText().toString();
+//                        w.setRate(editTextInput);
+//                        addPWorker(w);
+//                        Log.d("onclick","editext value is: "+ editTextInput);
+                    }
+                })
+                .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        closeKeyboard();
+                    }
+                })
+                .create();
+        dialog.show();
+
+        dialog.getButton(AlertDialog.BUTTON_POSITIVE).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                closeKeyboard();
+                String pName = projectName.getText().toString();
+                String pLocation= projectLocation.getText().toString();
+                String pPeriod = projectPeriod.getText().toString();
+                String pCompany = projectCompany.getText().toString();
+                if (TextUtils.isEmpty(pName)) {
+                    projectName.setError("This field is required!");
+                    if (TextUtils.isEmpty(pLocation)) {
+                        projectLocation.setError("This field is required!");
+                        if (TextUtils.isEmpty(pPeriod)) {
+                            projectPeriod.setError("This field is required!");
+                        }
+                        if (TextUtils.isEmpty(pCompany)) {
+                            projectCompany.setError("This field is required!");
+                        }
+                    }
+                }
+
+                else if (TextUtils.isEmpty(pLocation)) {
+                    projectLocation.setError("This field is required!");
+                    if (TextUtils.isEmpty(pPeriod)) {
+                        projectPeriod.setError("This field is required!");
+                    }
+                    if (TextUtils.isEmpty(pCompany)) {
+                        projectCompany.setError("This field is required!");
+                    }
+                }
+
+                else if (TextUtils.isEmpty(pPeriod)) {
+                    projectPeriod.setError("This field is required!");
+                    if (TextUtils.isEmpty(pCompany)) {
+                        projectCompany.setError("This field is required!");
+                    }
+                }
+
+                else if (TextUtils.isEmpty(pCompany)) {
+                    projectCompany.setError("This field is required!");
+                }
+                else{
+
+//                            HashMap<String,WorkerProfile> WorkerList = new HashMap<String,WorkerProfile>();
+//                            Log.d("debug", String.valueOf(pWorkerList.size()));
+//                            for (WorkerProfile worker: pWorkerList){
+//                                WorkerList.put(worker.getId(), worker);
+//                            }
+
+                    String projectID = mainRef.child("Project_List").push().getKey();
+                    Project newProject = new Project(projectID, pName, pCompany, pLocation, pPeriod, "0");
+                    mainRef.child("Project_List").child(projectID).setValue(newProject);
+                    dialog.dismiss();
+                }
+
+            }
+        });
+        projectName.requestFocus();
+        InputMethodManager imm = (InputMethodManager) getSystemService(this.INPUT_METHOD_SERVICE);
+        imm.showSoftInput(projectName, InputMethodManager.SHOW_IMPLICIT);
+        showKeyboard();
+    }
+
     private void transitionToWorkerListActivity() {
 
         Intent intent = new Intent(MainActivity.this, WorkerListActivity.class);
@@ -447,6 +584,26 @@ public class MainActivity extends AppCompatActivity {
         if (childCount > 1) {
             table.removeViews(1, childCount - 1);
         }
+    }
+
+    public void closeKeyboard(){
+        InputMethodManager inputMethodManager = (InputMethodManager) this.getSystemService(Context.INPUT_METHOD_SERVICE);
+        inputMethodManager.toggleSoftInput(InputMethodManager.HIDE_IMPLICIT_ONLY, 0);
+    }
+
+    public void showKeyboard() {
+        InputMethodManager inputMethodManager = (InputMethodManager) this.getSystemService(Context.INPUT_METHOD_SERVICE);
+        inputMethodManager.toggleSoftInput(InputMethodManager.SHOW_FORCED, 0);
+        ScrollView scroll = (ScrollView) this.findViewById(R.id.scroll);
+//        scroll.scrollTo(5, scroll.getBottom());
+        scroll.scrollTo(0, scroll.getTop());
+        scroll.post(new Runnable() {
+            @Override
+            public void run() {
+                scroll.scrollTo(0, scroll.getBottom());
+//                scroll.fullScroll(ScrollView.FOCUS_DOWN);
+            }
+        });
     }
 
 
