@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     package="com.theinternetcompany.wpworkermanagement">
 
     <application
@@ -14,7 +15,7 @@
         <activity android:name=".NewProjectActivity"></activity>
         <activity android:name=".WorkerListActivity"></activity>
         <activity android:name=".MarkAttendanceActivity"></activity>
-        <activity android:name=".ProjectDetailActivity" ></activity>
+        <activity android:name=".ProjectDetailActivity"></activity>
         <activity android:name=".EditWorkerActivity" />
         <activity android:name=".WokerDetailActivity" />
         <activity android:name=".NewWorkerActivity" />
@@ -37,7 +38,8 @@
             android:readPermission="true"
             android:permission="true"
             android:writePermission="true"
-            android:exported="false">
+            android:exported="false"
+            tools:targetApi="q">
             <meta-data
                 android:name="android.support.FILE_PROVIDER_PATHS"
                 android:resource="@xml/provider_paths"/>

@@ -24,6 +24,7 @@ import android.util.TypedValue;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
@@ -84,7 +85,7 @@ public class ProjectDetailActivity extends AppCompatActivity {
     private TextView projectName, projectId, projectLocation, projectCompany, projectDuration, twConveyance, twWages,twCashExpenses,twChequePayments,twTotalExpenses, tableTitle, tvWorkers, tvCash, tvCheque, tvOperationTitle;
     private Button btnAdd, btnRemove,btnMarkAttendance, btnAddConveyance, btnAddEntry, btnEditEntry, btnDeleteEntry, btnAddChequeEntry, btnEditChequeEntry, btnDeleteChequeEntry, btnHideShowColumns;
     private FloatingActionButton btnEditProject,btnDelete, btnDone, btnCashDone, btnChequeDone;
-    ScrollView tableScollView;
+    ScrollView tableScollView,tableScollView2, scroll;
     LinearLayout layout, dateLL, buttonsLL, buttonsLL2, buttonsLL3;
 
     @Override
@@ -114,7 +115,6 @@ public class ProjectDetailActivity extends AppCompatActivity {
         projectName = findViewById(R.id.twProjectName);
         projectId = findViewById(R.id.twProjectId);
         workerTable = findViewById(R.id.projectTable);
-        workerTable2 = findViewById(R.id.projectTable2);
         tableTitle = findViewById(R.id.tableTitle);
         ETdate = findViewById(R.id.ETdate);
         tvWorkers = findViewById(R.id.tvWorkers);
@@ -159,6 +159,7 @@ public class ProjectDetailActivity extends AppCompatActivity {
         btnChequeDone = findViewById(R.id.btnChequeDone);
         tvOperationTitle = findViewById(R.id.operationTitle);
         tableScollView = findViewById(R.id.tableScrollView);
+        scroll = findViewById(R.id.scroll);
 
         Intent i = getIntent();
         project = (Project) i.getSerializableExtra("project");
@@ -183,7 +184,6 @@ public class ProjectDetailActivity extends AppCompatActivity {
         workerAddSearchView.setVisibility(View.GONE);
         workerConveyanceSearchView.setVisibility(View.GONE);
         workerAttendanceSearchView.setVisibility(View.GONE);
-        layout.setVisibility(View.GONE);
         dateLL.setVisibility(View.GONE);
         tvOperationTitle.setVisibility(View.GONE);
         btnCashDone.setVisibility(View.GONE);
@@ -201,6 +201,41 @@ public class ProjectDetailActivity extends AppCompatActivity {
 //        tableScollView.requestLayout();
 //        getWorkerData();
 //        populateTable(pWorkerList, workerTable, "main");
+
+//        scroll.setOnTouchListener(new View.OnTouchListener() {
+//
+//            @Override
+//            public boolean onTouch(View v, MotionEvent event) {
+//
+//                findViewById(R.id.tableScrollView).getParent()
+//                        .requestDisallowInterceptTouchEvent(false);
+//
+//                findViewById(R.id.tableScrollView2).getParent()
+//                        .requestDisallowInterceptTouchEvent(false);
+//                return false;
+//            }
+//        });
+
+//        tableScollView.setOnTouchListener(new View.OnTouchListener() {
+//            @Override
+//            public boolean onTouch(View v, MotionEvent event) {
+//
+//                // Disallow the touch request for parent scroll on touch of  child view
+//                v.getParent().requestDisallowInterceptTouchEvent(true);
+//                return false;
+//            }
+//        });
+
+//        tableScollView2.setOnTouchListener(new View.OnTouchListener() {
+//            @Override
+//            public boolean onTouch(View v, MotionEvent event) {
+//
+//                // Disallow the touch request for parent scroll on touch of  child view
+//                v.getParent().requestDisallowInterceptTouchEvent(true);
+//                return false;
+//            }
+//        });
+
 
         final Calendar myCalendar = Calendar.getInstance();
 
@@ -250,7 +285,6 @@ public class ProjectDetailActivity extends AppCompatActivity {
                 btnHideShowColumns.setVisibility(View.VISIBLE);
                 cashSearchView.setVisibility(View.GONE);
                 chequeSearchView.setVisibility(View.GONE);
-                layout.setVisibility(View.GONE);
                 dateLL.setVisibility(View.GONE);
 //                ViewGroup.LayoutParams params = tableScollView.getLayoutParams();
 //                if (params.height > dP(150)){
@@ -289,16 +323,15 @@ public class ProjectDetailActivity extends AppCompatActivity {
                 workerAddSearchView.setVisibility(View.GONE);
                 workerConveyanceSearchView.setVisibility(View.GONE);
                 workerAttendanceSearchView.setVisibility(View.GONE);
-                layout.setVisibility(View.GONE);
                 dateLL.setVisibility(View.GONE);
                 btnHideShowColumns.setVisibility(View.GONE);
                 pWorkerSearchView.setVisibility(View.GONE);
                 cashSearchView.setVisibility(View.VISIBLE);
                 chequeSearchView.setVisibility(View.GONE);
-                ViewGroup.LayoutParams params = tableScollView.getLayoutParams();
-                params.height = dP(300);
-                tableScollView.setLayoutParams(params);
-                tableScollView.requestLayout();
+//                ViewGroup.LayoutParams params = tableScollView.getLayoutParams();
+//                params.height = dP(200);
+//                tableScollView.setLayoutParams(params);
+//                tableScollView.requestLayout();
 
             }
         });
@@ -331,15 +364,14 @@ public class ProjectDetailActivity extends AppCompatActivity {
                 workerAddSearchView.setVisibility(View.GONE);
                 workerConveyanceSearchView.setVisibility(View.GONE);
                 workerAttendanceSearchView.setVisibility(View.GONE);
-                layout.setVisibility(View.GONE);
                 dateLL.setVisibility(View.GONE);
                 pWorkerSearchView.setVisibility(View.GONE);
                 cashSearchView.setVisibility(View.GONE);
                 chequeSearchView.setVisibility(View.VISIBLE);
-                ViewGroup.LayoutParams params = tableScollView.getLayoutParams();
-                params.height = dP(300);
-                tableScollView.setLayoutParams(params);
-                tableScollView.requestLayout();
+//                ViewGroup.LayoutParams params = tableScollView.getLayoutParams();
+//                params.height = dP(200);
+//                tableScollView.setLayoutParams(params);
+//                tableScollView.requestLayout();
             }
         });
 
@@ -581,10 +613,11 @@ public class ProjectDetailActivity extends AppCompatActivity {
                 workerAttendanceSearchView.setVisibility(View.GONE);
                 tableTitle.setVisibility(View.VISIBLE);
                 tableTitle.setText("Select Worker To Remove: ");
+                pWorkerSearchView.setVisibility(View.GONE);
                 workerRemoveSearchView.setVisibility(View.VISIBLE);
                 btnDone.setVisibility(View.VISIBLE);
                 getPWorkerData("remove");
-                layout .setVisibility(View.VISIBLE);
+//                layout .setVisibility(View.VISIBLE);
 
 
 
@@ -606,12 +639,13 @@ public class ProjectDetailActivity extends AppCompatActivity {
                 workerConveyanceSearchView.setVisibility(View.GONE);
                 workerAttendanceSearchView.setVisibility(View.GONE);
                 workerRemoveSearchView.setVisibility(View.GONE);
+                pWorkerSearchView.setVisibility(View.GONE);
                 tableTitle.setVisibility(View.VISIBLE);
                 tableTitle.setText("Select Worker To Add: ");
                 workerAddSearchView.setVisibility(View.VISIBLE);
                 btnDone.setVisibility(View.VISIBLE);
                 getPWorkerData("add");
-                layout .setVisibility(View.VISIBLE);
+//                layout .setVisibility(View.VISIBLE);
 
 //                populateTable(workerList, projectTable2, "add");
 
@@ -626,6 +660,7 @@ public class ProjectDetailActivity extends AppCompatActivity {
                 btnEditProject.setVisibility(View.GONE);
                 btnDelete.setVisibility(View.GONE);
                 dateLL.setVisibility(View.GONE);
+                pWorkerSearchView.setVisibility(View.GONE);
                 workerConveyanceSearchView.setVisibility(View.VISIBLE);
                 workerAttendanceSearchView.setVisibility(View.GONE);
                 workerRemoveSearchView.setVisibility(View.GONE);
@@ -633,7 +668,7 @@ public class ProjectDetailActivity extends AppCompatActivity {
                 tableTitle.setVisibility(View.VISIBLE);
                 tableTitle.setText("Select Worker To Add Conveyance");
                 btnDone.setVisibility(View.VISIBLE);
-                layout .setVisibility(View.VISIBLE);
+//                layout .setVisibility(View.VISIBLE);
                 getPWorkerData("conveyance");
             }
         });
@@ -645,6 +680,7 @@ public class ProjectDetailActivity extends AppCompatActivity {
                 buttonsLL2.setVisibility(View.GONE);
                 btnEditProject.setVisibility(View.GONE);
                 btnDelete.setVisibility(View.GONE);
+                pWorkerSearchView.setVisibility(View.GONE);
                 workerConveyanceSearchView.setVisibility(View.GONE);
                 workerAttendanceSearchView.setVisibility(View.VISIBLE);
                 workerRemoveSearchView.setVisibility(View.GONE);
@@ -653,7 +689,7 @@ public class ProjectDetailActivity extends AppCompatActivity {
                 tableTitle.setText("Select Worker To Mark Attendance");
                 dateLL.setVisibility(View.VISIBLE);
                 btnDone.setVisibility(View.VISIBLE);
-                layout .setVisibility(View.VISIBLE);
+//                layout .setVisibility(View.VISIBLE);
                 getPWorkerData("attendance");
             }
         });
@@ -667,12 +703,13 @@ public class ProjectDetailActivity extends AppCompatActivity {
                 btnDelete.setVisibility(View.VISIBLE);
                 dateLL.setVisibility(View.GONE);
                 tableTitle.setVisibility(View.GONE);
+                pWorkerSearchView.setVisibility(View.VISIBLE);
                 workerConveyanceSearchView.setVisibility(View.GONE);
                 workerAttendanceSearchView.setVisibility(View.GONE);
                 workerRemoveSearchView.setVisibility(View.GONE);
                 workerAddSearchView.setVisibility(View.GONE);
                 btnDone.setVisibility(View.GONE);
-                layout .setVisibility(View.GONE);
+                getPWorkerData("main");
 
             }
         });
@@ -686,7 +723,6 @@ public class ProjectDetailActivity extends AppCompatActivity {
                 btnDelete.setVisibility(View.VISIBLE);
                 btnCashDone.setVisibility(View.GONE);
                 btnChequeDone.setVisibility(View.GONE);
-                layout .setVisibility(View.GONE);
                 tvOperationTitle.setVisibility(View.GONE);
                 populateCashTable(workerTable,"none", cashExpenseList);
 
@@ -702,7 +738,6 @@ public class ProjectDetailActivity extends AppCompatActivity {
                 btnDelete.setVisibility(View.VISIBLE);
                 btnCashDone.setVisibility(View.GONE);
                 btnChequeDone.setVisibility(View.GONE);
-                layout .setVisibility(View.GONE);
                 tvOperationTitle.setVisibility(View.GONE);
                 populateChequeTable(workerTable,"none", chequeExpenseList);
 
@@ -1497,7 +1532,7 @@ public class ProjectDetailActivity extends AppCompatActivity {
 
                 }
 
-                populateTable(pWorkerList, workerTable, "inner");
+//                populateTable(pWorkerList, workerTable, "inner");
                 if (parent.equals("add")){
                     DatabaseReference workerRef = mainRef.child("Worker_List");
                     workerRef.keepSynced(true);
@@ -1529,7 +1564,7 @@ public class ProjectDetailActivity extends AppCompatActivity {
 
                             }
                             Log.v("MAKICHUT", String.valueOf(addWorkerList.size()));
-                            populateTable(addWorkerList, workerTable2, parent);
+                            populateTable(addWorkerList, workerTable, parent);
                         }
 
                         @Override
@@ -1541,7 +1576,7 @@ public class ProjectDetailActivity extends AppCompatActivity {
 //                            populateTable(pWorkerList, projectTable, "inner");
                 }
                 else {
-                    populateTable(pWorkerList, workerTable2, parent);
+                    populateTable(pWorkerList, workerTable, parent);
 //                            populateTable(pWorkerList, projectTable, "inner");
                 }
 
@@ -1569,7 +1604,6 @@ public class ProjectDetailActivity extends AppCompatActivity {
         nameTag.setTextSize(TypedValue.COMPLEX_UNIT_SP, 20);
         nameTag.setTextColor(getResources().getColor(R.color.yellow));
         nameTag.setTypeface(Typeface.DEFAULT_BOLD);
-        headerRow.addView(nameTag);
 
         TextView particularsTag = new TextView(ProjectDetailActivity.this);
         particularsTag.setText("Particulars");
@@ -1577,7 +1611,6 @@ public class ProjectDetailActivity extends AppCompatActivity {
         particularsTag.setTextSize(TypedValue.COMPLEX_UNIT_SP, 20);
         particularsTag.setTextColor(getResources().getColor(R.color.yellow));
         particularsTag.setTypeface(Typeface.DEFAULT_BOLD);
-        headerRow.addView(particularsTag);
 
         TextView creditTag = new TextView(ProjectDetailActivity.this);
         creditTag.setText("Credit");
@@ -1585,7 +1618,6 @@ public class ProjectDetailActivity extends AppCompatActivity {
         creditTag.setTextSize(TypedValue.COMPLEX_UNIT_SP, 20);
         creditTag.setTextColor(getResources().getColor(R.color.yellow));
         creditTag.setTypeface(Typeface.DEFAULT_BOLD);
-        headerRow.addView(creditTag);
 
         TextView debitTag = new TextView(ProjectDetailActivity.this);
         debitTag.setText("Debit");
@@ -1593,7 +1625,6 @@ public class ProjectDetailActivity extends AppCompatActivity {
         debitTag.setTextSize(TypedValue.COMPLEX_UNIT_SP, 20);
         debitTag.setTextColor(getResources().getColor(R.color.yellow));
         debitTag.setTypeface(Typeface.DEFAULT_BOLD);
-        headerRow.addView(debitTag);
 
         TextView balanceTag = new TextView(ProjectDetailActivity.this);
         balanceTag.setText("Balance");
@@ -1786,9 +1817,6 @@ public class ProjectDetailActivity extends AppCompatActivity {
         finalAmountTag.setTextColor(getResources().getColor(R.color.yellow));
         finalAmountTag.setBackgroundResource(R.drawable.dark_grey_table_divider);
         finalAmountTag.setTypeface(Typeface.DEFAULT_BOLD);
-        headerRow.addView(nameTag);
-        headerRow.addView(amountTag);
-        headerRow.addView(discountTag);
         headerRow.addView(finalAmountTag);
 
         TextView payTag = new TextView(ProjectDetailActivity.this);
@@ -1951,7 +1979,7 @@ public class ProjectDetailActivity extends AppCompatActivity {
         workTypeTag.setBackgroundResource(R.drawable.dark_grey_table_divider);
         headerRow.addView(workTypeTag);
 
-        if (table == workerTable){
+        if (parentMethod.equals("remove") || parentMethod.equals("conveyance") || parentMethod.equals("attendance") || parentMethod.equals("main") ){
             if (pWorkerList.size() != 0){
                 if (pWorkerList.get(0).getAttendance() != null){
                     for (String date : pWorkerList.get(0).getAttendance().keySet()){
@@ -2004,16 +2032,17 @@ public class ProjectDetailActivity extends AppCompatActivity {
             totalTag.setBackgroundResource(R.drawable.dark_grey_table_divider);
             headerRow.addView(totalTag);
 
-            TextView payTag = new TextView(ProjectDetailActivity.this);
-            payTag.setPadding(20,20,20,20);
-            payTag.setText("");
-            payTag.setTextSize(TypedValue.COMPLEX_UNIT_SP, 20);
-            payTag.setTypeface(Typeface.DEFAULT_BOLD);
-            payTag.setBackgroundResource(R.drawable.dark_grey_table_divider);
-            headerRow.addView(payTag);
-
-
+            if (parentMethod.equals("main")){
+                TextView payTag = new TextView(ProjectDetailActivity.this);
+                payTag.setPadding(20,20,20,20);
+                payTag.setText("");
+                payTag.setTextSize(TypedValue.COMPLEX_UNIT_SP, 20);
+                payTag.setTypeface(Typeface.DEFAULT_BOLD);
+                payTag.setBackgroundResource(R.drawable.dark_grey_table_divider);
+                headerRow.addView(payTag);
+            }
         }
+
 
         table.addView(headerRow);
         Log.d("header", parentMethod);
@@ -2067,34 +2096,7 @@ public class ProjectDetailActivity extends AppCompatActivity {
             // Adding the row to tableLayout
             Log.v("BHENCHOD", "MADARCHOD");
 
-            if (table == workerTable2){
-                row.setClickable(true);
-                row.setOnClickListener(new View.OnClickListener() {
-
-                    @Override
-                    public void onClick(View v) {
-                        if (parentMethod.equals("add")){
-
-                            openRateDialog(p);
-//                            populateTable(pWorkerList, projectTable, "inner");
-                        }
-                        else if (parentMethod.equals("remove")){
-                            deleteWorkerDialog(p);
-//                            populateTable(pWorkerList, projectTable, "inner");
-                        }
-                        else if (parentMethod.equals("conveyance")){
-                            openConveyanceDialog(p);
-                        }
-                        else if (parentMethod.equals("attendance")){
-                            openShiftDialog(p);
-                        }
-
-
-                    }
-                });
-            }
-
-            else{
+            if (parentMethod.equals("remove") || parentMethod.equals("conveyance") || parentMethod.equals("attendance")|| parentMethod.equals("main") ){
                 if(p.getAttendance() != null){
                     for (String shift : p.getAttendance().values()){
                         TextView shifts = new TextView(ProjectDetailActivity.this);
@@ -2146,49 +2148,81 @@ public class ProjectDetailActivity extends AppCompatActivity {
                 total.setTextSize(TypedValue.COMPLEX_UNIT_SP, 20);
 
 
-                TextView pay = new TextView(ProjectDetailActivity.this);
-                pay.setPadding(20,20,20,20);
-                pay.setTextSize(TypedValue.COMPLEX_UNIT_SP, 20);
-                if (p.getPaid()){
-                    pay.setText("Paid");
-                    pay.setTextColor(Color.parseColor("#00A300"));
-                }else{
-                    pay.setText("Pay");
-                    pay.setTextColor(Color.parseColor("#CC0000"));
-                }
-
-//                pay.setBackgroundColor(Color.parseColor("#00A300"));
-                pay.setTypeface(Typeface.DEFAULT_BOLD);
-                pay.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
-                        markWorkerPaid(p);
-                    }
-                });
-
                 if(index % 2 != 0){
                     totalShifts.setBackgroundResource(R.drawable.table_divider);
                     wage.setBackgroundResource(R.drawable.table_divider);
                     conveyance.setBackgroundResource(R.drawable.table_divider);
                     total.setBackgroundResource(R.drawable.table_divider);
-                    pay.setBackgroundResource(R.drawable.table_divider);
                 }else{
                     totalShifts.setBackgroundResource(R.drawable.grey_table_divider);
                     wage.setBackgroundResource(R.drawable.grey_table_divider);
                     conveyance.setBackgroundResource(R.drawable.grey_table_divider);
                     total.setBackgroundResource(R.drawable.grey_table_divider);
-                    pay.setBackgroundResource(R.drawable.grey_table_divider);
                 }
 
                 row.addView(totalShifts);
                 row.addView(wage);
                 row.addView(conveyance);
                 row.addView(total);
-                row.addView(pay);
+                if (parentMethod.equals("main")){
+                    TextView pay = new TextView(ProjectDetailActivity.this);
+                    pay.setPadding(20,20,20,20);
+                    pay.setTextSize(TypedValue.COMPLEX_UNIT_SP, 20);
+                    if (p.getPaid()){
+                        pay.setText("Paid");
+                        pay.setTextColor(Color.parseColor("#00A300"));
+                    }else{
+                        pay.setText("Pay");
+                        pay.setTextColor(Color.parseColor("#CC0000"));
+                    }
+                    if(index % 2 != 0){
+                        pay.setBackgroundResource(R.drawable.table_divider);
+                    }else{
+                        pay.setBackgroundResource(R.drawable.grey_table_divider);
+                    }
+
+//                pay.setBackgroundColor(Color.parseColor("#00A300"));
+                    pay.setTypeface(Typeface.DEFAULT_BOLD);
+                    pay.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View view) {
+                            markWorkerPaid(p);
+                        }
+                    });
+                    row.addView(pay);
+                }
+                row.setClickable(true);
+                row.setOnClickListener(new View.OnClickListener() {
+
+                    @Override
+                    public void onClick(View v) {
+                        if (parentMethod.equals("remove")){
+                            deleteWorkerDialog(p);
+//                            populateTable(pWorkerList, projectTable, "inner");
+                        }
+                        else if (parentMethod.equals("conveyance")){
+                            openConveyanceDialog(p);
+                        }
+                        else if (parentMethod.equals("attendance")){
+                            openShiftDialog(p);
+                        }
+
+
+                    }
+                });
 
             }
 
+            else if (parentMethod.equals("add")){
+                row.setClickable(true);
+                row.setOnClickListener(new View.OnClickListener() {
 
+                    @Override
+                    public void onClick(View v) {
+                        openRateDialog(p);
+                    }
+                });
+            }
             table.addView(row);
             Log.v("KIA ADD", "RANDI");
         }
